@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import classes from "./Button.module.css"
+import classes from "./WalletButton.module.css"
 
 interface ButtonProps {
   children: React.ReactNode

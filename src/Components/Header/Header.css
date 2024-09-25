@@ -1,0 +1,6 @@
+.container {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  border: 1px solid black;
+}
