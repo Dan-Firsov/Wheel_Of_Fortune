@@ -1,49 +1,47 @@
 import { ethers, BrowserProvider, formatEther } from "ethers"
-import Button from "./Button/WalletButton"
+import Button from "./button/WalletButton"
 import { useEffect, useState } from "react"
 import "./ConnectWalletButton.css"
+import { tokenAddress, useConnect } from "../../store/store"
+import { connectWallet } from "../../utils/connectWallet"
+import { setBalances } from "../../utils/setBalance"
 
 export default function ConnectWalletButton() {
-  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null)
-  const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null)
-  const [address, setAddress] = useState<string | null>(null)
+  const { provider, signer, address } = useConnect()
+
   const [balance, setBalance] = useState<string | null>(null)
+  const [balanceToken, setBalanceToken] = useState<string>("0")
 
   useEffect(() => {
-    if (signer && provider) {
-      ;(async () => {
-        try {
-          const address = await signer.getAddress()
-
-          const balance = formatEther(await provider.getBalance(address))
-          setBalance(balance)
-        } catch (error) {
-          console.error("Balance Error", error)
-        }
-      })()
-    }
-  }, [provider, signer])
+    console.log("Test")
+  }, [])
 
   const connectMetaMask = async () => {
     if (window.ethereum == null) {
       console.log("MetaMask not installed; using read-only defaults")
-      setProvider(null)
     } else {
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      setProvider(provider)
+      await connectWallet()
+      console.log(address, signer, provider)
 
-      const signer = await provider.getSigner()
-      setSigner(signer)
-
-      const address = await signer.getAddress()
-      setAddress(address)
+      if (address && signer && provider !== null) {
+        const currentBalances = await setBalances(address, signer, provider)
+        if (currentBalances) {
+          setBalanceToken(currentBalances.userTokenBalance)
+          setBalance(currentBalances.balance)
+        }
+      }
     }
   }
 
   return (
     <div className="connect-wallet-button-wraper">
       <Button onClick={() => connectMetaMask()}>{signer ? `${address?.slice(0, 4) + "..." + address?.slice(-5)}` : "Connect Wallet"}</Button>
-      {balance && <span>{`Balance: ${balance}`}</span>}
+      {balance && (
+        <div className="balance-wrapper">
+          <span>{`Balance: ${balance.slice(0, 8)} ETH`}</span>
+          <span>{`${balanceToken} WLD`}</span>
+        </div>
+      )}
     </div>
   )
 }
