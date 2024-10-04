@@ -3,11 +3,10 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 export const tokenAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
-// type MyPersist = PersistOptions
 
 export interface connectAddress {
   address: string | null
-  setAddress: (address: string) => void
+  setAddress: (address: string | null) => void
 }
 
 export interface connection {
@@ -20,7 +19,7 @@ export const useAddress = create(
   persist<connectAddress>(
     (set) => ({
       address: null,
-      setAddress: (address: string) => set({ address }),
+      setAddress: (address: string | null) => set({ address }),
     }),
     {
       name: "connect-storage",
