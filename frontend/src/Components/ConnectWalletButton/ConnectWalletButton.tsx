@@ -1,8 +1,8 @@
-import Button from "./button/WalletButton"
 import { useEffect, useState } from "react"
 import "./ConnectWalletButton.css"
 import { useAddress } from "../../store/WalletStore"
 import { connectWallet } from "../../utils/WalletConnection"
+import WalletButton from "./button/WalletButton"
 
 export default function ConnectWalletButton() {
   const { address, setAddress } = useAddress()
@@ -23,6 +23,8 @@ export default function ConnectWalletButton() {
         } else {
           setAddress(null)
         }
+      } else {
+        setAddress(null)
       }
     })()
   }, [address])
@@ -33,7 +35,7 @@ export default function ConnectWalletButton() {
 
   return (
     <div className="connect-wallet-button-wraper">
-      <Button onClick={() => connectMetaMask()}>{address ? `${address?.slice(0, 4) + "..." + address?.slice(-5)}` : "Connect Wallet"}</Button>
+      <WalletButton onClick={() => connectMetaMask()}>{address ? `${address?.slice(0, 4) + "..." + address?.slice(-5)}` : "Connect Wallet"}</WalletButton>
       {balance && (
         <div className="balance-wrapper">
           <span>{`Balance: ${balance.slice(0, 8)} ETH`}</span>

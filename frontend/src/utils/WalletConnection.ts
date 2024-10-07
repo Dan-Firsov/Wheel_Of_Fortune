@@ -1,9 +1,10 @@
 import { ethers } from "ethers"
 import { GetBalances } from "./GetBalances"
-import { useAddress } from "../store/WalletStore"
+import { useAddress, useConnection } from "../store/WalletStore"
 
 export const connectWallet = async (): Promise<{ balance: string; tokenBalance: string } | undefined> => {
   const { setAddress } = useAddress.getState()
+  const { setConnection } = useConnection.getState()
 
   try {
     if (window.ethereum) {
@@ -11,6 +12,7 @@ export const connectWallet = async (): Promise<{ balance: string; tokenBalance: 
       const signer = await provider.getSigner()
       const address = await signer.getAddress()
       setAddress(address)
+      setConnection(provider, signer)
       const currentBalances = await GetBalances(provider, signer, address)
       return currentBalances
     } else {
