@@ -4,8 +4,7 @@ pragma solidity ^0.8.0;
 
 interface IWheelOfFortune {
 
-    event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
-
+    
 
     function deposit() external payable;
 
@@ -15,7 +14,7 @@ interface IWheelOfFortune {
 
     function placeBet(uint256 amount) external;
 
-    function getPracticipants() external view returns (address[] memory);
+    function getParcticipants() external view returns (address[] memory);
 
     function getTotalPot() external view returns (uint256);
 
