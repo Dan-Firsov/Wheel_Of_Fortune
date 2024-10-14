@@ -1,5 +1,5 @@
-import { WildTokenABI } from "../assests/WildTokenABI"
-import { tokenAddress } from "../store/WalletStore"
+import { WildTokenABI } from "../../assests/WildTokenABI"
+import { tokenAddress } from "../../store/WalletStore"
 import { BrowserProvider, ethers, formatEther, JsonRpcSigner } from "ethers"
 
 export const GetBalances = async (provider: BrowserProvider, signer: JsonRpcSigner, address: string) => {

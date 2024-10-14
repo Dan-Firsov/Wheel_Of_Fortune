@@ -2,9 +2,9 @@
 
 pragma solidity ^0.8.0;
 
-import {IWheelOfFortune} from "./IWheelOfFortune.sol";
+// import {IWheelOfFortune} from "./IWheelOfFortune.sol";
 
-contract WheelOfFortune is IWheelOfFortune{
+contract WheelOfFortune {
 
     address  owner;
     uint constant DURATION = 5 minutes;
@@ -35,6 +35,14 @@ contract WheelOfFortune is IWheelOfFortune{
     constructor() {
         owner = msg.sender;
         createGameSession();
+    }
+
+    function createGameSession() internal {
+        GameSession storage session = GameSessions.push();
+        session.endsGameAt = 0;
+        session.start = false;
+        session.stopped = false;
+        emit GameCreated();
     }
 
 
@@ -121,12 +129,5 @@ contract WheelOfFortune is IWheelOfFortune{
         return balance[msg.sender];
     }
 
-    function createGameSession() internal {
-        GameSession storage session = GameSessions.push();
-        session.endsGameAt = 0;
-        session.start = false;
-        session.stopped = false;
-        emit GameCreated();
-    }
 
 }

@@ -1,6 +1,6 @@
 import { ethers, parseUnits } from "ethers"
-import { WildTokenABI } from "../assests/WildTokenABI"
-import { tokenAddress, useConnection } from "../store/WalletStore"
+import { WildTokenABI } from "../../assests/WildTokenABI"
+import { tokenAddress, useConnection } from "../../store/WalletStore"
 
 export const Transfer = async (addressTo: string, tokenValue: string) => {
   const { signer } = useConnection.getState()
