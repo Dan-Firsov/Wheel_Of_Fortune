@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Transfer } from "../../../utils/ERC20/Transfer"
+import { Transfer } from "../../../utils/erc20/Transfer"
 import TransferButton from "./button/transferButton"
 import TransferInput from "./input/transferInput"
 import TransactionHistoryPanel from "./transactionHistory/transactionHistoryPanel"

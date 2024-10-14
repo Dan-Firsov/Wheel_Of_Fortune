@@ -1,8 +1,8 @@
 import { ethers } from "ethers"
-import { GetBalances } from "./ERC20/GetBalances"
 import { useAddress, useConnection } from "../store/WalletStore"
+import { wofGetBalance } from "./wheelOfForune/wofGetBalance"
 
-export const connectWallet = async (): Promise<{ balance: string; tokenBalance: string } | undefined> => {
+export const wofConnectWallet = async (): Promise<string | undefined> => {
   const { setAddress } = useAddress.getState()
   const { setConnection } = useConnection.getState()
 
@@ -13,8 +13,8 @@ export const connectWallet = async (): Promise<{ balance: string; tokenBalance: 
       const address = await signer.getAddress()
       setAddress(address)
       setConnection(provider, signer)
-      const currentBalances = await GetBalances(provider, signer, address)
-      return currentBalances
+      const currentBalance = await wofGetBalance(provider, signer)
+      return currentBalance
     } else {
       console.log("MetaMask not installed; using read-only defaults")
     }

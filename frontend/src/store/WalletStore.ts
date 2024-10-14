@@ -3,6 +3,7 @@ import { create } from "zustand"
 import { persist } from "zustand/middleware"
 
 export const tokenAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+export const wofAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 
 export interface connectAddress {
   address: string | null

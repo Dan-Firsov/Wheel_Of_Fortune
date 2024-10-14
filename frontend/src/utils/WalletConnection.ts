@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { GetBalances } from "./ERC20/GetBalances"
+import { GetBalances } from "./erc20/GetBalances"
 import { useAddress, useConnection } from "../store/WalletStore"
 
 export const connectWallet = async (): Promise<{ balance: string; tokenBalance: string } | undefined> => {
