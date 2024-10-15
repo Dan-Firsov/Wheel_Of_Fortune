@@ -9,13 +9,14 @@ export default function WithdrawPanel() {
   const [value, setValue] = useState<string>("")
   const [errorMessage, setErrorMessage] = useState("")
 
-  const handleTransfer = async () => {
+  const handleWithdraw = async () => {
     try {
       if (value) {
         await Withdraw(value)
         setErrorMessage("")
       } else {
         console.log("Please provide value.")
+        setErrorMessage("Please provide value.")
       }
     } catch (error: any) {
       if (error.reason && error.reason.includes("Insufficient funds on balance")) {
@@ -29,8 +30,10 @@ export default function WithdrawPanel() {
   return (
     <div className="deposit-panel-wrapper">
       <WithdrawInput value={value} onValueChange={(e) => setValue(e.target.value)}></WithdrawInput>
+
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-      <WithdrawButton onClick={handleTransfer}>Withdraw</WithdrawButton>
+
+      <WithdrawButton onClick={handleWithdraw}>Withdraw</WithdrawButton>
     </div>
   )
 }

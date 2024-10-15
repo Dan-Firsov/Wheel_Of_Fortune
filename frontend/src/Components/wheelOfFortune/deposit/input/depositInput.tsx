@@ -7,8 +7,8 @@ interface TransferInputProps {
 
 export default function DepositInput({ value, onValueChange }: TransferInputProps) {
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
-    const regex = /^\d*$/
+    const newValue = e.target.value.replace(",", ".")
+    const regex = /^\d*\.?\d*$/
     if (regex.test(newValue)) {
       onValueChange(e)
     }
