@@ -2,7 +2,6 @@
 
 pragma solidity ^0.8.0;
 
-// import {IWheelOfFortune} from "./IWheelOfFortune.sol";
 
 contract WheelOfFortune {
 
@@ -13,7 +12,8 @@ contract WheelOfFortune {
 
     struct GameSession {
         address[] participants;
-        mapping (address => uint) participantBet;
+        uint256[] participantBets;
+        mapping (address => uint) participantIndex;
         uint256 totalPot;
         uint256 endsGameAt;
         bool start;
@@ -26,10 +26,12 @@ contract WheelOfFortune {
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
     event BetPlaced(address indexed user, uint256 amount);
-    event WinnerSelected(address indexed winner, uint256 payout);
     event GameStarted(uint256 endsAt);
     event GameCreated();
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
+
+    event ParticipantsUpdated(address[] participants, uint256[] bets);
+    event TotalPotUpdate(uint256 newTotalPot, uint participantCount);
 
 
     constructor() {
@@ -65,18 +67,15 @@ contract WheelOfFortune {
         require(block.timestamp >= session.endsGameAt, "Game is still running");
         require(session.start, "Game not started");
         require(!session.stopped, "Session already completed");
-
         require(session.totalPot > 0, "Total pot is zero");
 
         uint random = uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp))) % session.totalPot;
         uint current = 0;
 
         for(uint i = 0; i < session.participants.length; i++) {
-            address player = session.participants[i];
-            current += session.participantBet[player];
-
+            current += session.participantBets[i];
             if(random < current) {
-                winner = player;
+                winner = session.participants[i];
                 uint256 payout = session.totalPot - (session.totalPot * FEE / 100);
                 balance[winner] += payout;
 
@@ -86,6 +85,8 @@ contract WheelOfFortune {
 
         session.stopped = true;
         emit GameResult(winner,session.totalPot,session.participants);
+        emit TotalPotUpdate(0,0);
+
 
         createGameSession();
 
@@ -98,11 +99,24 @@ contract WheelOfFortune {
         require(!session.stopped, "Session already completed");
 
         balance[msg.sender] -= amount;
-        session.participants.push(msg.sender);
-        session.participantBet[msg.sender] += amount;
+
+
+        uint256 betIndex;
+
+        if (session.participantIndex[msg.sender] == 0 && (session.participants.length == 0 || session.participants[0] != msg.sender)) {
+            session.participants.push(msg.sender);
+            session.participantBets.push(amount);
+            betIndex = session.participants.length - 1;
+            session.participantIndex[msg.sender] = betIndex + 1;
+        } else {
+            betIndex = session.participantIndex[msg.sender] - 1; 
+            session.participantBets[betIndex] += amount;
+        }
+
         session.totalPot += amount;
 
         emit BetPlaced(msg.sender, amount);
+        emit TotalPotUpdate(session.totalPot,session.participants.length);
 
         if(session.participants.length >= 3 && !session.start) {
             session.start = true;
