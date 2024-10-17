@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 export default function TransactionHistoryPanel() {
   const { address } = useAddress.getState()
   const [transactions, setTransactions] = useState<any[]>([])
-  console.log(address)
 
   useEffect(() => {
     const fetchTransaction = async () => {

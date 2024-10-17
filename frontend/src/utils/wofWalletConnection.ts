@@ -13,7 +13,7 @@ export const wofConnectWallet = async (): Promise<string | undefined> => {
       const address = await signer.getAddress()
       setAddress(address)
       setConnection(provider, signer)
-      const currentBalance = await wofGetBalance(provider, signer)
+      const currentBalance = await wofGetBalance(signer)
       return currentBalance
     } else {
       console.log("MetaMask not installed; using read-only defaults")

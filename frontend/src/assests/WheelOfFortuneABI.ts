@@ -90,19 +90,38 @@ export const WheelOfFortuneABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: true,
-        internalType: "address",
-        name: "winner",
-        type: "address",
+        indexed: false,
+        internalType: "address[]",
+        name: "participants",
+        type: "address[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "bets",
+        type: "uint256[]",
+      },
+    ],
+    name: "ParticipantsUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newTotalPot",
+        type: "uint256",
       },
       {
         indexed: false,
         internalType: "uint256",
-        name: "payout",
+        name: "participantCount",
         type: "uint256",
       },
     ],
-    name: "WinnerSelected",
+    name: "TotalUpdate",
     type: "event",
   },
   {

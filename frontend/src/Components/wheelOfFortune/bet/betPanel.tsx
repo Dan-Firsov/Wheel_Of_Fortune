@@ -2,6 +2,7 @@ import { useState } from "react"
 import BetInput from "./input/betInput"
 import BetButton from "./button/betButton"
 import { PlaceBet } from "../../../utils/wheelOfForune/wofPlaceBet"
+import "./betPanel.css"
 
 export default function BetPanel() {
   const [value, setValue] = useState<string>("")

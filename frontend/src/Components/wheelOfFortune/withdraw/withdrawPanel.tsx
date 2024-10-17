@@ -2,8 +2,6 @@ import { useEffect, useState } from "react"
 import WithdrawButton from "./button/withdrawButton"
 import WithdrawInput from "./input/withdrawInput"
 import { Withdraw } from "../../../utils/wheelOfForune/wofWithdraw"
-import { ethers } from "ethers"
-import { wofAddress } from "../../../store/WalletStore"
 
 export default function WithdrawPanel() {
   const [value, setValue] = useState<string>("")

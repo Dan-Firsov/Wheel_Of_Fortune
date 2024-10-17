@@ -31,7 +31,7 @@ contract WheelOfFortune {
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
 
     event ParticipantsUpdated(address[] participants, uint256[] bets);
-    event TotalPotUpdate(uint256 newTotalPot, uint participantCount);
+    event TotalUpdate(uint256 newTotalPot, uint participantCount);
 
 
     constructor() {
@@ -85,7 +85,7 @@ contract WheelOfFortune {
 
         session.stopped = true;
         emit GameResult(winner,session.totalPot,session.participants);
-        emit TotalPotUpdate(0,0);
+        emit TotalUpdate(0,0);
 
 
         createGameSession();
@@ -116,7 +116,7 @@ contract WheelOfFortune {
         session.totalPot += amount;
 
         emit BetPlaced(msg.sender, amount);
-        emit TotalPotUpdate(session.totalPot,session.participants.length);
+        emit TotalUpdate(session.totalPot,session.participants.length);
 
         if(session.participants.length >= 3 && !session.start) {
             session.start = true;
