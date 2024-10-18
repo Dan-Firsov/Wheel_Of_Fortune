@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react"
 import "./wofHeader.css"
-import { useConnection, wofAddress } from "../../../store/WalletStore"
+import { wofAddress } from "../../../store/WalletStore"
 import { ethers, formatEther } from "ethers"
 import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
-
-interface EventData {
-  newTotalPot: number
-  participantCount: number
-}
+import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
 
 export default function WofHeader() {
-  const [totalPot, setTotalPot] = useState<number>()
-  const [totalParcticipants, setTotalParticipants] = useState<number>()
-  const [events, setEvents] = useState<EventData[]>([])
+  const { totalPot, setTotalPot } = usePotState()
+  const { totalParcticipants, setTotalParticipants } = useParticipantsState()
 
   useEffect(() => {
     const fetchTotals = async () => {
       const provider = new ethers.BrowserProvider(window.ethereum)
+
       const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
 
       const filter = contract.filters.TotalUpdate()
@@ -31,16 +27,13 @@ export default function WofHeader() {
         }
       })
 
-      console.log("Fetched events:", formattedEvents)
-
       if (formattedEvents.length > 0) {
         const latestEvent = formattedEvents[formattedEvents.length - 1]
         setTotalPot(latestEvent.newTotalPot)
         setTotalParticipants(latestEvent.participantCount)
       }
-
-      setEvents(formattedEvents)
     }
+
     fetchTotals()
   }, [totalPot, totalParcticipants])
 

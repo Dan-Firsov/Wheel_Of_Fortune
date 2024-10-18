@@ -115,6 +115,7 @@ contract WheelOfFortune {
 
         session.totalPot += amount;
 
+        emit ParticipantsUpdated(session.participants, session.participantBets);
         emit BetPlaced(msg.sender, amount);
         emit TotalUpdate(session.totalPot,session.participants.length);
 

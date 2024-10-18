@@ -19,7 +19,7 @@ export default function DepositPanel() {
 
   return (
     <div className="deposit-panel-wrapper">
-      <DepositInput value={value} onValueChange={(e) => setValue(e.target.value)}></DepositInput>
+      <DepositInput value={value} onValueChange={(e) => setValue(e.target.value.replace(",", "."))}></DepositInput>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 

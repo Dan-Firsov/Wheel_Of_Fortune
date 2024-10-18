@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import "./wofConnectWalletButton.css"
 import { useAddress } from "../../../store/WalletStore"
-import { connectWallet } from "../../../utils/WalletConnection"
 import { wofConnectWallet } from "../../../utils/wofWalletConnection"
 import WalletButton from "../button/WalletButton"
 
@@ -16,6 +15,7 @@ export default function WofConnectWalletButton() {
         const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
         if (accounts.length > 0) {
           const currentBalance = await wofConnectWallet()
+
           if (currentBalance) {
             setBalance(currentBalance)
           }

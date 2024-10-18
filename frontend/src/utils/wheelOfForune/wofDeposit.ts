@@ -8,7 +8,6 @@ export const Deposit = async (value: string) => {
 
   const deposit = async () => {
     const amount = parseUnits(value, 18)
-    console.log(amount)
 
     const tx = await contract.deposit({ value: amount })
     await tx.wait()

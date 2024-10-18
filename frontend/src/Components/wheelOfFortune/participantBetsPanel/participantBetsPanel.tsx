@@ -1,46 +1,66 @@
-import { BigNumberish, ethers, formatEther } from "ethers"
-import { useConnection, wofAddress } from "../../../store/WalletStore"
-import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
+import { ethers, formatEther } from "ethers"
 import { useEffect, useState } from "react"
-import { format } from "path"
+import { wofAddress } from "../../../store/WalletStore"
+import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
+import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
+
+interface Participant {
+  address: string
+  bet: number
+}
 
 export default function ParticipantBetsPanel() {
-  const [players, setPlayers] = useState<{ address: string; bet: string; chance: string }[]>([])
-  const { provider } = useConnection.getState()
-
-  const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+  const [participants, setParticipants] = useState<Participant[]>([])
+  const { totalPot } = usePotState()
+  const { totalParcticipants } = useParticipantsState()
   useEffect(() => {
-    if (provider) {
-      provider.on("ParticipantsUpdated", (participants: string[], bets: bigint[]) => {
-        const totalBets = bets.reduce((acc, bet) => acc + bet, BigInt(0))
+    const fetchParticipants = async () => {
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
 
-        const playerData = participants.map((participant, index) => {
-          const betInEther = formatEther(bets[index])
-          const chance = (Number(bets[index]) / Number(totalBets)) * 100
-          return {
-            address: participant,
-            bet: betInEther,
-            chance: chance.toFixed(2) + "%",
-          }
-        })
-        setPlayers(playerData)
+      const filter = contract.filters.ParticipantsUpdated()
+      const eventLogs = await contract.queryFilter(filter)
+
+      const formattedEvents = eventLogs.map((event) => {
+        const decoded = contract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
+        const addresses = decoded[0] as string[]
+        console.log(addresses)
+        const bets = decoded[1] as bigint[]
+        console.log(bets)
+
+        return addresses.map((address, index) => ({
+          address,
+          bet: Number(formatEther(bets[index])),
+        }))
       })
-
-      return () => {
-        provider.removeAllListeners("ParticipantsUpdated")
+      if (formattedEvents.length > 0) {
+        const latestEvent = formattedEvents[formattedEvents.length - 1]
+        latestEvent.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
+        setParticipants(latestEvent)
       }
     }
-  }, [provider])
+    fetchParticipants()
 
+    return () => {
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+      contract.removeAllListeners("ParticipantsUpdated")
+    }
+  }, [participants])
   return (
     <div>
-      {players.map((player, index) => (
-        <div key={index} className="player">
-          <span>{player.address}</span>
-          <span>{player.bet} ETH</span>
-          <span>{player.chance}</span>
-        </div>
-      ))}
+      <h3>Participants:</h3>
+      <ol>
+        {participants.map((participant, index) => {
+          const winChance = (participant.bet / totalPot) * 100
+
+          return (
+            <li key={index}>
+              Address: {participant.address?.slice(0, 7) + "...." + participant.address?.slice(-6)}, Bet: {participant.bet}, Chance: {winChance.toFixed(2)}%
+            </li>
+          )
+        })}
+      </ol>
     </div>
   )
 }

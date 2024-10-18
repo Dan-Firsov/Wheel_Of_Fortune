@@ -10,10 +10,13 @@ export const wofConnectWallet = async (): Promise<string | undefined> => {
     if (window.ethereum) {
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
+
       const address = await signer.getAddress()
       setAddress(address)
       setConnection(provider, signer)
       const currentBalance = await wofGetBalance(signer)
+      console.log(currentBalance)
+
       return currentBalance
     } else {
       console.log("MetaMask not installed; using read-only defaults")
