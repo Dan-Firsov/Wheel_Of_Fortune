@@ -5,7 +5,6 @@ import { wofAddress } from "../../store/WalletStore"
 export const wofGetBalance = async (signer: JsonRpcSigner) => {
   const connect = new ethers.Contract(wofAddress, WheelOfFortuneABI, signer)
   const balance = await connect.getBalance()
-  console.log(balance)
 
   if (balance) {
     return ethers.formatUnits(balance, 18)

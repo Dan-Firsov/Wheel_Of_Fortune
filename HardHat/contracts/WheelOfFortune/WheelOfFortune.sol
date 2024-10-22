@@ -15,19 +15,24 @@ contract WheelOfFortune {
         uint256[] participantBets;
         mapping (address => uint) participantIndex;
         uint256 totalPot;
+        address winner;
         uint256 endsGameAt;
         bool start;
         bool stopped;
     }
 
     GameSession[] public GameSessions;
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can call this function");
+        _;
+    }
     
 
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
     event BetPlaced(address indexed user, uint256 amount);
     event GameStarted(uint256 endsAt);
-    event GameCreated();
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
 
     event ParticipantsUpdated(address[] participants, uint256[] bets);
@@ -44,7 +49,6 @@ contract WheelOfFortune {
         session.endsGameAt = 0;
         session.start = false;
         session.stopped = false;
-        emit GameCreated();
     }
 
 
@@ -61,7 +65,7 @@ contract WheelOfFortune {
         emit Withdraw (msg.sender, amount);
     }
 
-    function spinWheel() external returns (address winner) {
+    function spinWheel() external onlyOwner  {
         require(GameSessions.length > 0, "No active game sessions");
         GameSession storage session = GameSessions[GameSessions.length -1];
         require(block.timestamp >= session.endsGameAt, "Game is still running");
@@ -75,16 +79,16 @@ contract WheelOfFortune {
         for(uint i = 0; i < session.participants.length; i++) {
             current += session.participantBets[i];
             if(random < current) {
-                winner = session.participants[i];
+                session.winner = session.participants[i];
                 uint256 payout = session.totalPot - (session.totalPot * FEE / 100);
-                balance[winner] += payout;
+                balance[session.winner] += payout;
 
                 break;
             }
         }
 
         session.stopped = true;
-        emit GameResult(winner,session.totalPot,session.participants);
+        emit GameResult(session.winner,session.totalPot,session.participants);
         emit TotalUpdate(0,0);
 
 

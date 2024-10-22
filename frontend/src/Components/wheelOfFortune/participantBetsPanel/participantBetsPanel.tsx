@@ -12,7 +12,6 @@ interface Participant {
 export default function ParticipantBetsPanel() {
   const [participants, setParticipants] = useState<Participant[]>([])
   const { totalPot } = usePotState()
-  const { totalParcticipants } = useParticipantsState()
   useEffect(() => {
     const fetchParticipants = async () => {
       const provider = new ethers.BrowserProvider(window.ethereum)
@@ -24,9 +23,7 @@ export default function ParticipantBetsPanel() {
       const formattedEvents = eventLogs.map((event) => {
         const decoded = contract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
         const addresses = decoded[0] as string[]
-        console.log(addresses)
         const bets = decoded[1] as bigint[]
-        console.log(bets)
 
         return addresses.map((address, index) => ({
           address,
@@ -46,7 +43,7 @@ export default function ParticipantBetsPanel() {
       const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
       contract.removeAllListeners("ParticipantsUpdated")
     }
-  }, [participants])
+  }, [])
   return (
     <div>
       <h3>Participants:</h3>

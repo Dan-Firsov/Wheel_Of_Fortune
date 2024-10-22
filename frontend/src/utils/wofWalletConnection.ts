@@ -15,7 +15,6 @@ export const wofConnectWallet = async (): Promise<string | undefined> => {
       setAddress(address)
       setConnection(provider, signer)
       const currentBalance = await wofGetBalance(signer)
-      console.log(currentBalance)
 
       return currentBalance
     } else {

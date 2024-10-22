@@ -3,7 +3,6 @@ import WofConnectWalletButton from "../connectWalletButton/wheelOfForune/wofConn
 import "./Header.css"
 import { ethers } from "ethers"
 import { wofAddress } from "../../store/WalletStore"
-import { createSecureContext } from "tls"
 
 export default function Header() {
   const [contractBalance, setContractBalance] = useState<string>("")
