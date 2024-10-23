@@ -13,13 +13,12 @@ export default function ParticipantBetsPanel() {
   const [participants, setParticipants] = useState<Participant[]>([])
   const { totalPot } = usePotState()
   useEffect(() => {
-    const fetchParticipants = async () => {
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
 
+    const fetchParticipants = async () => {
       const filter = contract.filters.ParticipantsUpdated()
       const eventLogs = await contract.queryFilter(filter)
-
       const formattedEvents = eventLogs.map((event) => {
         const decoded = contract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
         const addresses = decoded[0] as string[]
@@ -36,12 +35,23 @@ export default function ParticipantBetsPanel() {
         setParticipants(latestEvent)
       }
     }
+
     fetchParticipants()
 
+    const handleParticipantsUpdate = (addresses: string[], bets: bigint[]) => {
+      const updatedParticipants = addresses.map((address, index) => ({
+        address,
+        bet: Number(formatEther(bets[index])),
+      }))
+
+      updatedParticipants.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
+      setParticipants(updatedParticipants)
+    }
+
+    contract.on("ParticipantsUpdated", handleParticipantsUpdate)
+
     return () => {
-      const provider = new ethers.BrowserProvider(window.ethereum)
-      const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
-      contract.removeAllListeners("ParticipantsUpdated")
+      contract.off("ParticipantsUpdated", handleParticipantsUpdate)
     }
   }, [])
   return (

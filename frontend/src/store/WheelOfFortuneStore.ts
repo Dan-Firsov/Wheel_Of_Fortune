@@ -5,7 +5,7 @@ export interface PotState {
   setTotalPot: (newTotal: number) => void
 }
 export interface ParcticipantsState {
-  totalParcticipants: number
+  totalParticipants: number
   setTotalParticipants: (newTotal: number) => void
 }
 
@@ -15,6 +15,6 @@ export const usePotState = create<PotState>((set) => ({
 }))
 
 export const useParticipantsState = create<ParcticipantsState>((set) => ({
-  totalParcticipants: 0,
-  setTotalParticipants: (newTotal) => set({ totalParcticipants: newTotal }),
+  totalParticipants: 0,
+  setTotalParticipants: (newTotal) => set({ totalParticipants: newTotal }),
 }))

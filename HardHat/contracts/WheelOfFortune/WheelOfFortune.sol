@@ -34,7 +34,6 @@ contract WheelOfFortune {
     event BetPlaced(address indexed user, uint256 amount);
     event GameStarted(uint256 endsAt);
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
-
     event ParticipantsUpdated(address[] participants, uint256[] bets);
     event TotalUpdate(uint256 newTotalPot, uint participantCount);
 
