@@ -1,6 +1,6 @@
 import BetPanel from "./bet/betPanel"
 import WofHeader from "./wofHeader/wofHeader"
-import GameTimer from "./timerPanel/timerPanel"
+import GameTimer from "./gameTimer/gameTimer"
 import "./wheelOfFortune.css"
 import ParticipantBetsPanel from "./participantBetsPanel/participantBetsPanel"
 

@@ -43,11 +43,14 @@ contract WheelOfFortune {
         createGameSession();
     }
 
-    function createGameSession() internal {
+    function createGameSession() public onlyOwner {
         GameSession storage session = GameSessions.push();
         session.endsGameAt = 0;
         session.start = false;
         session.stopped = false;
+        emit ParticipantsUpdated(session.participants,session.participantBets);
+        emit TotalUpdate(session.totalPot, session.participants.length);
+
     }
 
 
@@ -88,11 +91,6 @@ contract WheelOfFortune {
 
         session.stopped = true;
         emit GameResult(session.winner,session.totalPot,session.participants);
-        emit TotalUpdate(0,0);
-
-
-        createGameSession();
-
     }
 
     function placeBet(uint256 amount) external {
@@ -102,7 +100,6 @@ contract WheelOfFortune {
         require(!session.stopped, "Session already completed");
 
         balance[msg.sender] -= amount;
-
 
         uint256 betIndex;
 
@@ -146,6 +143,4 @@ contract WheelOfFortune {
     function getBalance() external view returns (uint256) {
         return balance[msg.sender];
     }
-
-
 }

@@ -1,6 +1,6 @@
-export const SpinWheel = async () => {
+export const CreateGame = async () => {
   try {
-    const response = await fetch("http://localhost:5000/spinWheel", {
+    const response = await fetch("http://localhost:5000/createGameSession", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -9,9 +9,9 @@ export const SpinWheel = async () => {
 
     const data = await response.json()
     if (data.success) {
-      console.log("Spin wheel successful:", data.txHash)
+      console.log("Create game successful:", data.txHash)
     } else {
-      console.error("Spin wheel failed:", data.error)
+      console.error("Create game failed:", data.error)
     }
   } catch (error) {
     console.error("Error contacting backend server:", error)
