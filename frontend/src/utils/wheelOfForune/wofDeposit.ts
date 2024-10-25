@@ -1,16 +1,13 @@
-import { ethers, parseUnits } from "ethers"
-import { useConnection, wofAddress } from "../../store/WalletStore"
-import { WheelOfFortuneABI } from "../../assests/WheelOfFortuneABI"
+import { parseUnits } from "ethers"
+import { getSigContract } from "../../store/WalletStore"
 
 export const Deposit = async (value: string) => {
-  const { signer } = useConnection.getState()
-  const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, signer)
-
-  const deposit = async () => {
+  try {
+    const contract = await getSigContract()
     const amount = parseUnits(value, 18)
-
     const tx = await contract.deposit({ value: amount })
     await tx.wait()
+  } catch (error) {
+    console.error("Deposit error:", error)
   }
-  deposit()
 }

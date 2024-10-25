@@ -77,7 +77,6 @@ export default function GameTimer() {
     fetchGameEvents()
 
     const handleGameStarted = (endsAt: number) => {
-      console.log("GameStarted event caught, endsAt:", endsAt)
       const currentTime = Math.floor(Date.now() / 1000)
       const timeLeft = endsAt - currentTime
 
@@ -90,7 +89,6 @@ export default function GameTimer() {
     }
 
     const handleGameResult = (winnerAddress: string, totalPot: bigint) => {
-      console.log("GameResult event caught, winner:", winnerAddress, "totalPot:", totalPot)
       setWinner(winnerAddress)
       setGameActive(false)
       setRemainingTime(null)

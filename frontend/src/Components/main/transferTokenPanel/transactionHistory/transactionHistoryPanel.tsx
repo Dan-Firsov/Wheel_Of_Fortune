@@ -1,6 +1,6 @@
 import { ethers } from "ethers"
 import { WildTokenABI } from "../../../../assests/WildTokenABI"
-import { tokenAddress, useAddress, useConnection } from "../../../../store/WalletStore"
+import { getSigContract, tokenAddress, useAddress } from "../../../../store/WalletStore"
 import { useEffect, useState } from "react"
 
 export default function TransactionHistoryPanel() {
@@ -10,12 +10,9 @@ export default function TransactionHistoryPanel() {
   useEffect(() => {
     const fetchTransaction = async () => {
       if (address) {
-        const provider = new ethers.BrowserProvider(window.ethereum)
-        const signer = await provider.getSigner()
-        const contract = new ethers.Contract(tokenAddress, WildTokenABI, signer)
+        const contract = await getSigContract()
         const filter = contract.filters.Transfer(address, null)
         const events = await contract.queryFilter(filter)
-
         const formattedEvents = events.map((event) => {
           const decoded = contract.interface.decodeEventLog("Transfer", event.data, event.topics)
           return {

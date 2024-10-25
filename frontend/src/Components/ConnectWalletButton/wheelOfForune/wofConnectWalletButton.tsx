@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import "./wofConnectWalletButton.css"
-import { useAddress } from "../../../store/WalletStore"
+import { useAddress, wofAddress } from "../../../store/WalletStore"
 import { wofConnectWallet } from "../../../utils/wofWalletConnection"
 import WalletButton from "../button/WalletButton"
+import { ethers } from "ethers"
+import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
 
 export default function WofConnectWalletButton() {
   const { address, setAddress } = useAddress()
@@ -10,6 +12,9 @@ export default function WofConnectWalletButton() {
   const [balance, setBalance] = useState<string | null>(null)
 
   useEffect(() => {
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+
     ;(async () => {
       if (window.ethereum) {
         const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
@@ -26,7 +31,23 @@ export default function WofConnectWalletButton() {
         setAddress(null)
       }
     })()
-  }, [address])
+
+    const handleCurrentBalance = async () => {
+      const currentBalance = await wofConnectWallet()
+
+      if (currentBalance) {
+        setBalance(currentBalance)
+      }
+    }
+
+    contract.on("Deposit", handleCurrentBalance)
+    contract.on("Withdraw", handleCurrentBalance)
+    contract.on("BetPlaced", handleCurrentBalance)
+
+    return () => {
+      contract.off("Deposit", handleCurrentBalance)
+    }
+  }, [])
 
   const connectMetaMask = async () => {
     wofConnectWallet()

@@ -1,6 +1,6 @@
 import { ethers, formatEther } from "ethers"
 import { useEffect, useState } from "react"
-import { wofAddress } from "../../../store/WalletStore"
+import { getWsContract, wofAddress } from "../../../store/WalletStore"
 import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
 import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
 
@@ -13,8 +13,7 @@ export default function ParticipantBetsPanel() {
   const [participants, setParticipants] = useState<Participant[]>([])
   const { totalPot } = usePotState()
   useEffect(() => {
-    const provider = new ethers.BrowserProvider(window.ethereum)
-    const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+    const contract = getWsContract()
 
     const fetchParticipants = async () => {
       const filter = contract.filters.ParticipantsUpdated()

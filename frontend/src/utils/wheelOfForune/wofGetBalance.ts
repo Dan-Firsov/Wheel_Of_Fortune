@@ -1,14 +1,16 @@
-import { BrowserProvider, JsonRpcSigner, ethers } from "ethers"
-import { WheelOfFortuneABI } from "../../assests/WheelOfFortuneABI"
-import { wofAddress } from "../../store/WalletStore"
+import { ethers } from "ethers"
+import { getSigContract } from "../../store/WalletStore"
 
-export const wofGetBalance = async (signer: JsonRpcSigner) => {
-  const connect = new ethers.Contract(wofAddress, WheelOfFortuneABI, signer)
-  const balance = await connect.getBalance()
-
-  if (balance) {
-    return ethers.formatUnits(balance, 18)
-  } else {
-    return "0"
+export const wofGetBalance = async () => {
+  try {
+    const contract = await getSigContract()
+    const balance = await contract.getBalance()
+    if (balance) {
+      return ethers.formatUnits(balance, 18)
+    } else {
+      return "0"
+    }
+  } catch (error) {
+    console.error("Get Balance error:", error)
   }
 }

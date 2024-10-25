@@ -1,21 +1,15 @@
-import { ethers } from "ethers"
-import { useAddress, useConnection } from "../store/WalletStore"
+import { getBrowsProvider, useAddress } from "../store/WalletStore"
 import { wofGetBalance } from "./wheelOfForune/wofGetBalance"
 
-export const wofConnectWallet = async (): Promise<string | undefined> => {
+export const wofConnectWallet = async () => {
   const { setAddress } = useAddress.getState()
-  const { setConnection } = useConnection.getState()
-
   try {
     if (window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum)
+      const provider = await getBrowsProvider()
       const signer = await provider.getSigner()
-
       const address = await signer.getAddress()
       setAddress(address)
-      setConnection(provider, signer)
-      const currentBalance = await wofGetBalance(signer)
-
+      const currentBalance = await wofGetBalance()
       return currentBalance
     } else {
       console.log("MetaMask not installed; using read-only defaults")
