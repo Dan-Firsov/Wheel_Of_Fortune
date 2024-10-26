@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import "./wofHeader.css"
-import { getBrowsContract, getWsContract, getWsProvider, wofAddress } from "../../../store/WalletStore"
+import { getBrowsContract, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
 import { ethers, formatEther } from "ethers"
 import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
 import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
@@ -10,7 +10,10 @@ export default function WofHeader() {
   const { totalParticipants, setTotalParticipants } = useParticipantsState()
 
   useEffect(() => {
-    const contract = getWsContract()
+    // const contract = getBrowsContract()
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    const contract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, provider)
+
     const fetchTotals = async () => {
       const filter = contract.filters.TotalUpdate()
       const eventLogs = await contract.queryFilter(filter)
@@ -35,7 +38,6 @@ export default function WofHeader() {
       setTotalPot(Number(formatEther(newTotalPot)))
       setTotalParticipants(Number(participantCount))
     }
-
     contract.on("TotalUpdate", handleTotalUpdate)
 
     return () => {

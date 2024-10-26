@@ -1,6 +1,6 @@
 import { ethers, formatEther } from "ethers"
 import { useEffect, useState } from "react"
-import { wofAddress } from "../../../store/WalletStore"
+import { WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
 import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
 import { SpinWheel } from "../../../utils/wheelOfForune/wofSpinWheel"
 import { CreateGame } from "../../../utils/wheelOfForune/wofCreateGame"
@@ -13,7 +13,7 @@ export default function GameTimer() {
 
   useEffect(() => {
     const provider = new ethers.BrowserProvider(window.ethereum)
-    const contract = new ethers.Contract(wofAddress, WheelOfFortuneABI, provider)
+    const contract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, provider)
 
     const fetchGameEvents = async () => {
       try {

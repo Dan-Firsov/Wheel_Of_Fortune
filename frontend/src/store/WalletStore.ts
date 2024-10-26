@@ -1,12 +1,12 @@
 import { ethers } from "ethers"
 import { create } from "zustand"
 import { WheelOfFortuneABI } from "../assests/WheelOfFortuneABI"
+import { Provider } from "react"
 
 export const tokenAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
-export const wofAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
-export const WS_URL = "ws://127.0.0.1:8545/"
-
-const WOF_ABI = WheelOfFortuneABI
+export const WOF_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
+export const WS_URL = "ws://localhost:8545/"
+export const WOF_ABI = WheelOfFortuneABI
 
 let wsProvider: ethers.WebSocketProvider | null = null
 let browsProvider: ethers.BrowserProvider | null = null
@@ -32,14 +32,14 @@ export function getBrowsProvider() {
 export function getWsContract() {
   if (!wsContract) {
     const wsProvider = getWsProvider()
-    wsContract = new ethers.Contract(wofAddress, WOF_ABI, wsProvider)
+    wsContract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, wsProvider)
   }
   return wsContract
 }
 export function getBrowsContract() {
   if (!browsContract) {
     const browsProvider = getBrowsProvider()
-    browsContract = new ethers.Contract(wofAddress, WOF_ABI, browsProvider)
+    browsContract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, browsProvider)
   }
   return browsContract
 }
@@ -47,7 +47,7 @@ export async function getSigContract() {
   if (!sigContract) {
     const browsProvider = getBrowsProvider()
     const signer = await browsProvider.getSigner()
-    sigContract = new ethers.Contract(wofAddress, WOF_ABI, signer)
+    sigContract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, signer)
   }
   return sigContract
 }
@@ -60,4 +60,14 @@ export interface connectAddress {
 export const useAddress = create<connectAddress>((set) => ({
   address: null,
   setAddress: (address: string | null) => set({ address }),
+}))
+
+export interface initProvider {
+  provider: ethers.BrowserProvider | null
+  setProvider: (provider: ethers.BrowserProvider | null) => void
+}
+
+export const useProvider = create<initProvider>((set, get) => ({
+  provider: null,
+  setProvider: (provider: ethers.BrowserProvider | null) => set({ provider }),
 }))
