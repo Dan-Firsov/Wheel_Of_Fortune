@@ -1,14 +1,17 @@
 import { ethers } from "ethers"
-import { getSigContract } from "../../store/WalletStore"
+import { useSigContract } from "../../hooks/useSigContract"
+import { useContractStore } from "../../store/WalletStore"
 
 export const wofGetBalance = async () => {
+  const { sigContract } = useContractStore.getState()
   try {
-    const contract = await getSigContract()
-    const balance = await contract.getBalance()
-    if (balance) {
-      return ethers.formatUnits(balance, 18)
-    } else {
-      return "0"
+    if (sigContract) {
+      const balance = await sigContract.getBalance()
+      if (balance) {
+        return ethers.formatUnits(balance, 18)
+      } else {
+        return "0"
+      }
     }
   } catch (error) {
     console.error("Get Balance error:", error)

@@ -1,11 +1,12 @@
-import { getBrowsProvider, useAddress } from "../store/WalletStore"
+import { ethers } from "ethers"
+import { useAddress, useContractStore } from "../store/WalletStore"
 import { wofGetBalance } from "./wheelOfForune/wofGetBalance"
 
 export const wofConnectWallet = async () => {
   const { setAddress } = useAddress.getState()
   try {
     if (window.ethereum) {
-      const provider = await getBrowsProvider()
+      const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
       const address = await signer.getAddress()
       setAddress(address)

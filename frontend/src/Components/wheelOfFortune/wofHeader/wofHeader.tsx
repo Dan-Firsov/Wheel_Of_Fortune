@@ -1,49 +1,45 @@
 import { useEffect } from "react"
 import "./wofHeader.css"
-import { getBrowsContract, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
-import { ethers, formatEther } from "ethers"
+import { formatEther } from "ethers"
 import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
-import { WheelOfFortuneABI } from "../../../assests/WheelOfFortuneABI"
+import { useContractStore } from "../../../store/WalletStore"
 
 export default function WofHeader() {
   const { totalPot, setTotalPot } = usePotState()
   const { totalParticipants, setTotalParticipants } = useParticipantsState()
+  const { browsContract } = useContractStore()
 
   useEffect(() => {
-    // const contract = getBrowsContract()
-    const provider = new ethers.BrowserProvider(window.ethereum)
-    const contract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, provider)
-
     const fetchTotals = async () => {
-      const filter = contract.filters.TotalUpdate()
-      const eventLogs = await contract.queryFilter(filter)
-      const formattedEvents = eventLogs.map((event) => {
-        const decoded = contract.interface.decodeEventLog("TotalUpdate", event.data, event.topics)
-        return {
-          newTotalPot: Number(formatEther(decoded[0])),
-          participantCount: Number(decoded[1]),
+      if (browsContract) {
+        const filter = browsContract.filters.TotalUpdate()
+        const eventLogs = await browsContract.queryFilter(filter)
+        const formattedEvents = eventLogs.map((event) => {
+          const decoded = browsContract.interface.decodeEventLog("TotalUpdate", event.data, event.topics)
+          return {
+            newTotalPot: Number(formatEther(decoded[0])),
+            participantCount: Number(decoded[1]),
+          }
+        })
+        if (formattedEvents.length > 0) {
+          const latestEvent = formattedEvents[formattedEvents.length - 1]
+          setTotalPot(latestEvent.newTotalPot)
+          setTotalParticipants(latestEvent.participantCount)
         }
-      })
-      if (formattedEvents.length > 0) {
-        const latestEvent = formattedEvents[formattedEvents.length - 1]
-        setTotalPot(latestEvent.newTotalPot)
-        setTotalParticipants(latestEvent.participantCount)
       }
     }
-
     fetchTotals()
-
     const handleTotalUpdate = (newTotalPot: bigint, participantCount: bigint) => {
-      console.log("Event received:", { newTotalPot, participantCount })
       setTotalPot(Number(formatEther(newTotalPot)))
       setTotalParticipants(Number(participantCount))
     }
-    contract.on("TotalUpdate", handleTotalUpdate)
+
+    if (browsContract) browsContract.on("TotalUpdate", handleTotalUpdate)
 
     return () => {
-      contract.off("TotalUpdate", handleTotalUpdate)
+      if (browsContract) browsContract.off("TotalUpdate", handleTotalUpdate)
     }
-  }, [])
+  }, [browsContract])
 
   return (
     <div className="wof-header-wrapper">

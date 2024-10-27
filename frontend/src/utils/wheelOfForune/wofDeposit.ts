@@ -1,12 +1,15 @@
 import { parseUnits } from "ethers"
-import { getSigContract } from "../../store/WalletStore"
+import { useContractStore } from "../../store/WalletStore"
 
 export const Deposit = async (value: string) => {
+  const { sigContract } = useContractStore.getState()
+
   try {
-    const contract = await getSigContract()
     const amount = parseUnits(value, 18)
-    const tx = await contract.deposit({ value: amount })
-    await tx.wait()
+    if (sigContract) {
+      const tx = await sigContract.deposit({ value: amount })
+      await tx.wait()
+    }
   } catch (error) {
     console.error("Deposit error:", error)
   }

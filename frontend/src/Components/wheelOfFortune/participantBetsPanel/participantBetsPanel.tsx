@@ -1,6 +1,6 @@
 import { ethers, formatEther } from "ethers"
 import { useEffect, useState } from "react"
-import { getBrowsContract, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
+import { useContractStore, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
 import { usePotState } from "../../../store/WheelOfFortuneStore"
 
 interface Participant {
@@ -11,50 +11,46 @@ interface Participant {
 export default function ParticipantBetsPanel() {
   const [participants, setParticipants] = useState<Participant[]>([])
   const { totalPot } = usePotState()
+  const { browsContract } = useContractStore()
+
   useEffect(() => {
-    // const contract = getBrowsContract()
-
-    const provider = new ethers.BrowserProvider(window.ethereum)
-    const contract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, provider)
-
     const fetchParticipants = async () => {
-      const filter = contract.filters.ParticipantsUpdated()
-      const eventLogs = await contract.queryFilter(filter)
-      const formattedEvents = eventLogs.map((event) => {
-        const decoded = contract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
-        const addresses = decoded[0] as string[]
-        const bets = decoded[1] as bigint[]
+      if (browsContract) {
+        const filter = browsContract.filters.ParticipantsUpdated()
+        const eventLogs = await browsContract.queryFilter(filter)
+        const formattedEvents = eventLogs.map((event) => {
+          const decoded = browsContract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
+          const addresses = decoded[0] as string[]
+          const bets = decoded[1] as bigint[]
 
-        return addresses.map((address, index) => ({
-          address,
-          bet: Number(formatEther(bets[index])),
-        }))
-      })
-      if (formattedEvents.length > 0) {
-        const latestEvent = formattedEvents[formattedEvents.length - 1]
-        latestEvent.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
-        setParticipants(latestEvent)
+          return addresses.map((address, index) => ({
+            address,
+            bet: Number(formatEther(bets[index])),
+          }))
+        })
+        if (formattedEvents.length > 0) {
+          const latestEvent = formattedEvents[formattedEvents.length - 1]
+          latestEvent.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
+          setParticipants(latestEvent)
+        }
       }
     }
-
     fetchParticipants()
-
     const handleParticipantsUpdate = (addresses: string[], bets: bigint[]) => {
       const updatedParticipants = addresses.map((address, index) => ({
         address,
         bet: Number(formatEther(bets[index])),
       }))
-
       updatedParticipants.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
       setParticipants(updatedParticipants)
     }
 
-    contract.on("ParticipantsUpdated", handleParticipantsUpdate)
+    if (browsContract) browsContract.on("ParticipantsUpdated", handleParticipantsUpdate)
 
     return () => {
-      contract.off("ParticipantsUpdated", handleParticipantsUpdate)
+      if (browsContract) browsContract.off("ParticipantsUpdated", handleParticipantsUpdate)
     }
-  }, [])
+  }, [browsContract])
   return (
     <div>
       <h3>Participants:</h3>
