@@ -4,8 +4,11 @@ import { wofGetBalance } from "./wheelOfForune/wofGetBalance"
 
 export const wofConnectWallet = async () => {
   const { setAddress } = useAddress.getState()
+  const { setBrowsContract, setSigContract } = useContractStore.getState()
   try {
     if (window.ethereum) {
+      await setBrowsContract()
+      await setSigContract()
       const provider = new ethers.BrowserProvider(window.ethereum)
       const signer = await provider.getSigner()
       const address = await signer.getAddress()

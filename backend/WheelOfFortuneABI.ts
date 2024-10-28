@@ -44,8 +44,15 @@ export const WheelOfFortuneABI = [
   },
   {
     anonymous: false,
-    inputs: [],
-    name: "GameCreated",
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "startAt",
+        type: "uint256",
+      },
+    ],
+    name: "GameFinished",
     type: "event",
   },
   {
@@ -159,8 +166,18 @@ export const WheelOfFortuneABI = [
         type: "uint256",
       },
       {
+        internalType: "address",
+        name: "winner",
+        type: "address",
+      },
+      {
         internalType: "uint256",
         name: "endsGameAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "nextGameStartAt",
         type: "uint256",
       },
       {
@@ -194,6 +211,13 @@ export const WheelOfFortuneABI = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "createGameSession",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -258,13 +282,7 @@ export const WheelOfFortuneABI = [
   {
     inputs: [],
     name: "spinWheel",
-    outputs: [
-      {
-        internalType: "address",
-        name: "winner",
-        type: "address",
-      },
-    ],
+    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },

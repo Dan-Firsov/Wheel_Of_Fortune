@@ -18,7 +18,6 @@ app.post("/spinWheel", async (req, res) => {
   try {
     const tx = await contract.spinWheel()
     await tx.wait()
-    console.log("Использовано газа:", receipt.gasUsed.toString())
     res.status(200).send("Wheel spun successfully")
   } catch (error) {
     res.status(500).send(error.message)
@@ -29,7 +28,6 @@ app.post("/createGameSession", async (req, res) => {
   try {
     const tx = await contract.createGameSession()
     await tx.wait()
-    console.log("Использовано газа:", receipt.gasUsed.toString())
     res.json({ success: true, txHash: tx.hash })
   } catch (error) {
     res.status(500).json({ success: false, error: error.message })

@@ -5,24 +5,30 @@ import { wofConnectWallet } from "../../../utils/wofWalletConnection"
 import WalletButton from "../button/WalletButton"
 import { useBrowsContract } from "../../../hooks/useBrowsContract"
 
+let isRequestingAccounts = false
+
 export default function WofConnectWalletButton() {
   const { address, setAddress } = useAddress()
   const [balance, setBalance] = useState<string | null>(null)
   const { browsContract, setBrowsContract, setSigContract } = useContractStore()
 
   useEffect(() => {
-    setBrowsContract()
-    setSigContract()
     const fetchBalance = async () => {
       if (window.ethereum) {
-        const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
-        if (accounts.length > 0) {
-          const currentBalance = await wofConnectWallet()
-          if (currentBalance) {
-            setBalance(currentBalance)
+        try {
+          const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
+          if (accounts.length > 0) {
+            const currentBalance = await wofConnectWallet()
+            if (currentBalance) {
+              setBalance(currentBalance)
+            }
+          } else {
+            setAddress(null)
           }
-        } else {
-          setAddress(null)
+        } catch (error) {
+          console.error("Error connecting to MetaMask:", error)
+        } finally {
+          isRequestingAccounts = false
         }
       } else {
         setAddress(null)
@@ -53,7 +59,18 @@ export default function WofConnectWalletButton() {
   }, [browsContract])
 
   const connectMetaMask = async () => {
-    wofConnectWallet()
+    if (!isRequestingAccounts) {
+      try {
+        isRequestingAccounts = true
+        await wofConnectWallet()
+      } catch (error) {
+        console.error("Error connecting to MetaMask:", error)
+      } finally {
+        isRequestingAccounts = false
+      }
+    } else {
+      console.log("MetaMask is already processing a request. Please wait.")
+    }
   }
 
   return (

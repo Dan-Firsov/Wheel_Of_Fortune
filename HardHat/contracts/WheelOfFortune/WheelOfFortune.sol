@@ -6,8 +6,10 @@ pragma solidity ^0.8.0;
 contract WheelOfFortune {
 
     address  owner;
-    uint constant DURATION = 5 minutes;
+    uint constant RESULT_DURATION = 30 seconds;
+    uint constant NEXT_GAME_DURATION = 10 seconds;
     uint constant FEE = 10;
+    bool gameCreating = true;
     mapping (address => uint256) public balance;
 
     struct GameSession {
@@ -15,8 +17,9 @@ contract WheelOfFortune {
         uint256[] participantBets;
         mapping (address => uint) participantIndex;
         uint256 totalPot;
-        address winner;
+        address winner ;
         uint256 endsGameAt;
+        uint256 nextGameStartAt;
         bool start;
         bool stopped;
     }
@@ -33,6 +36,7 @@ contract WheelOfFortune {
     event Withdraw(address indexed user, uint256 amount);
     event BetPlaced(address indexed user, uint256 amount);
     event GameStarted(uint256 endsAt);
+    event GameFinished(uint256 startAt);
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
     event ParticipantsUpdated(address[] participants, uint256[] bets);
     event TotalUpdate(uint256 newTotalPot, uint participantCount);
@@ -44,13 +48,16 @@ contract WheelOfFortune {
     }
 
     function createGameSession() public onlyOwner {
+        require(gameCreating, "Game sassion not over");
+        gameCreating = false;
         GameSession storage session = GameSessions.push();
         session.endsGameAt = 0;
         session.start = false;
         session.stopped = false;
+        session.totalPot = 0;
+        session.winner = address(0);
         emit ParticipantsUpdated(session.participants,session.participantBets);
         emit TotalUpdate(session.totalPot, session.participants.length);
-
     }
 
 
@@ -77,20 +84,20 @@ contract WheelOfFortune {
 
         uint random = uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp))) % session.totalPot;
         uint current = 0;
-
         for(uint i = 0; i < session.participants.length; i++) {
             current += session.participantBets[i];
             if(random < current) {
                 session.winner = session.participants[i];
                 uint256 payout = session.totalPot - (session.totalPot * FEE / 100);
                 balance[session.winner] += payout;
-
                 break;
             }
         }
-
         session.stopped = true;
         emit GameResult(session.winner,session.totalPot,session.participants);
+        session.nextGameStartAt = block.timestamp + NEXT_GAME_DURATION;
+        emit GameFinished(session.nextGameStartAt);
+        gameCreating = true;
     }
 
     function placeBet(uint256 amount) external {
@@ -100,9 +107,7 @@ contract WheelOfFortune {
         require(!session.stopped, "Session already completed");
 
         balance[msg.sender] -= amount;
-
         uint256 betIndex;
-
         if (session.participantIndex[msg.sender] == 0 && (session.participants.length == 0 || session.participants[0] != msg.sender)) {
             session.participants.push(msg.sender);
             session.participantBets.push(amount);
@@ -112,7 +117,6 @@ contract WheelOfFortune {
             betIndex = session.participantIndex[msg.sender] - 1; 
             session.participantBets[betIndex] += amount;
         }
-
         session.totalPot += amount;
 
         emit ParticipantsUpdated(session.participants, session.participantBets);
@@ -121,17 +125,15 @@ contract WheelOfFortune {
 
         if(session.participants.length >= 3 && !session.start) {
             session.start = true;
-            session.endsGameAt = block.timestamp + DURATION;
+            session.endsGameAt = block.timestamp + RESULT_DURATION;
             emit GameStarted(session.endsGameAt);
         }
-
     }
 
     function getParcticipants() external view returns (address[] memory) {
         require(GameSessions.length > 0, "No active game sessions");
         GameSession storage session = GameSessions[GameSessions.length -1];
         return session.participants;
-
     }
 
     function getTotalPot() external view returns (uint256) {

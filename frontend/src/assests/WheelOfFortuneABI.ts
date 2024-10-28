@@ -46,6 +46,19 @@ export const WheelOfFortuneABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "startAt",
+        type: "uint256",
+      },
+    ],
+    name: "GameFinished",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "winner",
@@ -160,6 +173,11 @@ export const WheelOfFortuneABI = [
       {
         internalType: "uint256",
         name: "endsGameAt",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "nextGameStartAt",
         type: "uint256",
       },
       {

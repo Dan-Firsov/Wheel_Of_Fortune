@@ -8,15 +8,6 @@ export const WOF_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 export const WS_URL = "ws://localhost:8545/"
 export const WOF_ABI = WheelOfFortuneABI
 
-let browsProvider: ethers.BrowserProvider | null = null
-
-export function getBrowsProvider() {
-  if (!browsProvider) {
-    browsProvider = new ethers.BrowserProvider(window.ethereum)
-  }
-  return browsProvider
-}
-
 export interface connectAddress {
   address: string | null
   setAddress: (address: string | null) => void
