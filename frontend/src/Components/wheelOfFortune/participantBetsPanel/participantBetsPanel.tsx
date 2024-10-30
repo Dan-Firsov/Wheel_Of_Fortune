@@ -1,7 +1,7 @@
 import { ethers, formatEther } from "ethers"
 import { useEffect, useState } from "react"
 import { useContractStore, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
-import { usePotState } from "../../../store/WheelOfFortuneStore"
+import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 
 interface Participant {
   address: string
@@ -10,7 +10,7 @@ interface Participant {
 
 export default function ParticipantBetsPanel() {
   const [participants, setParticipants] = useState<Participant[]>([])
-  const { totalPot } = usePotState()
+  const { totalPot } = useWheelOfFortuneStore()
   const { browsContract } = useContractStore()
 
   useEffect(() => {

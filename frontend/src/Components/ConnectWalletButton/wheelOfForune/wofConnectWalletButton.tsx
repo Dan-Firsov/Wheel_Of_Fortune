@@ -10,7 +10,7 @@ let isRequestingAccounts = false
 export default function WofConnectWalletButton() {
   const { address, setAddress } = useAddress()
   const [balance, setBalance] = useState<string | null>(null)
-  const { browsContract, setBrowsContract, setSigContract } = useContractStore()
+  const { browsContract } = useContractStore()
 
   useEffect(() => {
     const fetchBalance = async () => {

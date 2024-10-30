@@ -18,9 +18,9 @@ app.post("/spinWheel", async (req, res) => {
   try {
     const tx = await contract.spinWheel()
     await tx.wait()
-    res.status(200).send("Wheel spun successfully")
+    res.json({ success: true, message: "Wheel spun successfully", txHash: tx.hash })
   } catch (error) {
-    res.status(500).send(error.message)
+    res.status(500).json({ success: false, error: error.message })
   }
 })
 

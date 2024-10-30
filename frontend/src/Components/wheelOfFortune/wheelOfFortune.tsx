@@ -1,14 +1,14 @@
 import BetPanel from "./bet/betPanel"
 import WofHeader from "./wofHeader/wofHeader"
-import GameTimer from "./gameTimer/gameTimer"
 import "./wheelOfFortune.css"
 import ParticipantBetsPanel from "./participantBetsPanel/participantBetsPanel"
+import GameTimerPanel from "./gameTimerPanel/gameTimerPanel"
 
 export default function WheelOfFortune() {
   return (
     <div className="wof-wrapper">
       <WofHeader></WofHeader>
-      <GameTimer></GameTimer>
+      <GameTimerPanel></GameTimerPanel>
       <ParticipantBetsPanel></ParticipantBetsPanel>
       <BetPanel></BetPanel>
     </div>

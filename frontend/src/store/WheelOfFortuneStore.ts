@@ -1,20 +1,30 @@
 import { create } from "zustand"
 
-export interface PotState {
+export interface IWheelOfFortuneStore {
   totalPot: number
-  setTotalPot: (newTotal: number) => void
-}
-export interface ParcticipantsState {
   totalParticipants: number
+  winner: string
+  isGameFinished: boolean
+  setTotalPot: (newTotal: number) => void
   setTotalParticipants: (newTotal: number) => void
+  setWinner: (newWinner: string) => void
+  setIsGameFinished: (newBool: boolean) => void
 }
 
-export const usePotState = create<PotState>((set) => ({
+export const useWheelOfFortuneStore = create<IWheelOfFortuneStore>((set) => ({
   totalPot: 0,
-  setTotalPot: (newTotal) => set({ totalPot: newTotal }),
-}))
-
-export const useParticipantsState = create<ParcticipantsState>((set) => ({
   totalParticipants: 0,
+  winner: "",
+  isGameFinished: false,
+  setTotalPot: (newTotal) => set({ totalPot: newTotal }),
   setTotalParticipants: (newTotal) => set({ totalParticipants: newTotal }),
+  setWinner: (newWinner) => set({ winner: newWinner }),
+  setIsGameFinished: (newBool) =>
+    set(() => {
+      if (localStorage.getItem("isGameFinished")) {
+        localStorage.removeItem("isGameFinished")
+      }
+      localStorage.setItem("isGameFinished", JSON.stringify(newBool))
+      return { isGameFinished: newBool }
+    }),
 }))

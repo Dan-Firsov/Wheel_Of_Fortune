@@ -1,12 +1,11 @@
 import { useEffect } from "react"
 import "./wofHeader.css"
 import { formatEther } from "ethers"
-import { useParticipantsState, usePotState } from "../../../store/WheelOfFortuneStore"
+import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 import { useContractStore } from "../../../store/WalletStore"
 
 export default function WofHeader() {
-  const { totalPot, setTotalPot } = usePotState()
-  const { totalParticipants, setTotalParticipants } = useParticipantsState()
+  const { totalPot, totalParticipants, setTotalPot, setTotalParticipants } = useWheelOfFortuneStore()
   const { browsContract } = useContractStore()
 
   useEffect(() => {
