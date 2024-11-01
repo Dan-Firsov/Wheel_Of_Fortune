@@ -15,7 +15,7 @@ export default function GameSessionPanel() {
       console.log("Событие пришло", update)
       switch (update.type) {
         case "timerUpdate":
-          setTimeLeft(update.timeLeft)
+          setTimeLeft(update.timeLeftSec)
           setGamePhase("ongoing")
           break
         case "gameEnded":

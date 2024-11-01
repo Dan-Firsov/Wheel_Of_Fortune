@@ -4,6 +4,8 @@ import http from "http"
 import { Server as SocketIOServer } from "socket.io"
 import { eventEmitter } from "./events/gameEvents"
 import gameRoutes from "./routes/gameRoutes"
+import { initializeEventSubscriptions } from "./config/eventSubscriptions"
+import { initializeContract } from "./config/contract"
 
 const app = express()
 const server = http.createServer(app)
@@ -16,6 +18,10 @@ const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use("/game", gameRoutes)
+
+initializeContract()
+
+initializeEventSubscriptions()
 
 io.on("connection", (socket) => {
   console.log("New client connected")

@@ -1,8 +1,10 @@
-import { formatEther } from "ethers"
-import contract from "../config/contract"
-import { eventEmitter } from "../events/gameEvents"
+import { getContract } from "../config/contract"
 
 export async function selectWinner() {
+  const contract = getContract()
+  if (!contract) {
+    throw new Error("Contract is not initialized")
+  }
   try {
     const tx = await contract.spinWheel()
     await tx.wait()
@@ -12,6 +14,10 @@ export async function selectWinner() {
   }
 }
 export async function createNewGameSession() {
+  const contract = getContract()
+  if (!contract) {
+    throw new Error("Contract is not initialized")
+  }
   try {
     const tx = await contract.createGameSession()
     await tx.wait()
@@ -20,32 +26,3 @@ export async function createNewGameSession() {
     console.error("Winner selection error:", error)
   }
 }
-
-contract.on("GameStarted", (endsAt: bigint) => {
-  console.log(`GameStarted event received. The game will end at: ${endsAt.toString()}`)
-  eventEmitter.emit("startGameTimer", Number(endsAt))
-})
-
-contract.on("GameResult", (newWinner: string, totalPot: bigint) => {
-  console.log(`"GameResult event received. The game winner: ${newWinner}, winning ${Number(formatEther(totalPot))} ETH`)
-  const gameResult = {
-    winner: newWinner,
-    winningPot: Number(formatEther(totalPot)),
-  }
-  eventEmitter.emit("gameUpdate", { type: "gameResult", gameResult })
-})
-
-contract.on("GameFinished", (startAt: bigint) => {
-  console.log(`GameFinished event received. New game will start at: ${startAt.toString()}`)
-  eventEmitter.emit("startNewSessionTimer", Number(startAt))
-})
-
-eventEmitter.on("gameEnded", async () => {
-  console.log("Winner selecting")
-  await selectWinner()
-})
-
-eventEmitter.on("createNewGameSession", async () => {
-  console.log("Starting a new game session")
-  await createNewGameSession()
-})

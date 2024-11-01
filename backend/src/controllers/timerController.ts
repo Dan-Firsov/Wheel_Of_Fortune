@@ -1,14 +1,30 @@
+import { getProvider } from "../config/contract"
 import { eventEmitter } from "../events/gameEvents"
 
-export function startGameTimer(endsAt: number) {
+async function getBlockTimestamp(): Promise<number> {
+  const provider = getProvider()
+  if (!provider) {
+    throw new Error("Contract is not initialized")
+  }
+  const block = await provider.getBlock("latest")
+  if (!block) {
+    throw new Error("Failed to retrieve block timestamp.")
+  }
+  return block.timestamp
+}
+
+export async function startGameTimer(endsAt: number) {
+  const blockTimestamp = await getBlockTimestamp()
+  let timeLeftSec = endsAt - blockTimestamp
   const interval = setInterval(() => {
-    const timeLeft = endsAt * 1000 - Date.now()
-    if (timeLeft <= 0) {
+    console.log(`Time left: ${timeLeftSec} seconds`)
+    if (timeLeftSec <= 0) {
       clearInterval(interval)
       eventEmitter.emit("gameUpdate", { type: "gameEnded" })
       eventEmitter.emit("gameEnded")
     } else {
-      eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeft })
+      eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeftSec })
+      timeLeftSec--
     }
   }, 1000)
 }
@@ -25,14 +41,3 @@ export function startNewSessionTimer(startAt: number) {
     }
   }, 1000)
 }
-
-eventEmitter.on("startGameTimer", (endsAt: number) => {
-  console.log("Starting game timer")
-  startGameTimer(endsAt)
-})
-
-eventEmitter.on("startNewSessionTimer", (startAt: number) => {
-  console.log("Starting new game timer")
-  startNewSessionTimer(startAt)
-  eventEmitter.emit("gameUpdate", { type: "newSessionTimerStarted" })
-})
