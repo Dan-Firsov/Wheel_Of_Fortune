@@ -15,29 +15,30 @@ async function getBlockTimestamp(): Promise<number> {
 
 export async function startGameTimer(endsAt: number) {
   const blockTimestamp = await getBlockTimestamp()
-  let timeLeftSec = endsAt - blockTimestamp
+  let timeLeft = endsAt - blockTimestamp
   const interval = setInterval(() => {
-    console.log(`Time left: ${timeLeftSec} seconds`)
-    if (timeLeftSec <= 0) {
+    if (timeLeft <= 0) {
       clearInterval(interval)
       eventEmitter.emit("gameUpdate", { type: "gameEnded" })
       eventEmitter.emit("gameEnded")
     } else {
-      eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeftSec })
-      timeLeftSec--
+      eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeft })
+      timeLeft--
     }
   }, 1000)
 }
 
-export function startNewSessionTimer(startAt: number) {
+export async function startNewSessionTimer(startAt: number) {
+  const blockTimestamp = await getBlockTimestamp()
+  let timeLeft = startAt - blockTimestamp
   const interval = setInterval(() => {
-    const timeLeft = startAt * 1000 - Date.now()
     if (timeLeft <= 0) {
       clearInterval(interval)
       eventEmitter.emit("createNewGameSession")
       eventEmitter.emit("gameUpdate", { type: "newSessionStarted" })
     } else {
       eventEmitter.emit("gameUpdate", { type: "newSessionTimerUpdate", timeLeft })
+      timeLeft--
     }
   }, 1000)
 }

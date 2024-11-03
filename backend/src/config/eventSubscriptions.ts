@@ -11,11 +11,21 @@ export function initializeEventSubscriptions() {
     throw new Error("Contract is not initialized before subscribing to events.")
   }
 
-  contract.on("GameStarted", (endsAt: bigint) => {
-    const dateNow = Date.now()
-    console.log(`Date Now: ${dateNow}`)
-    console.log(`GameStarted event received. The game will end at: ${endsAt}`)
-    eventEmitter.emit("startGameTimer", Number(endsAt))
+  contract.on("TotalUpdate", (newTotalPot: bigint, participantCount: bigint) => {
+    const totalUpdate = {
+      totalPot: Number(formatEther(newTotalPot)),
+      participantCount: Number(participantCount),
+    }
+    eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate })
+  })
+  contract.on("ParticipantsUpdated", (addresses: string[], bets: bigint[]) => {
+    const updatedParticipants = addresses.map((address, index) => ({
+      address,
+      bet: Number(formatEther(bets[index])),
+    }))
+    updatedParticipants.sort((a, b) => b.bet - a.bet)
+
+    eventEmitter.emit("gameUpdate", { type: "participantsUpdated", updatedParticipants })
   })
 
   contract.on("GameResult", (newWinner: string, totalPot: bigint) => {

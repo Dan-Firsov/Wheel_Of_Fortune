@@ -29,31 +29,34 @@ function getBlockTimestamp() {
 function startGameTimer(endsAt) {
     return __awaiter(this, void 0, void 0, function* () {
         const blockTimestamp = yield getBlockTimestamp();
-        let timeLeftSec = endsAt - blockTimestamp;
+        let timeLeft = endsAt - blockTimestamp;
         const interval = setInterval(() => {
-            console.log(`Time left: ${timeLeftSec} seconds`);
-            if (timeLeftSec <= 0) {
+            if (timeLeft <= 0) {
                 clearInterval(interval);
                 gameEvents_1.eventEmitter.emit("gameUpdate", { type: "gameEnded" });
                 gameEvents_1.eventEmitter.emit("gameEnded");
             }
             else {
-                gameEvents_1.eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeftSec });
-                timeLeftSec--;
+                gameEvents_1.eventEmitter.emit("gameUpdate", { type: "timerUpdate", timeLeft });
+                timeLeft--;
             }
         }, 1000);
     });
 }
 function startNewSessionTimer(startAt) {
-    const interval = setInterval(() => {
-        const timeLeft = startAt * 1000 - Date.now();
-        if (timeLeft <= 0) {
-            clearInterval(interval);
-            gameEvents_1.eventEmitter.emit("createNewGameSession");
-            gameEvents_1.eventEmitter.emit("gameUpdate", { type: "newSessionStarted" });
-        }
-        else {
-            gameEvents_1.eventEmitter.emit("gameUpdate", { type: "newSessionTimerUpdate", timeLeft });
-        }
-    }, 1000);
+    return __awaiter(this, void 0, void 0, function* () {
+        const blockTimestamp = yield getBlockTimestamp();
+        let timeLeft = startAt - blockTimestamp;
+        const interval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                gameEvents_1.eventEmitter.emit("createNewGameSession");
+                gameEvents_1.eventEmitter.emit("gameUpdate", { type: "newSessionStarted" });
+            }
+            else {
+                gameEvents_1.eventEmitter.emit("gameUpdate", { type: "newSessionTimerUpdate", timeLeft });
+                timeLeft--;
+            }
+        }, 1000);
+    });
 }

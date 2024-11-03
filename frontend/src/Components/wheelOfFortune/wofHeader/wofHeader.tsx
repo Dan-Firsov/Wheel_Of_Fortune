@@ -3,6 +3,9 @@ import "./wofHeader.css"
 import { formatEther } from "ethers"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 import { useContractStore } from "../../../store/WalletStore"
+import io from "socket.io-client"
+
+const socket = io("http://localhost:5000")
 
 export default function WofHeader() {
   const { totalPot, totalParticipants, setTotalPot, setTotalParticipants } = useWheelOfFortuneStore()

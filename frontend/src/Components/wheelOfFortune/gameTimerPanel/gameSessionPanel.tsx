@@ -4,7 +4,7 @@ import io from "socket.io-client"
 const socket = io("http://localhost:5000")
 
 export default function GameSessionPanel() {
-  const [gamePhase, setGamePhase] = useState<"waiting" | "ongoing" | "nextGameTimer">("waiting")
+  const [gamePhase, setGamePhase] = useState<"waiting" | "ongoing" | "determining" | "nextGameTimer">("waiting")
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
   const [newGameTimeLeft, setNewGameTimeLeft] = useState<number | null>(null)
   const [winner, setWinner] = useState<string | null>(null)
@@ -12,14 +12,13 @@ export default function GameSessionPanel() {
 
   useEffect(() => {
     socket.on("gameUpdate", (update) => {
-      console.log("Событие пришло", update)
       switch (update.type) {
         case "timerUpdate":
-          setTimeLeft(update.timeLeftSec)
+          setTimeLeft(update.timeLeft)
           setGamePhase("ongoing")
           break
         case "gameEnded":
-          setWinner("Determining the winner...")
+          setGamePhase("determining")
           break
         case "gameResult":
           setWinner(update.gameResult.winner)
@@ -52,9 +51,11 @@ export default function GameSessionPanel() {
     <div>
       {gamePhase === "waiting" && <h2>Waiting for participants...</h2>}
 
-      {gamePhase === "ongoing" && timeLeft !== null && <h2>Ends game time: {Math.floor(timeLeft / 1000)} sec</h2>}
+      {gamePhase === "ongoing" && timeLeft !== null && <h2>Ends game time: {timeLeft} sec</h2>}
 
-      {gamePhase === "nextGameTimer" && newGameTimeLeft !== null && <h2>Next game starts in: {Math.floor(newGameTimeLeft / 1000)} sec</h2>}
+      {gamePhase === "determining" && <h2>Determining the winner...</h2>}
+
+      {gamePhase === "nextGameTimer" && newGameTimeLeft !== null && <h2>Next game starts in: {newGameTimeLeft} sec</h2>}
 
       {winner && (
         <h3>
