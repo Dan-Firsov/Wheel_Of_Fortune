@@ -1,6 +1,5 @@
 import { ethers } from "ethers"
-import { useSigContract } from "../../hooks/useSigContract"
-import { useContractStore } from "../../store/WalletStore"
+import { useContractStore } from "../../store/ConnectionStore"
 
 export const wofGetBalance = async () => {
   const { sigContract } = useContractStore.getState()

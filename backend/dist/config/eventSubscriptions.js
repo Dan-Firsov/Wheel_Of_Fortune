@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializeEventSubscriptions = initializeEventSubscriptions;
 const contract_1 = require("../config/contract");
+const countsController_1 = require("../controllers/countsController");
 const gameController_1 = require("../controllers/gameController");
 const timerController_1 = require("../controllers/timerController");
 const gameEvents_1 = require("../events/gameEvents");
@@ -20,10 +21,29 @@ function initializeEventSubscriptions() {
     if (!contract) {
         throw new Error("Contract is not initialized before subscribing to events.");
     }
+    contract.on("TotalUpdate", (newTotalPot, participantCount) => {
+        const totalUpdate = {
+            totalPot: Number((0, ethers_1.formatEther)(newTotalPot)),
+            participantCount: Number(participantCount),
+        };
+        (0, countsController_1.getCurrentGameState)().then(({ participants }) => {
+            (0, countsController_1.updateGameState)(totalUpdate.totalPot, totalUpdate.participantCount, participants);
+        });
+        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate });
+    });
+    contract.on("ParticipantsUpdated", (addresses, bets) => {
+        const updatedParticipants = addresses.map((address, index) => ({
+            address,
+            bet: Number((0, ethers_1.formatEther)(bets[index])),
+        }));
+        updatedParticipants.sort((a, b) => b.bet - a.bet);
+        (0, countsController_1.getCurrentGameState)().then(({ totalPot, participantCount }) => {
+            (0, countsController_1.updateGameState)(totalPot, participantCount, updatedParticipants);
+        });
+        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "participantsUpdated", updatedParticipants });
+    });
     contract.on("GameStarted", (endsAt) => {
-        const dateNow = Date.now();
-        console.log(`Date Now: ${dateNow}`);
-        console.log(`GameStarted event received. The game will end at: ${endsAt}`);
+        console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`);
         gameEvents_1.eventEmitter.emit("startGameTimer", Number(endsAt));
     });
     contract.on("GameResult", (newWinner, totalPot) => {
@@ -52,6 +72,7 @@ function initializeEventSubscriptions() {
     }));
     gameEvents_1.eventEmitter.on("createNewGameSession", () => __awaiter(this, void 0, void 0, function* () {
         console.log("Starting a new game session");
+        (0, countsController_1.updateGameState)(0, 0, []);
         yield (0, gameController_1.createNewGameSession)();
     }));
 }

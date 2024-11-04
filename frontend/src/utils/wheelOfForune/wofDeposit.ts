@@ -1,5 +1,5 @@
 import { parseUnits } from "ethers"
-import { useContractStore } from "../../store/WalletStore"
+import { useContractStore } from "../../store/ConnectionStore"
 
 export const Deposit = async (value: string) => {
   const { sigContract } = useContractStore.getState()

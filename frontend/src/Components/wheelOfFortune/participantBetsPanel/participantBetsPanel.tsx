@@ -1,56 +1,26 @@
-import { ethers, formatEther } from "ethers"
-import { useEffect, useState } from "react"
-import { useContractStore, WOF_ABI, WOF_ADDRESS } from "../../../store/WalletStore"
+import { useEffect } from "react"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
-
-interface Participant {
-  address: string
-  bet: number
-}
+import { socket } from "../../../store/ConnectionStore"
 
 export default function ParticipantBetsPanel() {
-  const [participants, setParticipants] = useState<Participant[]>([])
-  const { totalPot } = useWheelOfFortuneStore()
-  const { browsContract } = useContractStore()
-
+  const { totalPot, participants, setParticipants } = useWheelOfFortuneStore()
   useEffect(() => {
-    const fetchParticipants = async () => {
-      if (browsContract) {
-        const filter = browsContract.filters.ParticipantsUpdated()
-        const eventLogs = await browsContract.queryFilter(filter)
-        const formattedEvents = eventLogs.map((event) => {
-          const decoded = browsContract.interface.decodeEventLog("ParticipantsUpdated", event.data, event.topics)
-          const addresses = decoded[0] as string[]
-          const bets = decoded[1] as bigint[]
+    fetch("http://localhost:5000/api/game-state")
+      .then((res) => res.json())
+      .then((gameState) => {
+        setParticipants(gameState.participants)
+      })
+      .catch((error) => console.error("Error fetching game state:", error))
 
-          return addresses.map((address, index) => ({
-            address,
-            bet: Number(formatEther(bets[index])),
-          }))
-        })
-        if (formattedEvents.length > 0) {
-          const latestEvent = formattedEvents[formattedEvents.length - 1]
-          latestEvent.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
-          setParticipants(latestEvent)
-        }
+    socket.on("gameUpdate", (update) => {
+      if (update.type === "participantsUpdated") {
+        setParticipants(update.updatedParticipants)
       }
-    }
-    fetchParticipants()
-    const handleParticipantsUpdate = (addresses: string[], bets: bigint[]) => {
-      const updatedParticipants = addresses.map((address, index) => ({
-        address,
-        bet: Number(formatEther(bets[index])),
-      }))
-      updatedParticipants.sort((a, b) => b.bet / totalPot - a.bet / totalPot)
-      setParticipants(updatedParticipants)
-    }
-
-    if (browsContract) browsContract.on("ParticipantsUpdated", handleParticipantsUpdate)
-
+    })
     return () => {
-      if (browsContract) browsContract.off("ParticipantsUpdated", handleParticipantsUpdate)
+      socket.off("gameUpdate")
     }
-  }, [browsContract])
+  }, [])
   return (
     <div>
       <h3>Participants:</h3>

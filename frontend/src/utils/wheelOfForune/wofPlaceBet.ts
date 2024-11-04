@@ -1,6 +1,5 @@
 import { parseUnits } from "ethers"
-import { useSigContract } from "../../hooks/useSigContract"
-import { useContractStore } from "../../store/WalletStore"
+import { useContractStore } from "../../store/ConnectionStore"
 
 export const PlaceBet = async (value: string) => {
   const { sigContract } = useContractStore.getState()

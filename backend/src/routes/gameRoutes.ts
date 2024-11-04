@@ -1,5 +1,6 @@
 import express from "express"
 import { createNewGameSession, selectWinner } from "../controllers/gameController"
+import { getCurrentGameState } from "../controllers/countsController"
 
 const router = express.Router()
 
@@ -18,6 +19,16 @@ router.post("/select-winner", async (req, res) => {
     res.status(200).json({ message: "Winner selected" })
   } catch (error) {
     res.status(500).json({ error: "Failed to select a winner" })
+  }
+})
+
+router.get("/game-state", async (req, res) => {
+  try {
+    const gameState = await getCurrentGameState()
+    res.json(gameState)
+  } catch (error) {
+    console.error("Failed to get game state:", error)
+    res.status(500).json({ error: "Failed to get game state" })
   }
 })
 

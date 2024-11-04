@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react"
 import "./wofConnectWalletButton.css"
-import { useAddress, useContractStore } from "../../../store/WalletStore"
+import { useAddress, useContractStore } from "../../../store/ConnectionStore"
 import { wofConnectWallet } from "../../../utils/wofWalletConnection"
 import WalletButton from "../button/WalletButton"
-import { useBrowsContract } from "../../../hooks/useBrowsContract"
 
 let isRequestingAccounts = false
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import "./ConnectWalletButton.css"
-import { useAddress } from "../../../store/WalletStore"
+import { useAddress } from "../../../store/ConnectionStore"
 import { connectWallet } from "../../../utils/WalletConnection"
 import WalletButton from "../button/WalletButton"
 

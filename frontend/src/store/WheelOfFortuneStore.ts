@@ -1,30 +1,24 @@
 import { create } from "zustand"
 
+interface Participant {
+  address: string
+  bet: number
+}
+
 export interface IWheelOfFortuneStore {
   totalPot: number
   totalParticipants: number
-  winner: string
-  isGameFinished: boolean
+  participants: Participant[]
   setTotalPot: (newTotal: number) => void
   setTotalParticipants: (newTotal: number) => void
-  setWinner: (newWinner: string) => void
-  setIsGameFinished: (newBool: boolean) => void
+  setParticipants: (newParticipants: Participant[]) => void
 }
 
 export const useWheelOfFortuneStore = create<IWheelOfFortuneStore>((set) => ({
   totalPot: 0,
   totalParticipants: 0,
-  winner: "",
-  isGameFinished: false,
+  participants: [],
   setTotalPot: (newTotal) => set({ totalPot: newTotal }),
   setTotalParticipants: (newTotal) => set({ totalParticipants: newTotal }),
-  setWinner: (newWinner) => set({ winner: newWinner }),
-  setIsGameFinished: (newBool) =>
-    set(() => {
-      if (localStorage.getItem("isGameFinished")) {
-        localStorage.removeItem("isGameFinished")
-      }
-      localStorage.setItem("isGameFinished", JSON.stringify(newBool))
-      return { isGameFinished: newBool }
-    }),
+  setParticipants: (newParticipants) => set({ participants: newParticipants }),
 }))

@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { useAddress, useContractStore } from "../store/WalletStore"
+import { useAddress, useContractStore } from "../store/ConnectionStore"
 import { wofGetBalance } from "./wheelOfForune/wofGetBalance"
 
 export const wofConnectWallet = async () => {

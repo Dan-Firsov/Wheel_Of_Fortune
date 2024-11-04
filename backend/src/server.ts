@@ -17,7 +17,7 @@ const io = new SocketIOServer(server, {
 const PORT = process.env.PORT || 5000
 
 app.use(cors())
-app.use("/game", gameRoutes)
+app.use("/api", gameRoutes)
 
 initializeContract()
 

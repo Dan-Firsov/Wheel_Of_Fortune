@@ -1,6 +1,6 @@
 import { ethers } from "ethers"
 import { GetBalances } from "./erc20/GetBalances"
-import { useAddress } from "../store/WalletStore"
+import { useAddress } from "../store/ConnectionStore"
 
 export const connectWallet = async () => {
   const { setAddress } = useAddress.getState()

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const gameController_1 = require("../controllers/gameController");
+const countsController_1 = require("../controllers/countsController");
 const router = express_1.default.Router();
 router.post("/new-session", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -31,6 +32,16 @@ router.post("/select-winner", (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         res.status(500).json({ error: "Failed to select a winner" });
+    }
+}));
+router.get("/game-state", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const gameState = yield (0, countsController_1.getCurrentGameState)();
+        res.json(gameState);
+    }
+    catch (error) {
+        console.error("Failed to get game state:", error);
+        res.status(500).json({ error: "Failed to get game state" });
     }
 }));
 exports.default = router;

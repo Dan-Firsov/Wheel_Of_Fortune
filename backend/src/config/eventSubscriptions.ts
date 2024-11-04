@@ -1,4 +1,5 @@
 import { getContract } from "../config/contract"
+import { getCurrentGameState, updateGameState } from "../controllers/countsController"
 import { createNewGameSession, selectWinner } from "../controllers/gameController"
 import { startGameTimer, startNewSessionTimer } from "../controllers/timerController"
 import { eventEmitter } from "../events/gameEvents"
@@ -16,8 +17,14 @@ export function initializeEventSubscriptions() {
       totalPot: Number(formatEther(newTotalPot)),
       participantCount: Number(participantCount),
     }
+
+    getCurrentGameState().then(({ participants }) => {
+      updateGameState(totalUpdate.totalPot, totalUpdate.participantCount, participants)
+    })
+
     eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate })
   })
+
   contract.on("ParticipantsUpdated", (addresses: string[], bets: bigint[]) => {
     const updatedParticipants = addresses.map((address, index) => ({
       address,
@@ -25,7 +32,16 @@ export function initializeEventSubscriptions() {
     }))
     updatedParticipants.sort((a, b) => b.bet - a.bet)
 
+    getCurrentGameState().then(({ totalPot, participantCount }) => {
+      updateGameState(totalPot, participantCount, updatedParticipants)
+    })
+
     eventEmitter.emit("gameUpdate", { type: "participantsUpdated", updatedParticipants })
+  })
+
+  contract.on("GameStarted", (endsAt: bigint) => {
+    console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`)
+    eventEmitter.emit("startGameTimer", Number(endsAt))
   })
 
   contract.on("GameResult", (newWinner: string, totalPot: bigint) => {
@@ -59,6 +75,7 @@ export function initializeEventSubscriptions() {
 
   eventEmitter.on("createNewGameSession", async () => {
     console.log("Starting a new game session")
+    updateGameState(0, 0, [])
     await createNewGameSession()
   })
 }

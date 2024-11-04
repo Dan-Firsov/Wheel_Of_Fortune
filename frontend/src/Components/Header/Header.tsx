@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import WofConnectWalletButton from "../connectWalletButton/wheelOfForune/wofConnectWalletButton"
 import "./Header.css"
 import { ethers } from "ethers"
-import { WOF_ADDRESS } from "../../store/WalletStore"
+import { WOF_ADDRESS } from "../../store/ConnectionStore"
 
 export default function Header() {
   const [contractBalance, setContractBalance] = useState<string>("")

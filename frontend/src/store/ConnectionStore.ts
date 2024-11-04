@@ -1,12 +1,13 @@
 import { ethers } from "ethers"
 import { create } from "zustand"
 import { WheelOfFortuneABI } from "../assests/WheelOfFortuneABI"
-import { Provider } from "react"
+import { io } from "socket.io-client"
 
 export const tokenAddress = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 export const WOF_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"
 export const WS_URL = "ws://localhost:8545/"
 export const WOF_ABI = WheelOfFortuneABI
+export const socket = io("http://localhost:5000")
 
 export interface connectAddress {
   address: string | null
