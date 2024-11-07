@@ -8,7 +8,7 @@ contract WheelOfFortune {
     address  owner;
     uint constant RESULT_DURATION = 30 seconds;
     uint constant NEXT_GAME_DURATION = 10 seconds;
-    uint constant FEE = 10;
+    uint constant FEE = 15;
     bool gameCreating = true;
     mapping (address => uint256) public balance;
 
@@ -38,6 +38,7 @@ contract WheelOfFortune {
     event GameStarted(uint256 endsAt);
     event GameFinished(uint256 startAt);
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
+    event WithdrawBet();
     event ParticipantsUpdated(address[] participants, uint256[] bets);
     event TotalUpdate(uint256 newTotalPot, uint participantCount);
 
@@ -88,7 +89,8 @@ contract WheelOfFortune {
             current += session.participantBets[i];
             if(random < current) {
                 session.winner = session.participants[i];
-                uint256 payout = session.totalPot - (session.totalPot * FEE / 100);
+                uint256 commission = (session.totalPot - session.participantBets[i]) * FEE / 100;
+                uint256 payout = session.totalPot - commission;
                 balance[session.winner] += payout;
                 break;
             }
@@ -128,6 +130,38 @@ contract WheelOfFortune {
             session.endsGameAt = block.timestamp + RESULT_DURATION;
             emit GameStarted(session.endsGameAt);
         }
+    }
+
+    function withdrawBet(uint256 amount) external {
+        require(GameSessions.length > 0, "No active game sessions");
+        GameSession storage session = GameSessions[GameSessions.length - 1];
+        require(!session.start, "Game has started");
+
+        uint256 index = session.participantIndex[msg.sender];
+        require(index > 0, "You have not placed any bets");
+        uint256 betIndex = index - 1;
+        require(session.participantBets[betIndex] >= amount, "Insufficient bet balance");
+
+        session.participantBets[betIndex] -= amount;
+        session.totalPot -= amount;
+        balance[msg.sender] += amount;
+
+        if (session.participantBets[betIndex] == 0) {
+            uint256 lastIndex = session.participants.length - 1;
+            if (betIndex != lastIndex) {
+                session.participants[betIndex] = session.participants[lastIndex];
+                session.participantBets[betIndex] = session.participantBets[lastIndex];
+
+                session.participantIndex[session.participants[betIndex]] = betIndex + 1;
+            }
+            session.participants.pop();
+            session.participantBets.pop();
+            delete session.participantIndex[msg.sender];
+        }
+
+        emit TotalUpdate(session.totalPot, session.participants.length);
+        emit ParticipantsUpdated(session.participants, session.participantBets);
+        emit WithdrawBet();
     }
 
     function getParcticipants() external view returns (address[] memory) {
