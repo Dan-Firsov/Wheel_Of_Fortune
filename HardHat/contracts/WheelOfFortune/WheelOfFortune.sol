@@ -6,9 +6,9 @@ pragma solidity ^0.8.0;
 contract WheelOfFortune {
 
     address  owner;
-    uint constant RESULT_DURATION = 30 seconds;
-    uint constant NEXT_GAME_DURATION = 10 seconds;
-    uint constant FEE = 15;
+    uint32 constant RESULT_DURATION = 30 seconds;
+    uint32 constant NEXT_GAME_DURATION = 10 seconds;
+    uint8 constant FEE = 15;
     bool gameCreating = true;
     mapping (address => uint256) public balance;
 
@@ -39,8 +39,7 @@ contract WheelOfFortune {
     event GameFinished(uint256 startAt);
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
     event WithdrawBet();
-    event ParticipantsUpdated(address[] participants, uint256[] bets);
-    event TotalUpdate(uint256 newTotalPot, uint participantCount);
+    event TotalUpdate(uint256 newTotalPot, uint participantCount, address[] participants, uint256[] bets);
 
 
     constructor() {
@@ -57,8 +56,7 @@ contract WheelOfFortune {
         session.stopped = false;
         session.totalPot = 0;
         session.winner = address(0);
-        emit ParticipantsUpdated(session.participants,session.participantBets);
-        emit TotalUpdate(session.totalPot, session.participants.length);
+        emit TotalUpdate(session.totalPot, session.participants.length,session.participants,session.participantBets);
     }
 
 
@@ -121,9 +119,8 @@ contract WheelOfFortune {
         }
         session.totalPot += amount;
 
-        emit ParticipantsUpdated(session.participants, session.participantBets);
         emit BetPlaced(msg.sender, amount);
-        emit TotalUpdate(session.totalPot,session.participants.length);
+        emit TotalUpdate(session.totalPot, session.participants.length,session.participants,session.participantBets);
 
         if(session.participants.length >= 3 && !session.start) {
             session.start = true;
@@ -159,8 +156,7 @@ contract WheelOfFortune {
             delete session.participantIndex[msg.sender];
         }
 
-        emit TotalUpdate(session.totalPot, session.participants.length);
-        emit ParticipantsUpdated(session.participants, session.participantBets);
+        emit TotalUpdate(session.totalPot, session.participants.length,session.participants,session.participantBets);
         emit WithdrawBet();
     }
 
