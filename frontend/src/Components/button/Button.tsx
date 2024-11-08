@@ -1,12 +1,12 @@
 import React, { useState } from "react"
-import classes from "./WalletButton.module.css"
+import classes from "./Button.module.css"
 
 interface ButtonProps {
   children: React.ReactNode
   onClick: () => Promise<void>
 }
 
-export default function WalletButton({ children, onClick }: ButtonProps) {
+export default function Button({ children, onClick }: ButtonProps) {
   const [isPressed, setPressed] = useState(false)
 
   const handleMouseDown = () => setPressed(true)

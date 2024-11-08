@@ -1,5 +1,5 @@
 import { getContract } from "../config/contract"
-import { getCurrentGameState, updateGameState } from "../controllers/countsController"
+import { updateGameState } from "../controllers/countsController"
 import { createNewGameSession, selectWinner } from "../controllers/gameController"
 import { startGameTimer, startNewSessionTimer } from "../controllers/timerController"
 import { eventEmitter } from "../events/gameEvents"
@@ -17,17 +17,12 @@ export function initializeEventSubscriptions() {
       totalPot: Number(formatEther(newTotalPot)),
       participantCount: Number(participantCount),
     }
-
     const updatedParticipants = addresses.map((address, index) => ({
       address,
       bet: Number(formatEther(bets[index])),
     }))
     updatedParticipants.sort((a, b) => b.bet - a.bet)
-
-    getCurrentGameState().then(({ participants }) => {
-      updateGameState(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants)
-    })
-
+    updateGameState(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants)
     eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants })
   })
 

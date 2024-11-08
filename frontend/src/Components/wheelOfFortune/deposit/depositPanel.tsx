@@ -1,7 +1,7 @@
 import { useState } from "react"
-import DepositButton from "./button/depositButton"
-import DepositInput from "./input/depositInput"
-import { Deposit } from "../../../utils/wheelOfForune/wofDeposit"
+import { Deposit } from "../../../utils/wheelOfForune/deposit"
+import Input from "../../input/input"
+import Button from "../../button/Button"
 
 export default function DepositPanel() {
   const [value, setValue] = useState<string>("")
@@ -19,11 +19,11 @@ export default function DepositPanel() {
 
   return (
     <div className="deposit-panel-wrapper">
-      <DepositInput value={value} onValueChange={(e) => setValue(e.target.value.replace(",", "."))}></DepositInput>
+      <Input value={value} onValueChange={(e) => setValue(e.target.value.replace(",", "."))}></Input>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-      <DepositButton onClick={handleDeposit}>Deposit</DepositButton>
+      <Button onClick={handleDeposit}>Deposit</Button>
     </div>
   )
 }

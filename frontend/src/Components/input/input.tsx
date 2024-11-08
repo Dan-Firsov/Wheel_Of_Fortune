@@ -5,7 +5,7 @@ interface TransferInputProps {
   onValueChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function WithdrawInput({ value, onValueChange }: TransferInputProps) {
+export default function Input({ value, onValueChange }: TransferInputProps) {
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     const regex = /^\d*\.?\d*$/

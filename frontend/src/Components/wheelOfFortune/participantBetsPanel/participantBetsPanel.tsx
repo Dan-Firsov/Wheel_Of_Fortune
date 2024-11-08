@@ -13,7 +13,7 @@ export default function ParticipantBetsPanel() {
       .catch((error) => console.error("Error fetching game state:", error))
 
     socket.on("gameUpdate", (update) => {
-      if (update.type === "participantsUpdated") {
+      if (update.type === "totalUpdate") {
         setParticipants(update.updatedParticipants)
       }
     })

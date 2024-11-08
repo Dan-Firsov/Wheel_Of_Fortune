@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
-import "./wofConnectWalletButton.css"
-import { useAddress, useContractStore } from "../../../store/ConnectionStore"
-import { wofConnectWallet } from "../../../utils/wofWalletConnection"
-import WalletButton from "../button/WalletButton"
+import "./сonnectWalletButton.css"
+import { useWallet, useContractStore } from "../../store/ConnectionStore"
+import WalletButton from "../button/Button"
+import { connectWallet } from "../../utils/WalletConnection"
+import { GetBalance } from "../../utils/wheelOfForune/getBalance"
+import UserCard from "../header/userCard/userCard"
 
 let isRequestingAccounts = false
 
-export default function WofConnectWalletButton() {
-  const { address, setAddress } = useAddress()
-  const [balance, setBalance] = useState<string | null>(null)
+export default function ConnectWalletButton() {
+  const { address, setAddress, balance, setBalance } = useWallet()
+  const [isUserCardVisible, setIsUserCardVisible] = useState(false)
   const { browsContract } = useContractStore()
 
   useEffect(() => {
@@ -17,12 +19,10 @@ export default function WofConnectWalletButton() {
         try {
           const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
           if (accounts.length > 0) {
-            const currentBalance = await wofConnectWallet()
-            if (currentBalance) {
-              setBalance(currentBalance)
-            }
+            await connectWallet()
           } else {
             setAddress(null)
+            setBalance(null)
           }
         } catch (error) {
           console.error("Error connecting to MetaMask:", error)
@@ -38,10 +38,7 @@ export default function WofConnectWalletButton() {
 
   useEffect(() => {
     const handleCurrentBalance = async () => {
-      const currentBalance = await wofConnectWallet()
-      if (currentBalance) {
-        setBalance(currentBalance)
-      }
+      await GetBalance()
     }
     if (browsContract) {
       browsContract.on("Deposit", handleCurrentBalance)
@@ -61,7 +58,7 @@ export default function WofConnectWalletButton() {
     if (!isRequestingAccounts) {
       try {
         isRequestingAccounts = true
-        await wofConnectWallet()
+        await connectWallet()
       } catch (error) {
         console.error("Error connecting to MetaMask:", error)
       } finally {
@@ -72,14 +69,18 @@ export default function WofConnectWalletButton() {
     }
   }
 
+  const toggleUserCard = async () => {
+    if (address) {
+      setIsUserCardVisible(!isUserCardVisible)
+    } else {
+      connectMetaMask()
+    }
+  }
+
   return (
-    <div className="connect-wallet-button-wraper">
-      <WalletButton onClick={() => connectMetaMask()}>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}</WalletButton>
-      {balance && (
-        <div className="balance-wrapper">
-          <span>{`Balance: ${balance.slice(0, 8)} ETH`}</span>
-        </div>
-      )}
+    <div className="connect-wallet-button-wrapper">
+      <WalletButton onClick={toggleUserCard}>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}</WalletButton>
+      {isUserCardVisible && <UserCard />} {/* Отображаем карточку только если isUserCardVisible = true */}
     </div>
   )
 }

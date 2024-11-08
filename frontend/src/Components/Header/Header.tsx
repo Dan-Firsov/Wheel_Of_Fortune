@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
-import WofConnectWalletButton from "../connectWalletButton/wheelOfForune/wofConnectWalletButton"
+import WofConnectWalletButton from "../wallet/сonnectWalletButton"
 import "./Header.css"
 import { ethers } from "ethers"
 import { WOF_ADDRESS } from "../../store/ConnectionStore"
+import UserCard from "./userCard/userCard"
+import ConnectWalletButton from "../wallet/сonnectWalletButton"
 
 export default function Header() {
   const [contractBalance, setContractBalance] = useState<string>("")
@@ -17,7 +19,7 @@ export default function Header() {
   return (
     <div className="container">
       <div>Contract Balance: {contractBalance ? `${contractBalance} ETH` : "Loading..."}</div>
-      <WofConnectWalletButton></WofConnectWalletButton>
+      <ConnectWalletButton></ConnectWalletButton>
     </div>
   )
 }

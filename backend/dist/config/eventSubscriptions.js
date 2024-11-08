@@ -21,26 +21,18 @@ function initializeEventSubscriptions() {
     if (!contract) {
         throw new Error("Contract is not initialized before subscribing to events.");
     }
-    contract.on("TotalUpdate", (newTotalPot, participantCount) => {
+    contract.on("TotalUpdate", (newTotalPot, participantCount, addresses, bets) => {
         const totalUpdate = {
             totalPot: Number((0, ethers_1.formatEther)(newTotalPot)),
             participantCount: Number(participantCount),
         };
-        (0, countsController_1.getCurrentGameState)().then(({ participants }) => {
-            (0, countsController_1.updateGameState)(totalUpdate.totalPot, totalUpdate.participantCount, participants);
-        });
-        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate });
-    });
-    contract.on("ParticipantsUpdated", (addresses, bets) => {
         const updatedParticipants = addresses.map((address, index) => ({
             address,
             bet: Number((0, ethers_1.formatEther)(bets[index])),
         }));
         updatedParticipants.sort((a, b) => b.bet - a.bet);
-        (0, countsController_1.getCurrentGameState)().then(({ totalPot, participantCount }) => {
-            (0, countsController_1.updateGameState)(totalPot, participantCount, updatedParticipants);
-        });
-        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "participantsUpdated", updatedParticipants });
+        (0, countsController_1.updateGameState)(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants);
+        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants });
     });
     contract.on("GameStarted", (endsAt) => {
         console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`);

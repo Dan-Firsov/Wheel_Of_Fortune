@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react"
-import WithdrawButton from "./button/withdrawButton"
-import WithdrawInput from "./input/withdrawInput"
-import { Withdraw } from "../../../utils/wheelOfForune/wofWithdraw"
+import { useState } from "react"
+import { Withdraw } from "../../../utils/wheelOfForune/withdraw"
+import Input from "../../input/input"
+import Button from "../../button/Button"
 
 export default function WithdrawPanel() {
   const [value, setValue] = useState<string>("")
@@ -27,11 +27,9 @@ export default function WithdrawPanel() {
 
   return (
     <div className="deposit-panel-wrapper">
-      <WithdrawInput value={value} onValueChange={(e) => setValue(e.target.value)}></WithdrawInput>
-
+      <Input value={value} onValueChange={(e) => setValue(e.target.value)}></Input>
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-
-      <WithdrawButton onClick={handleWithdraw}>Withdraw</WithdrawButton>
+      <Button onClick={handleWithdraw}>Withdraw</Button>
     </div>
   )
 }

@@ -9,14 +9,18 @@ export const WS_URL = "ws://localhost:8545/"
 export const WOF_ABI = WheelOfFortuneABI
 export const socket = io("http://localhost:5000")
 
-export interface connectAddress {
+export interface connectWallet {
   address: string | null
+  balance: string | null
   setAddress: (address: string | null) => void
+  setBalance: (balance: string | null) => void
 }
 
-export const useAddress = create<connectAddress>((set) => ({
+export const useWallet = create<connectWallet>((set) => ({
   address: null,
+  balance: null,
   setAddress: (address: string | null) => set({ address }),
+  setBalance: (balance: string | null) => set({ balance }),
 }))
 
 interface IUseContractStore {

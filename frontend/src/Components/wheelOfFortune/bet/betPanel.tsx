@@ -1,8 +1,8 @@
 import { useState } from "react"
-import BetInput from "./input/betInput"
-import BetButton from "./button/betButton"
-import { PlaceBet } from "../../../utils/wheelOfForune/wofPlaceBet"
+import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import "./betPanel.css"
+import Button from "../../button/Button"
+import Input from "../../input/input"
 
 export default function BetPanel() {
   const [value, setValue] = useState<string>("")
@@ -33,11 +33,11 @@ export default function BetPanel() {
   }
   return (
     <div className="bet-panel-wrapper">
-      <BetInput value={value} onValueChange={(e) => setValue(e.target.value)}></BetInput>
+      <Input value={value} onValueChange={(e) => setValue(e.target.value)}></Input>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
-      <BetButton onClick={handleBet}>Bet</BetButton>
+      <Button onClick={handleBet}>Bet</Button>
     </div>
   )
 }

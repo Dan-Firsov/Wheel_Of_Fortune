@@ -98,25 +98,6 @@ export const WheelOfFortuneABI = [
     inputs: [
       {
         indexed: false,
-        internalType: "address[]",
-        name: "participants",
-        type: "address[]",
-      },
-      {
-        indexed: false,
-        internalType: "uint256[]",
-        name: "bets",
-        type: "uint256[]",
-      },
-    ],
-    name: "ParticipantsUpdated",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
         internalType: "uint256",
         name: "newTotalPot",
         type: "uint256",
@@ -126,6 +107,18 @@ export const WheelOfFortuneABI = [
         internalType: "uint256",
         name: "participantCount",
         type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address[]",
+        name: "participants",
+        type: "address[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "bets",
+        type: "uint256[]",
       },
     ],
     name: "TotalUpdate",
@@ -148,6 +141,12 @@ export const WheelOfFortuneABI = [
       },
     ],
     name: "Withdraw",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [],
+    name: "WithdrawBet",
     type: "event",
   },
   {
@@ -295,6 +294,19 @@ export const WheelOfFortuneABI = [
       },
     ],
     name: "withdraw",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "withdrawBet",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

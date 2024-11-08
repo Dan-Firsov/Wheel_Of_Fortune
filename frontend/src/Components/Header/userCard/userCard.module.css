@@ -1,0 +1,37 @@
+.userCard {
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.address {
+  font-size: 13px;
+  color: #333;
+  margin-bottom: 2px;
+  word-wrap: break-word;
+}
+
+.balance {
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deposit,
+.withdraw {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button {
+  padding: 8px 12px;
+}
