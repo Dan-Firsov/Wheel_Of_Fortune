@@ -1,4 +1,5 @@
 .app {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 50px 1fr 50px;
+  height: 100vh;
 }

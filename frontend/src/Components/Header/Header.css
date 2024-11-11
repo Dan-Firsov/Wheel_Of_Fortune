@@ -1,8 +1,8 @@
-.container {
+.header-container {
   display: flex;
   flex-direction: row;
-
   align-items: start;
   justify-content: space-between;
   border: 1px solid black;
+  height: 50px;
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import "./сonnectWalletButton.css"
 import { useWallet, useContractStore } from "../../store/ConnectionStore"
-import WalletButton from "../button/Button"
+import Button from "../button/Button"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/userCard"
@@ -78,9 +78,9 @@ export default function ConnectWalletButton() {
   }
 
   return (
-    <div className="connect-wallet-button-wrapper">
-      <WalletButton onClick={toggleUserCard}>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}</WalletButton>
-      {isUserCardVisible && <UserCard />} {/* Отображаем карточку только если isUserCardVisible = true */}
+    <div className="connect-wallet-wraper">
+      <Button onClick={toggleUserCard}>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}</Button>
+      <UserCard isVisible={isUserCardVisible} />
     </div>
   )
 }

@@ -7,10 +7,10 @@ import GameSessionPanel from "./gameTimerPanel/gameSessionPanel"
 export default function WheelOfFortune() {
   return (
     <div className="wof-wrapper">
-      <WofHeader></WofHeader>
-      <GameSessionPanel></GameSessionPanel>
-      <ParticipantBetsPanel></ParticipantBetsPanel>
-      <BetPanel></BetPanel>
+      <WofHeader />
+      <GameSessionPanel />
+      <ParticipantBetsPanel />
+      <BetPanel />
     </div>
   )
 }

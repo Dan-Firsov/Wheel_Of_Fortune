@@ -1,6 +1,9 @@
-import DepositPanel from "../wheelOfFortune/deposit/depositPanel"
-import WithdrawPanel from "../wheelOfFortune/withdraw/withdrawPanel"
+import WheelOfFortune from "../wheelOfFortune/wheelOfFortune"
 
 export default function Main() {
-  return <div className="container"></div>
+  return (
+    <div className="container">
+      <WheelOfFortune />
+    </div>
+  )
 }
