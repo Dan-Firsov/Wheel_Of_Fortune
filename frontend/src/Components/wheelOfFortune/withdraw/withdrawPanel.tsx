@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Withdraw } from "../../../utils/wheelOfForune/withdraw"
 import Input from "../../input/input"
-import Button from "../../button/Button"
+import Button from "../../buttons/Button"
 
 export default function WithdrawPanel() {
   const [value, setValue] = useState<string>("")

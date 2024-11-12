@@ -1,8 +1,18 @@
 .header-container {
   display: flex;
   flex-direction: row;
-  align-items: start;
+  align-items: center;
   justify-content: space-between;
-  border: 1px solid black;
-  height: 50px;
+  height: 75px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  background-color: #ff6933;
+}
+
+.header-name {
+  text-align: center;
+  font-size: 1.875rem;
+  padding: 0 0.625rem 0;
+  font-style: italic;
+  font-weight: 800;
 }

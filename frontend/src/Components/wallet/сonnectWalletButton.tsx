@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import "./сonnectWalletButton.css"
+import styles from "./сonnectWalletButton.module.css"
 import { useWallet, useContractStore } from "../../store/ConnectionStore"
-import Button from "../button/Button"
+import Button from "../buttons/Button"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/userCard"
@@ -78,9 +78,11 @@ export default function ConnectWalletButton() {
   }
 
   return (
-    <div className="connect-wallet-wraper">
-      <Button onClick={toggleUserCard}>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}</Button>
-      <UserCard isVisible={isUserCardVisible} />
+    <div className={styles.connectWalletWraper}>
+      <Button customClass={styles.connectButton} onClick={toggleUserCard}>
+        {address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}
+      </Button>
+      <UserCard isVisible={isUserCardVisible} onClose={() => setIsUserCardVisible(false)} />
     </div>
   )
 }

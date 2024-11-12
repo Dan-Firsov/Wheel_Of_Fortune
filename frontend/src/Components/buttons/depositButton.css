@@ -1,0 +1,114 @@
+/* only animate if the device supports hover */
+@media (hover: hover) {
+  #silvercoin {
+    transform: scale(1);
+
+    transform: translate(-100px, 80px);
+    transition: transform 0.1s ease-in-out;
+  }
+
+  #creditcard {
+    transform: scale(1);
+
+    transform: translate(10px, 110px);
+    transition: transform 0.1s ease-in-out;
+  }
+
+  #money {
+    transform: scale(1);
+    transform: translate(30px, 180px);
+    transition: transform 0.1s ease-in-out;
+  }
+
+  #wallet {
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+  }
+
+  button:hover #wallet {
+    transform: scale(1.1);
+    transform: translateY(-10px);
+
+    transition: transform 0.2s ease-in-out;
+  }
+  button:hover #silvercoin {
+    transform: scale(1.5);
+
+    transform: translate(-100px, -30px);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  button:hover #creditcard {
+    transform: scale(1.5);
+
+    transform: translate(10px, 0);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  button:hover #money {
+    transform: scale(1.5);
+    transform: translate(30px, 0px);
+    transition: transform 0.4s ease-in-out;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.25rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.button:hover .button__text span {
+  transform: translateY(-5.25rem);
+  transition: transform 0.2s ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* styling */
+
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap");
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  outline: none;
+  background-color: #5086bd;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  color: #fff;
+  font-size: em;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
+  width: 75px;
+  height: 25px;
+  transition: all 0.2s ease-in-out;
+}
+.button:active {
+  transform: translateY(1px);
+}
+
+.button__text {
+  flex-grow: 1;
+  text-align: center;
+}
+.button__svg {
+  width: 3.33em; /* Пропорциональный размер иконки относительно текста */
+  height: 3.33em;
+  position: absolute;
+  right: -2.33rem; /* Прижимаем иконку к правому краю кнопки */
+  top: -1.66rem;
+}

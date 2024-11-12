@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Deposit } from "../../../utils/wheelOfForune/deposit"
 import Input from "../../input/input"
-import Button from "../../button/Button"
+import Button from "../../buttons/Button"
 
 export default function DepositPanel() {
   const [value, setValue] = useState<string>("")

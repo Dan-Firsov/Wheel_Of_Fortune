@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import "./betPanel.css"
-import Button from "../../button/Button"
+import Button from "../../buttons/Button"
 import Input from "../../input/input"
 
 export default function BetPanel() {
@@ -36,6 +36,10 @@ export default function BetPanel() {
       <Input value={value} onValueChange={(e) => setValue(e.target.value)}></Input>
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+
+      <button onClick={handleBet} className="btn btn-outline">
+        Bet
+      </button>
 
       <Button onClick={handleBet}>Bet</Button>
     </div>
