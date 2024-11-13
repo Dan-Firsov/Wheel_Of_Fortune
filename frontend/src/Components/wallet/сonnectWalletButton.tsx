@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import styles from "./сonnectWalletButton.module.css"
 import { useWallet, useContractStore } from "../../store/ConnectionStore"
-import Button from "../buttons/Button"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/userCard"
@@ -9,9 +8,12 @@ import UserCard from "../header/userCard/userCard"
 let isRequestingAccounts = false
 
 export default function ConnectWalletButton() {
-  const { address, setAddress, balance, setBalance } = useWallet()
+  const { address, setAddress, setBalance } = useWallet()
   const [isUserCardVisible, setIsUserCardVisible] = useState(false)
   const { browsContract } = useContractStore()
+
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const userCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -54,6 +56,23 @@ export default function ConnectWalletButton() {
     }
   }, [browsContract])
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userCardRef.current && !userCardRef.current.contains(event.target as Node) && buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
+        setIsUserCardVisible(false)
+      }
+    }
+    const handleWindowBlur = () => {
+      setIsUserCardVisible(false)
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    window.addEventListener("blur", handleWindowBlur)
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      window.removeEventListener("blur", handleWindowBlur)
+    }
+  }, [])
   const connectMetaMask = async () => {
     if (!isRequestingAccounts) {
       try {
@@ -69,9 +88,10 @@ export default function ConnectWalletButton() {
     }
   }
 
-  const toggleUserCard = async () => {
+  const handleToggleUserCard = () => {
+    console.log("Toggling user card visibility")
     if (address) {
-      setIsUserCardVisible(!isUserCardVisible)
+      setIsUserCardVisible((prev) => !prev)
     } else {
       connectMetaMask()
     }
@@ -79,10 +99,10 @@ export default function ConnectWalletButton() {
 
   return (
     <div className={styles.connectWalletWraper}>
-      <Button customClass={styles.connectButton} onClick={toggleUserCard}>
-        {address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : "Connect Wallet"}
-      </Button>
-      <UserCard isVisible={isUserCardVisible} onClose={() => setIsUserCardVisible(false)} />
+      <button ref={buttonRef} className={styles.connectButton} onClick={handleToggleUserCard}>
+        <span>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : <span style={{ fontWeight: "bold" }}>Connect Wallet</span>}</span>
+      </button>
+      {isUserCardVisible && <UserCard ref={userCardRef} isVisible={isUserCardVisible} onClose={() => setIsUserCardVisible(false)} />}
     </div>
   )
 }

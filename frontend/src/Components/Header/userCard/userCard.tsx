@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { forwardRef, useEffect, useRef, useState } from "react"
 import styles from "./userCard.module.css"
 import Button from "../../buttons/Button"
 import Input from "../../input/input"
@@ -12,24 +12,33 @@ interface UserCardProps {
   onClose: () => void
 }
 
-export default function UserCard({ isVisible, onClose }: UserCardProps) {
+const UserCard = forwardRef<HTMLDivElement, UserCardProps>(({ isVisible, onClose }, ref) => {
   const [depositAmount, setDepositAmount] = useState<string | "">("")
   const [withdrawAmount, setWithdrawAmount] = useState<string | "">("")
   const [errorMessageDep, setErrorMessageDep] = useState("")
   const [errorMessageWith, setErrorMessageWith] = useState("")
   const [errorVisibleDep, setErrorvisibleDep] = useState(false)
   const [errorVisibleWith, setErrorvisibleWith] = useState(false)
+  const [copyMessageVisible, setCopyMessageVisible] = useState(false)
   const { address, balance } = useWallet()
+  const [isAnimating, setIsAnimating] = useState(false)
 
   const modalRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    if (isVisible) {
+      setTimeout(() => setIsAnimating(true), 350)
+    } else {
+      setIsAnimating(false)
+    }
+  }, [isVisible])
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        onClose()
+        setIsAnimating(false)
+        setTimeout(() => onClose(), 350)
       }
     }
-
     if (isVisible) {
       document.addEventListener("mousedown", handleClickOutside)
     }
@@ -39,11 +48,17 @@ export default function UserCard({ isVisible, onClose }: UserCardProps) {
     }
   }, [isVisible, onClose])
 
-  // Не рендерим окно, если оно невидимо
-  if (!isVisible) {
-    return null
+  const handleCopy = () => {
+    if (address) {
+      navigator.clipboard
+        .writeText(address)
+        .then(() => {
+          setCopyMessageVisible(true)
+          setTimeout(() => setCopyMessageVisible(false), 3000)
+        })
+        .catch((err) => console.error("Failed to copy text: ", err))
+    }
   }
-
   const handleDeposit = async () => {
     if (depositAmount) {
       await Deposit(depositAmount)
@@ -54,7 +69,7 @@ export default function UserCard({ isVisible, onClose }: UserCardProps) {
       setErrorvisibleDep(true)
       setTimeout(() => {
         setErrorvisibleDep(false)
-      }, 3000)
+      }, 2000)
     }
   }
 
@@ -90,11 +105,15 @@ export default function UserCard({ isVisible, onClose }: UserCardProps) {
   }
 
   return (
-    <div className={`${styles.userCard} ${isVisible ? styles.visible : ""}`} ref={modalRef}>
-      <h3>Wallet</h3>
-      <p className={styles.address}>{address}</p>
+    <div className={`${styles.userCard} ${isAnimating ? styles.visible : ""}`} ref={ref as React.RefObject<HTMLDivElement>}>
+      <h3 style={{ fontWeight: "bold" }}>Wallet</h3>
+      <div className={styles.addressContainer}>
+        <p className={styles.address} onClick={handleCopy}>
+          {address}
+        </p>
+        {copyMessageVisible && <span className={styles.copyMessage}>Address copied!</span>}
+      </div>
       <p className={styles.balance}>Balance: {balance ? <span>{balance}</span> : <span>0</span>} ETH</p>
-
       <div className={styles.actions}>
         <div className={styles.actionsItem}>
           <Input value={depositAmount} onValueChange={(e) => setDepositAmount(e.target.value.replace(",", "."))}></Input>
@@ -112,4 +131,6 @@ export default function UserCard({ isVisible, onClose }: UserCardProps) {
       </div>
     </div>
   )
-}
+})
+
+export default UserCard

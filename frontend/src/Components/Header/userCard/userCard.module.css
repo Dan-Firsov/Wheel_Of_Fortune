@@ -1,32 +1,50 @@
 .userCard {
   position: absolute;
-  top: 70px;
-  right: 10px;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  top: 100%;
+  background-color: #f7efe2;
   padding: 12px;
-  width: 250px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  width: 100%;
   max-width: 300px;
-  margin: 0 auto;
-  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+  transform: translateY(-20px);
   opacity: 0;
-  transform: scale(0);
-  transform-origin: top right;
-  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: all 0.35s ease-in-out;
+  z-index: 1000;
 }
-
 .userCard.visible {
+  border: 1px solid #333;
+  border-width: 0px 2px 2px 2px;
+  transform: scaleY(1);
   opacity: 1;
-  transform: scale(1);
 }
-
 .address {
   font-size: 13px;
   color: #333;
   margin-bottom: 2px;
   word-wrap: break-word;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.address:hover {
+  color: orange;
+}
+
+.copyMessage {
+  position: absolute;
+  top: 5px;
+  right: 60px;
+  font-size: 12px;
+  background-color: #f7efe2;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  z-index: 1001;
 }
 
 .balance {
@@ -43,7 +61,6 @@
 .actionsItem {
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 .error {
   position: absolute;
@@ -66,16 +83,31 @@
   transform: scale(1);
 }
 
-.buttonDeposit {
-  background-color: #42e73c;
-  width: 350px;
-  padding: 8px 12px;
-  margin: px;
-}
 .buttonWithdraw {
-  background-color: #f5ce42;
-  padding: 8px 12px;
-  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: none;
+  outline: none;
+  background-color: #f9a603;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  color: #fff;
+  font-size: em;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
+  width: 85px;
+  height: 25px;
+  transition: all 0.2s ease-in-out;
+}
 
-  margin: px;
+.buttonWithdraw:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.buttonWithdraw:active {
+  transform: translateY(1px);
 }
