@@ -7,12 +7,12 @@ import { Deposit } from "../../../utils/wheelOfForune/deposit"
 import { useWallet } from "../../../store/ConnectionStore"
 import { DepositButton } from "../../buttons/depositButton"
 
-interface UserCardProps {
-  isVisible: boolean
-  onClose: () => void
+interface IUserCard {
+  userCardRef: React.RefObject<HTMLDivElement>
+  isAnimating: boolean
 }
 
-const UserCard = forwardRef<HTMLDivElement, UserCardProps>(({ isVisible, onClose }, ref) => {
+const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
   const [depositAmount, setDepositAmount] = useState<string | "">("")
   const [withdrawAmount, setWithdrawAmount] = useState<string | "">("")
   const [errorMessageDep, setErrorMessageDep] = useState("")
@@ -21,32 +21,6 @@ const UserCard = forwardRef<HTMLDivElement, UserCardProps>(({ isVisible, onClose
   const [errorVisibleWith, setErrorvisibleWith] = useState(false)
   const [copyMessageVisible, setCopyMessageVisible] = useState(false)
   const { address, balance } = useWallet()
-  const [isAnimating, setIsAnimating] = useState(false)
-
-  const modalRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (isVisible) {
-      setTimeout(() => setIsAnimating(true), 350)
-    } else {
-      setIsAnimating(false)
-    }
-  }, [isVisible])
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        setIsAnimating(false)
-        setTimeout(() => onClose(), 350)
-      }
-    }
-    if (isVisible) {
-      document.addEventListener("mousedown", handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [isVisible, onClose])
 
   const handleCopy = () => {
     if (address) {
@@ -105,7 +79,7 @@ const UserCard = forwardRef<HTMLDivElement, UserCardProps>(({ isVisible, onClose
   }
 
   return (
-    <div className={`${styles.userCard} ${isAnimating ? styles.visible : ""}`} ref={ref as React.RefObject<HTMLDivElement>}>
+    <div ref={userCardRef} className={`${styles.userCard} ${isAnimating ? styles.visible : ""}`}>
       <h3 style={{ fontWeight: "bold" }}>Wallet</h3>
       <div className={styles.addressContainer}>
         <p className={styles.address} onClick={handleCopy}>
@@ -131,6 +105,6 @@ const UserCard = forwardRef<HTMLDivElement, UserCardProps>(({ isVisible, onClose
       </div>
     </div>
   )
-})
+}
 
 export default UserCard

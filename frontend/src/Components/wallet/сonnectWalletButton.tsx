@@ -10,6 +10,7 @@ let isRequestingAccounts = false
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
   const [isUserCardVisible, setIsUserCardVisible] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false)
   const { browsContract } = useContractStore()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -59,20 +60,26 @@ export default function ConnectWalletButton() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userCardRef.current && !userCardRef.current.contains(event.target as Node) && buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
-        setIsUserCardVisible(false)
+        console.log("ClickOutside")
+        setIsAnimating(false)
+        setTimeout(() => setIsUserCardVisible(false), 350)
       }
     }
+
     const handleWindowBlur = () => {
-      setIsUserCardVisible(false)
+      console.log("blur")
+      setIsAnimating(false)
+      setTimeout(() => setIsUserCardVisible(false), 350)
     }
-    document.addEventListener("mousedown", handleClickOutside)
     window.addEventListener("blur", handleWindowBlur)
+    document.addEventListener("mousedown", handleClickOutside)
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
       window.removeEventListener("blur", handleWindowBlur)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
+
   const connectMetaMask = async () => {
     if (!isRequestingAccounts) {
       try {
@@ -89,9 +96,14 @@ export default function ConnectWalletButton() {
   }
 
   const handleToggleUserCard = () => {
-    console.log("Toggling user card visibility")
     if (address) {
-      setIsUserCardVisible((prev) => !prev)
+      if (!isUserCardVisible) {
+        setIsUserCardVisible(true)
+        setTimeout(() => setIsAnimating(true), 0)
+      } else {
+        setIsAnimating(false)
+        setTimeout(() => setIsUserCardVisible(false), 350)
+      }
     } else {
       connectMetaMask()
     }
@@ -99,10 +111,10 @@ export default function ConnectWalletButton() {
 
   return (
     <div className={styles.connectWalletWraper}>
-      <button ref={buttonRef} className={styles.connectButton} onClick={handleToggleUserCard}>
+      <button ref={buttonRef} className={`${styles.connectButton} ${isAnimating ? styles.active : ""}`} onClick={handleToggleUserCard}>
         <span>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : <span style={{ fontWeight: "bold" }}>Connect Wallet</span>}</span>
       </button>
-      {isUserCardVisible && <UserCard ref={userCardRef} isVisible={isUserCardVisible} onClose={() => setIsUserCardVisible(false)} />}
+      {isUserCardVisible && <UserCard userCardRef={userCardRef} isAnimating={isAnimating} />}
     </div>
   )
 }
