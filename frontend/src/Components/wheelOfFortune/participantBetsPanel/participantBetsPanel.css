@@ -1,0 +1,57 @@
+.participant-table {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+table {
+  width: 80%;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Добавляет пространство между строками */
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+  border-radius: 12px; /* Закругленные углы таблицы */
+  overflow: hidden; /* Скрывает элементы, выходящие за края */
+}
+
+thead {
+  background-color: #ffe0b2; /* Пастельный цвет для заголовка */
+  border-radius: 12px 12px 0 0; /* Закругленные углы сверху */
+}
+
+th,
+td {
+  padding: 15px 20px;
+  border: none;
+}
+
+th {
+  font-weight: bold;
+  color: #333;
+  font-size: 1em;
+}
+
+.waiting-cell {
+  padding: 20px;
+  text-align: center;
+  font-style: italic;
+  color: #888;
+}
+
+tbody tr {
+  background-color: #fffaf2; /* Пастельный оттенок для строк */
+  border-radius: 8px; /* Закругление строк */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Тень для строк */
+}
+
+tbody tr:hover {
+  background-color: #ffe8cc; /* Мягкий цвет при наведении */
+}
+
+tbody td:first-child {
+  font-weight: bold;
+  color: #f9a825;
+}

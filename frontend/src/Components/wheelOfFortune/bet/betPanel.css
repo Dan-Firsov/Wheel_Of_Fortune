@@ -4,4 +4,19 @@
   align-items: center;
   gap: 15px;
   margin: 10px;
+  width: 300px;
+}
+
+.bet-panel-input-container {
+  width: 200px; /* Пример ширины */
+  max-width: 100%;
+  height: 50px;
+  font-size: 16px; /* Пример размера шрифта */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.bet-panel-input-container:focus {
+  border-color: #ffba5a;
+  outline: none;
 }
