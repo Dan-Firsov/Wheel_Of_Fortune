@@ -4,6 +4,8 @@
   gap: 50px;
   align-items: start;
   margin: 30px;
+  border-radius: 1em;
+  background-color: #ffffff;
 }
 
 .total-wrapper {

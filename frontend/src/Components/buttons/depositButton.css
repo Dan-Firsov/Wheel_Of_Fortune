@@ -89,6 +89,7 @@
   width: 75px;
   height: 25px;
   transition: all 0.2s ease-in-out;
+  left: -10px;
 }
 .button:active {
   transform: translateY(1px);
@@ -102,6 +103,6 @@
   width: 3.33em;
   height: 3.33em;
   position: absolute;
-  right: -2.33rem;
-  top: -1.66rem;
+  right: -1.5rem;
+  top: -1.2rem;
 }

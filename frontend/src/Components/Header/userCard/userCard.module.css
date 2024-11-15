@@ -4,7 +4,7 @@
   background-color: #f7efe2;
   padding: 12px;
   width: 100%;
-  max-width: 300px;
+  max-width: 197px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid #333;
   font-family: sans-serif;
@@ -64,7 +64,8 @@
 .actionsItem {
   display: flex;
   align-items: center;
-  gap: 15px;
+  justify-content: space-between;
+  margin: 0 5px;
 }
 .error {
   position: absolute;
@@ -114,4 +115,9 @@
 
 .buttonWithdraw:active {
   transform: translateY(1px);
+}
+
+.userCardInput {
+  flex: 1;
+  max-width: 70px;
 }
