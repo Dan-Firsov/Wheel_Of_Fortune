@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react"
 import { socket } from "../../../store/ConnectionStore"
+import "./gameSessionPanel.css"
+import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 
 export default function GameSessionPanel() {
   const [gamePhase, setGamePhase] = useState<"waiting" | "ongoing" | "determining" | "nextGameTimer">("waiting")
@@ -7,11 +9,13 @@ export default function GameSessionPanel() {
   const [newGameTimeLeft, setNewGameTimeLeft] = useState<number | null>(null)
   const [winner, setWinner] = useState<string | null>(null)
   const [winnerPrize, setWinnerPrize] = useState<number | null>(null)
+  const { totalParticipants } = useWheelOfFortuneStore()
 
   useEffect(() => {
     socket.on("gameUpdate", (update) => {
       switch (update.type) {
         case "timerUpdate":
+          console.log(update.timeLeft)
           setTimeLeft(update.timeLeft)
           setGamePhase("ongoing")
           break
@@ -46,10 +50,19 @@ export default function GameSessionPanel() {
   }, [])
 
   return (
-    <div>
-      {gamePhase === "waiting" && <h2>Waiting for participants...</h2>}
+    <div className="game-session-panel-wrapper">
+      {gamePhase === "waiting" && (
+        <div>
+          <h2>{`Waiting for participants... (${3 - totalParticipants} left)`}</h2>
+        </div>
+      )}
 
-      {gamePhase === "ongoing" && timeLeft !== null && <h2>Ends game time: {timeLeft} sec</h2>}
+      {gamePhase === "ongoing" && timeLeft !== null && (
+        <div>
+          <h2>Ends game time: {timeLeft} sec</h2>
+          {timeLeft && <progress className="progressbar-game-session animated" id="p1" value={timeLeft} max="30"></progress>}
+        </div>
+      )}
 
       {gamePhase === "determining" && <h2>Determining the winner...</h2>}
 

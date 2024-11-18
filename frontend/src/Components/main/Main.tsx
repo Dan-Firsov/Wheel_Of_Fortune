@@ -1,4 +1,5 @@
 import WheelOfFortune from "../wheelOfFortune/wheelOfFortune"
+import "./main.css"
 
 export default function Main() {
   return (

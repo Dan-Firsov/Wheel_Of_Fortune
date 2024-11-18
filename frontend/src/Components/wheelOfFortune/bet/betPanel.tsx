@@ -6,6 +6,8 @@ import Input from "../../input/input"
 export default function BetPanel() {
   const [value, setValue] = useState<string>("")
   const [errorMessage, setErrorMessage] = useState("")
+  const [errorVisible, setErrorVisible] = useState(false)
+
   const checkboxRef = useRef<HTMLInputElement | null>(null)
   const formContainerRef = useRef<HTMLDivElement | null>(null)
 
@@ -17,18 +19,34 @@ export default function BetPanel() {
       } else {
         console.log("Please provide value.")
         setErrorMessage("Please provide value.")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
       }
     } catch (error: any) {
       if (error.reason && error.reason.includes("Insufficient funds on balance")) {
         setErrorMessage("Insufficient funds on balance")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
       }
 
       if (error.reason && error.reason.includes("No active game sessions")) {
         setErrorMessage("No active game sessions")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
       }
 
       if (error.reason && error.reason.includes("Session already completed")) {
         setErrorMessage("Session already completed")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
       }
     }
   }
@@ -59,13 +77,13 @@ export default function BetPanel() {
       <input className="c-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
       <div className="c-formContainer" ref={formContainerRef}>
         <form className="c-form">
-          <input id="lastname" className="input c-form__input" placeholder=" " autoComplete="off" type="text" value={value} onChange={handleValueChange} />
-          <div className="cut"></div>
-          <label htmlFor="lastname" className="placeholder">
+          <input id="lastname" className="input-bet c-form__input" placeholder=" " autoComplete="off" type="text" value={value} onChange={handleValueChange} />
+          <div className="cut-bet"></div>
+          <label htmlFor="lastname" className="placeholder-bet">
             Enter value
           </label>
 
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
 
           <label className="c-form__buttonLabel" htmlFor="checkbox">
             <button className="c-form__button" type="button" onClick={handleBet}>

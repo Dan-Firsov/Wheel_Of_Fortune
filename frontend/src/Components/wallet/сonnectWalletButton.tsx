@@ -71,7 +71,7 @@ export default function ConnectWalletButton() {
       setIsAnimating(false)
       setTimeout(() => setIsUserCardVisible(false), 350)
     }
-    window.addEventListener("blur", handleWindowBlur)
+    // window.addEventListener("blur", handleWindowBlur)
     document.addEventListener("mousedown", handleClickOutside)
 
     return () => {

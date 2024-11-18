@@ -1,0 +1,55 @@
+.game-session-panel-wrapper {
+  color: #65657b;
+}
+.progressbar-game-session {
+  box-sizing: border-box;
+  border: solid 0.4rem #ffe0a3;
+  width: 30rem;
+  height: 3rem;
+  border-radius: 0.5em;
+  background: linear-gradient(#ffe0a3, #ffffff);
+  font-family: monospace;
+  font-size: clamp(0.625em, 7.5vw, 5em);
+}
+
+.progressbar-game-session::-webkit-progress-bar {
+  background: transparent;
+}
+
+.progressbar-game-session::-webkit-progress-value {
+  border-radius: 0.5em;
+  box-shadow: inset 0 0.05em 0.05em rgba(255, 255, 255, 0.35);
+  background: linear-gradient(#ffec9d, transparent 85%), linear-gradient(90deg, #ffe94b, #f94745);
+}
+
+.progressbar-game-session::-moz-progress-bar {
+  border-radius: 0.5em;
+  box-shadow: inset 0 0.05em 0.05em rgba(255, 255, 255, 0.35);
+  background: linear-gradient(#ffec9d, transparent 85%), linear-gradient(90deg, #ffe94b, #f94745);
+}
+
+.progressbar-game-session:nth-child(2) {
+  background: linear-gradient(#ffec9d, transparent 85%), linear-gradient(90deg, #ffe94b, #f94745);
+}
+.progressbar-game-session.animated::-webkit-progress-value {
+  animation: progress-fill 1s linear infinite;
+  border-radius: 0.5em;
+  box-shadow: inset 0 0.05em 0.05em rgba(255, 255, 255, 0.35);
+  background: linear-gradient(#ffec9d, transparent 85%), linear-gradient(90deg, #ffe94b, #f94745);
+}
+
+.progressbar-game-session.animated::-moz-progress-bar {
+  animation: progress-fill 1s linear infinite;
+  border-radius: 0.5em;
+  box-shadow: inset 0 0.05em 0.05em rgba(255, 255, 255, 0.35);
+  background: linear-gradient(#ffec9d, transparent 85%), linear-gradient(90deg, #ffe94b, #f94745);
+}
+
+@keyframes progress-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}

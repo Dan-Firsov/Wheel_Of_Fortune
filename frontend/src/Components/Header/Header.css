@@ -1,4 +1,5 @@
 .header-wraper {
+  flex-shrink: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -6,7 +7,7 @@
   border-bottom: 2px solid #333;
   color: #333;
   height: 75px;
-  background-color: #cf3721;
+  background-color: #ff7b73;
   padding: 0 15px;
 }
 
