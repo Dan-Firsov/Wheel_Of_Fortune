@@ -3,7 +3,7 @@ import { updateGameState } from "../controllers/countsController"
 import { createNewGameSession, selectWinner } from "../controllers/gameController"
 import { startGameTimer, startNewSessionTimer } from "../controllers/timerController"
 import { eventEmitter } from "../events/gameEvents"
-import { formatEther } from "ethers"
+import { ethers, formatEther } from "ethers"
 
 export function initializeEventSubscriptions() {
   const contract = getContract()
@@ -11,6 +11,17 @@ export function initializeEventSubscriptions() {
   if (!contract) {
     throw new Error("Contract is not initialized before subscribing to events.")
   }
+
+  const provider = new ethers.JsonRpcProvider("https://your-rpc-url")
+  provider.on(
+    {
+      address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+      topics: [ethers.id("TotalUpdate(uint256,uint256,address[],uint256[])")],
+    },
+    (log) => {
+      console.log("Raw event log:", log)
+    }
+  )
 
   contract.on("TotalUpdate", (newTotalPot: bigint, participantCount: bigint, addresses: string[], bets: bigint[]) => {
     const totalUpdate = {

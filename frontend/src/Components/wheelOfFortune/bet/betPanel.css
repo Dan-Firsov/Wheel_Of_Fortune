@@ -8,7 +8,7 @@
 
   &:checked + .c-formContainer {
     .c-form {
-      width: 20.5em;
+      width: 25rem;
     }
 
     .c-form__toggle {
@@ -46,7 +46,7 @@
 .c-form,
 .c-form__toggle {
   width: 15rem;
-  height: 6.25em;
+  height: 8rem;
 }
 
 .c-formContainer {
@@ -180,7 +180,7 @@
   height: 1.2em;
   left: 2em;
   position: absolute;
-  top: 1.2rem;
+  top: 0.3rem;
   opacity: 0;
   transform: translateY(-10px);
   transition: transform 0.35s;
@@ -199,7 +199,7 @@
 
 .placeholder-bet {
   color: #65657b;
-  font-size: 3rem;
+  font-size: 2rem;
   left: 2rem;
   pointer-events: none;
   position: absolute;
@@ -208,7 +208,7 @@
 
 .input-bet:focus ~ .placeholder-bet,
 .input-bet:not(:placeholder-shown) ~ .placeholder-bet {
-  transform: translateY(-2.25rem) translateX(-2rem) scale(0.5);
+  transform: translateY(-2rem) translateX(-0.5rem) scale(0.5);
 }
 
 .input-bet:not(:placeholder-shown) ~ .placeholder-bet {
