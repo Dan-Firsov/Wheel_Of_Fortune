@@ -7,53 +7,59 @@ import { ethers, formatEther } from "ethers"
 
 export function initializeEventSubscriptions() {
   const contract = getContract()
+  console.log(`Contract info:  ${contract}`)
 
   if (!contract) {
     throw new Error("Contract is not initialized before subscribing to events.")
   }
 
-  const provider = new ethers.JsonRpcProvider("https://your-rpc-url")
-  provider.on(
-    {
-      address: "0x5fbdb2315678afecb367f032d93f642f64180aa3",
-      topics: [ethers.id("TotalUpdate(uint256,uint256,address[],uint256[])")],
-    },
-    (log) => {
-      console.log("Raw event log:", log)
-    }
-  )
-
   contract.on("TotalUpdate", (newTotalPot: bigint, participantCount: bigint, addresses: string[], bets: bigint[]) => {
-    const totalUpdate = {
-      totalPot: Number(formatEther(newTotalPot)),
-      participantCount: Number(participantCount),
+    try {
+      const totalUpdate = {
+        totalPot: Number(formatEther(newTotalPot)),
+        participantCount: Number(participantCount),
+      }
+      const updatedParticipants = addresses.map((address, index) => ({
+        address,
+        bet: Number(formatEther(bets[index])),
+      }))
+      updatedParticipants.sort((a, b) => b.bet - a.bet)
+      updateGameState(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants)
+      eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants })
+    } catch (error) {
+      console.error("Error parsing TotalUpdate event:", error)
     }
-    const updatedParticipants = addresses.map((address, index) => ({
-      address,
-      bet: Number(formatEther(bets[index])),
-    }))
-    updatedParticipants.sort((a, b) => b.bet - a.bet)
-    updateGameState(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants)
-    eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants })
   })
 
   contract.on("GameStarted", (endsAt: bigint) => {
-    console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`)
-    eventEmitter.emit("startGameTimer", Number(endsAt))
+    try {
+      console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`)
+      eventEmitter.emit("startGameTimer", Number(endsAt))
+    } catch (error) {
+      console.error("Error handling GameStarted event:", error)
+    }
   })
 
   contract.on("GameResult", (newWinner: string, totalPot: bigint) => {
-    console.log(`"GameResult event received. The game winner: ${newWinner}, winning ${Number(formatEther(totalPot))} ETH`)
-    const gameResult = {
-      winner: newWinner,
-      winningPot: Number(formatEther(totalPot)),
+    try {
+      console.log(`"GameResult event received. The game winner: ${newWinner}, winning ${Number(formatEther(totalPot))} ETH`)
+      const gameResult = {
+        winner: newWinner,
+        winningPot: Number(formatEther(totalPot)),
+      }
+      eventEmitter.emit("gameUpdate", { type: "gameResult", gameResult })
+    } catch (error) {
+      console.error("Error handling GameResult event:", error)
     }
-    eventEmitter.emit("gameUpdate", { type: "gameResult", gameResult })
   })
 
   contract.on("GameFinished", (startAt: bigint) => {
-    console.log(`GameFinished event received. New game will start at: ${startAt.toString()}`)
-    eventEmitter.emit("startNewSessionTimer", Number(startAt))
+    try {
+      console.log(`GameFinished event received. New game will start at: ${startAt.toString()}`)
+      eventEmitter.emit("startNewSessionTimer", Number(startAt))
+    } catch (error) {
+      console.error("Error handling GameFinished event:", error)
+    }
   })
 
   eventEmitter.on("startGameTimer", (endsAt: number) => {

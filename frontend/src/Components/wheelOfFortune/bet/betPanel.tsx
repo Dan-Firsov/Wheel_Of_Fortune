@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import "./betPanel.css"
-import Input from "../../input/input"
+import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
+import { useContractStore } from "../../../store/ConnectionStore"
 
 export default function BetPanel() {
   const [value, setValue] = useState<string>("")
@@ -51,6 +52,53 @@ export default function BetPanel() {
     }
   }
 
+  const handleRemoveBet = async () => {
+    try {
+      if (value) {
+        await WithdrawBet(value)
+        setErrorMessage("")
+      } else {
+        console.log("Please provide value.")
+        setErrorMessage("Please provide value.")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
+      }
+    } catch (error: any) {
+      if (error.reason && error.reason.includes("Insufficient bet balance")) {
+        setErrorMessage("Insufficient bet balance")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
+      }
+
+      if (error.reason && error.reason.includes("No active game sessions")) {
+        setErrorMessage("No active game sessions")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
+      }
+      if (error.reason && error.reason.includes("You have not placed any bets")) {
+        setErrorMessage("You have not placed any bets")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
+      }
+
+      if (error.reason && error.reason.includes("Game has started")) {
+        setErrorMessage("Game has started")
+        setErrorVisible(true)
+        setTimeout(() => {
+          setErrorVisible(false)
+        }, 2000)
+      }
+    }
+  }
+
   const handleClickOutside = (event: MouseEvent) => {
     if (checkboxRef.current?.checked && formContainerRef.current && !formContainerRef.current.contains(event.target as Node)) {
       checkboxRef.current.checked = false
@@ -82,12 +130,14 @@ export default function BetPanel() {
           <label htmlFor="lastname" className="placeholder-bet">
             Enter value
           </label>
-
           {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
-
           <label className="c-form__buttonLabel" htmlFor="checkbox">
             <button className="c-form__button" type="button" onClick={handleBet}>
               Bet
+            </button>
+
+            <button className="c-form__button_remove" type="button" onClick={handleRemoveBet}>
+              X
             </button>
           </label>
           <label className="c-form__toggle" htmlFor="checkbox" data-title="Place bet"></label>

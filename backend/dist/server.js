@@ -30,6 +30,7 @@ io.on("connection", (socket) => {
     });
 });
 gameEvents_1.eventEmitter.on("gameUpdate", (update) => {
+    console.log("Event emitted to frontend:", update);
     io.emit("gameUpdate", update);
 });
 server.listen(PORT, () => {

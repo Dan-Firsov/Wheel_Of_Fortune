@@ -20,7 +20,6 @@ app.use(cors())
 app.use("/api", gameRoutes)
 
 initializeContract()
-
 initializeEventSubscriptions()
 
 io.on("connection", (socket) => {
@@ -32,6 +31,7 @@ io.on("connection", (socket) => {
 })
 
 eventEmitter.on("gameUpdate", (update) => {
+  console.log("Event emitted to frontend:", update)
   io.emit("gameUpdate", update)
 })
 

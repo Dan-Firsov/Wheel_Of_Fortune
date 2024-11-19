@@ -163,6 +163,31 @@
   background-color: #ff7b73;
 }
 
+.c-form__button_remove {
+  position: absolute;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+  box-sizing: border-box;
+  color: #65657b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  height: 2rem;
+  width: 2rem;
+  top: -1.5rem;
+  right: -1.5rem;
+  background-color: #ff584f;
+  cursor: pointer;
+}
+
+.c-form__button_remove:hover {
+  background-color: #e04c44;
+}
+
 .input-bet {
   background-color: #ffd073;
   border-radius: 12px;

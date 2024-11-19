@@ -18,37 +18,58 @@ const gameEvents_1 = require("../events/gameEvents");
 const ethers_1 = require("ethers");
 function initializeEventSubscriptions() {
     const contract = (0, contract_1.getContract)();
+    console.log(`Contract info:  ${contract}`);
     if (!contract) {
         throw new Error("Contract is not initialized before subscribing to events.");
     }
     contract.on("TotalUpdate", (newTotalPot, participantCount, addresses, bets) => {
-        const totalUpdate = {
-            totalPot: Number((0, ethers_1.formatEther)(newTotalPot)),
-            participantCount: Number(participantCount),
-        };
-        const updatedParticipants = addresses.map((address, index) => ({
-            address,
-            bet: Number((0, ethers_1.formatEther)(bets[index])),
-        }));
-        updatedParticipants.sort((a, b) => b.bet - a.bet);
-        (0, countsController_1.updateGameState)(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants);
-        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants });
+        try {
+            const totalUpdate = {
+                totalPot: Number((0, ethers_1.formatEther)(newTotalPot)),
+                participantCount: Number(participantCount),
+            };
+            const updatedParticipants = addresses.map((address, index) => ({
+                address,
+                bet: Number((0, ethers_1.formatEther)(bets[index])),
+            }));
+            updatedParticipants.sort((a, b) => b.bet - a.bet);
+            (0, countsController_1.updateGameState)(totalUpdate.totalPot, totalUpdate.participantCount, updatedParticipants);
+            gameEvents_1.eventEmitter.emit("gameUpdate", { type: "totalUpdate", totalUpdate, updatedParticipants });
+        }
+        catch (error) {
+            console.error("Error parsing TotalUpdate event:", error);
+        }
     });
     contract.on("GameStarted", (endsAt) => {
-        console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`);
-        gameEvents_1.eventEmitter.emit("startGameTimer", Number(endsAt));
+        try {
+            console.log(`GameStarted event received. Game ends at: ${endsAt.toString()}`);
+            gameEvents_1.eventEmitter.emit("startGameTimer", Number(endsAt));
+        }
+        catch (error) {
+            console.error("Error handling GameStarted event:", error);
+        }
     });
     contract.on("GameResult", (newWinner, totalPot) => {
-        console.log(`"GameResult event received. The game winner: ${newWinner}, winning ${Number((0, ethers_1.formatEther)(totalPot))} ETH`);
-        const gameResult = {
-            winner: newWinner,
-            winningPot: Number((0, ethers_1.formatEther)(totalPot)),
-        };
-        gameEvents_1.eventEmitter.emit("gameUpdate", { type: "gameResult", gameResult });
+        try {
+            console.log(`"GameResult event received. The game winner: ${newWinner}, winning ${Number((0, ethers_1.formatEther)(totalPot))} ETH`);
+            const gameResult = {
+                winner: newWinner,
+                winningPot: Number((0, ethers_1.formatEther)(totalPot)),
+            };
+            gameEvents_1.eventEmitter.emit("gameUpdate", { type: "gameResult", gameResult });
+        }
+        catch (error) {
+            console.error("Error handling GameResult event:", error);
+        }
     });
     contract.on("GameFinished", (startAt) => {
-        console.log(`GameFinished event received. New game will start at: ${startAt.toString()}`);
-        gameEvents_1.eventEmitter.emit("startNewSessionTimer", Number(startAt));
+        try {
+            console.log(`GameFinished event received. New game will start at: ${startAt.toString()}`);
+            gameEvents_1.eventEmitter.emit("startNewSessionTimer", Number(startAt));
+        }
+        catch (error) {
+            console.error("Error handling GameFinished event:", error);
+        }
     });
     gameEvents_1.eventEmitter.on("startGameTimer", (endsAt) => {
         (0, timerController_1.startGameTimer)(endsAt);

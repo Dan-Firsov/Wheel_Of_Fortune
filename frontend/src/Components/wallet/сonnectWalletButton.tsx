@@ -47,12 +47,14 @@ export default function ConnectWalletButton() {
       browsContract.on("Deposit", handleCurrentBalance)
       browsContract.on("Withdraw", handleCurrentBalance)
       browsContract.on("BetPlaced", handleCurrentBalance)
+      browsContract.on("WithdrawBet", handleCurrentBalance)
     }
     return () => {
       if (browsContract) {
         browsContract.off("Deposit", handleCurrentBalance)
         browsContract.off("Withdraw", handleCurrentBalance)
         browsContract.off("BetPlaced", handleCurrentBalance)
+        browsContract.on("WithdrawBet", handleCurrentBalance)
       }
     }
   }, [browsContract])
@@ -60,18 +62,15 @@ export default function ConnectWalletButton() {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (userCardRef.current && !userCardRef.current.contains(event.target as Node) && buttonRef.current && !buttonRef.current.contains(event.target as Node)) {
-        console.log("ClickOutside")
         setIsAnimating(false)
         setTimeout(() => setIsUserCardVisible(false), 350)
       }
     }
 
     const handleWindowBlur = () => {
-      console.log("blur")
       setIsAnimating(false)
       setTimeout(() => setIsUserCardVisible(false), 350)
     }
-    // window.addEventListener("blur", handleWindowBlur)
     document.addEventListener("mousedown", handleClickOutside)
 
     return () => {

@@ -13,6 +13,7 @@ export default function GameSessionPanel() {
 
   useEffect(() => {
     socket.on("gameUpdate", (update) => {
+      console.log("Received update:", update)
       switch (update.type) {
         case "timerUpdate":
           console.log(update.timeLeft)

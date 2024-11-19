@@ -35,10 +35,10 @@ contract WheelOfFortune {
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
     event BetPlaced(address indexed user, uint256 amount);
+    event WithdrawBet();
     event GameStarted(uint256 endsAt);
     event GameFinished(uint256 startAt);
     event GameResult (address indexed winner, uint256 totalAmount, address[] participants);
-    event WithdrawBet();
     event TotalUpdate(uint256 newTotalPot, uint participantCount, address[] participants, uint256[] bets);
 
 
@@ -133,16 +133,13 @@ contract WheelOfFortune {
         require(GameSessions.length > 0, "No active game sessions");
         GameSession storage session = GameSessions[GameSessions.length - 1];
         require(!session.start, "Game has started");
-
         uint256 index = session.participantIndex[msg.sender];
         require(index > 0, "You have not placed any bets");
         uint256 betIndex = index - 1;
         require(session.participantBets[betIndex] >= amount, "Insufficient bet balance");
-
         session.participantBets[betIndex] -= amount;
         session.totalPot -= amount;
         balance[msg.sender] += amount;
-
         if (session.participantBets[betIndex] == 0) {
             uint256 lastIndex = session.participants.length - 1;
             if (betIndex != lastIndex) {
@@ -155,7 +152,6 @@ contract WheelOfFortune {
             session.participantBets.pop();
             delete session.participantIndex[msg.sender];
         }
-
         emit TotalUpdate(session.totalPot, session.participants.length,session.participants,session.participantBets);
         emit WithdrawBet();
     }
@@ -175,4 +171,5 @@ contract WheelOfFortune {
     function getBalance() external view returns (uint256) {
         return balance[msg.sender];
     }
+    
 }
