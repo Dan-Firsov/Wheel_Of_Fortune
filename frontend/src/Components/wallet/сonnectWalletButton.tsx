@@ -48,13 +48,15 @@ export default function ConnectWalletButton() {
       browsContract.on("Withdraw", handleCurrentBalance)
       browsContract.on("BetPlaced", handleCurrentBalance)
       browsContract.on("WithdrawBet", handleCurrentBalance)
+      browsContract.on("GameResult", handleCurrentBalance)
     }
     return () => {
       if (browsContract) {
         browsContract.off("Deposit", handleCurrentBalance)
         browsContract.off("Withdraw", handleCurrentBalance)
         browsContract.off("BetPlaced", handleCurrentBalance)
-        browsContract.on("WithdrawBet", handleCurrentBalance)
+        browsContract.off("WithdrawBet", handleCurrentBalance)
+        browsContract.off("GameResult", handleCurrentBalance)
       }
     }
   }, [browsContract])

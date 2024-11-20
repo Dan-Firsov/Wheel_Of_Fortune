@@ -6,7 +6,7 @@ pragma solidity ^0.8.0;
 contract WheelOfFortune {
 
     address  owner;
-    uint32 constant RESULT_DURATION = 30 seconds;
+    uint32 constant RESULT_DURATION = 1 minutes;
     uint32 constant NEXT_GAME_DURATION = 10 seconds;
     uint8 constant FEE = 15;
     bool gameCreating = true;
@@ -88,6 +88,8 @@ contract WheelOfFortune {
             if(random < current) {
                 session.winner = session.participants[i];
                 uint256 commission = (session.totalPot - session.participantBets[i]) * FEE / 100;
+                require(address(this).balance >= commission, "Insufficient funds for commission");
+                payable(owner).transfer(commission);
                 uint256 payout = session.totalPot - commission;
                 balance[session.winner] += payout;
                 break;
@@ -145,7 +147,6 @@ contract WheelOfFortune {
             if (betIndex != lastIndex) {
                 session.participants[betIndex] = session.participants[lastIndex];
                 session.participantBets[betIndex] = session.participantBets[lastIndex];
-
                 session.participantIndex[session.participants[betIndex]] = betIndex + 1;
             }
             session.participants.pop();

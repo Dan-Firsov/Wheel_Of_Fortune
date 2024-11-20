@@ -61,7 +61,7 @@ export default function GameSessionPanel() {
       {gamePhase === "ongoing" && timeLeft !== null && (
         <div>
           <h2>Ends game time: {timeLeft} sec</h2>
-          {timeLeft && <progress className="progressbar-game-session animated" id="p1" value={timeLeft} max="30"></progress>}
+          {timeLeft && <progress className="progressbar-game-session animated" id="p1" value={timeLeft} max="60"></progress>}
         </div>
       )}
 

@@ -34,16 +34,23 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
     }
   }
   const handleDeposit = async () => {
-    if (depositAmount) {
-      await Deposit(depositAmount)
-      setErrorMessageDep("")
-    } else {
-      console.log("Please provide value.")
-      setErrorMessageDep("Please provide value.")
-      setErrorvisibleDep(true)
-      setTimeout(() => {
-        setErrorvisibleDep(false)
-      }, 2000)
+    try {
+      if (depositAmount) {
+        await Deposit(depositAmount)
+        setErrorMessageDep("")
+      } else {
+        console.log("Please provide value.")
+        setErrorMessageDep("Please provide value.")
+        setErrorvisibleDep(true)
+        setTimeout(() => {
+          setErrorvisibleDep(false)
+        }, 2000)
+      }
+    } catch (error: any) {
+      console.error("Deposit error:", error)
+      if (error.reason && error.reason.includes("insufficient funds")) {
+        setErrorMessageDep("insufficient funds")
+      }
     }
   }
 

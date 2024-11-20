@@ -11,6 +11,6 @@ export const Deposit = async (value: string) => {
       await tx.wait()
     }
   } catch (error) {
-    console.error("Deposit error:", error)
+    throw error
   }
 }

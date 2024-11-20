@@ -1,18 +1,13 @@
 import { ethers } from "hardhat"
 
-const hre = require("hardhat")
-
 async function main() {
-  const [deployer] = await ethers.getSigners()
-
-  console.log("Deploying contracts with the account:", deployer.address)
-
-  const WildToken = await hre.ethers.getContractFactory("WildToken")
-  const wildToken = await WildToken.deploy(deployer)
-
-  await wildToken.deploy
-
-  console.log("WildToken deployed to", wildToken.address)
+  console.log("Starting deployment...")
+  const WheelOfFortune = await ethers.getContractFactory("WheelOfFortune")
+  console.log("Contract factory loaded")
+  const wheelOfFortune = await WheelOfFortune.deploy()
+  console.log("Deploy transaction sent. Waiting for deployment...")
+  await wheelOfFortune.waitForDeployment()
+  console.log("WheelOfFortune deployed to:", wheelOfFortune.target)
 }
 
 main()

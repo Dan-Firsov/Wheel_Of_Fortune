@@ -3,7 +3,7 @@ import { updateGameState } from "../controllers/countsController"
 import { createNewGameSession, selectWinner } from "../controllers/gameController"
 import { startGameTimer, startNewSessionTimer } from "../controllers/timerController"
 import { eventEmitter } from "../events/gameEvents"
-import { ethers, formatEther } from "ethers"
+import { formatEther } from "ethers"
 
 export function initializeEventSubscriptions() {
   const contract = getContract()
