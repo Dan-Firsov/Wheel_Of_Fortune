@@ -1,5 +1,5 @@
+import ConnectWalletButton from "../wallet/connectWalletButton"
 import "./Header.css"
-import ConnectWalletButton from "../wallet/сonnectWalletButton"
 
 export default function Header() {
   return (

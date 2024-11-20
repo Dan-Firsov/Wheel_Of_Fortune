@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import styles from "./сonnectWalletButton.module.css"
+import styles from "./connectWalletButton.module.css"
 import { useWallet, useContractStore } from "../../store/ConnectionStore"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
