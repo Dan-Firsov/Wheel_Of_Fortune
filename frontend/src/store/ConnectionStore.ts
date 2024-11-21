@@ -6,7 +6,7 @@ import { io } from "socket.io-client"
 export const WOF_ADDRESS = "0x026FB91F85c5772da859c7822C43de5c120e2481"
 export const WS_URL = "ws://localhost:8545/"
 export const WOF_ABI = WheelOfFortuneABI
-export const socket = io("http://localhost:5000")
+export const socket = io("https://673f4db5a84ae7047f96fa09--celebrated-florentine-7aae94.netlify.app/")
 
 export interface connectWallet {
   address: string | null

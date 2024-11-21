@@ -11,7 +11,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new SocketIOServer(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://0xwheeloffortune.netlify.app",
   },
 })
 const PORT = process.env.PORT || 5000
@@ -31,7 +31,6 @@ io.on("connection", (socket) => {
 })
 
 eventEmitter.on("gameUpdate", (update) => {
-  console.log("Event emitted to frontend:", update)
   io.emit("gameUpdate", update)
 })
 
