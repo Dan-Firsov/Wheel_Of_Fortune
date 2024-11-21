@@ -2,7 +2,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import "./betPanel.css"
 import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
-import { useContractStore } from "../../../store/ConnectionStore"
 
 export default function BetPanel() {
   const [value, setValue] = useState<string>("")

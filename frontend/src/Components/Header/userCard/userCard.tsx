@@ -1,11 +1,11 @@
-import { forwardRef, useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import styles from "./userCard.module.css"
-import Button from "../../buttons/Button"
-import Input from "../../input/input"
 import { Withdraw } from "../../../utils/wheelOfForune/withdraw"
 import { Deposit } from "../../../utils/wheelOfForune/deposit"
 import { useWallet } from "../../../store/ConnectionStore"
+import Input from "../../input/input"
 import { DepositButton } from "../../buttons/depositButton"
+import Button from "../../buttons/Button"
 
 interface IUserCard {
   userCardRef: React.RefObject<HTMLDivElement>
