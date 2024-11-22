@@ -18,6 +18,9 @@ const PORT = process.env.PORT || 5000
 
 app.use(cors())
 app.use("/api", gameRoutes)
+app.get("/", (req, res) => {
+  res.send("Server is running!")
+})
 
 initializeContract()
 initializeEventSubscriptions()

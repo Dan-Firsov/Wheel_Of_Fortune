@@ -21,6 +21,9 @@ const io = new socket_io_1.Server(server, {
 const PORT = process.env.PORT || 5000;
 app.use((0, cors_1.default)());
 app.use("/api", gameRoutes_1.default);
+app.get("/", (req, res) => {
+    res.send("Server is running!");
+});
 (0, contract_1.initializeContract)();
 (0, eventSubscriptions_1.initializeEventSubscriptions)();
 io.on("connection", (socket) => {
@@ -30,7 +33,6 @@ io.on("connection", (socket) => {
     });
 });
 gameEvents_1.eventEmitter.on("gameUpdate", (update) => {
-    console.log("Event emitted to frontend:", update);
     io.emit("gameUpdate", update);
 });
 server.listen(PORT, () => {

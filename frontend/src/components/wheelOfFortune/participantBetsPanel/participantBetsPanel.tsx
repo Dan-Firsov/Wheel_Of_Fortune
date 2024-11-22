@@ -7,7 +7,7 @@ export default function ParticipantBetsPanel() {
   const { totalPot, participants, setParticipants } = useWheelOfFortuneStore()
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/game-state")
+    fetch("https://project-v1-0-9.onrender.com/api/game-state")
       .then((res) => res.json())
       .then((gameState) => {
         setParticipants(gameState.participants)
