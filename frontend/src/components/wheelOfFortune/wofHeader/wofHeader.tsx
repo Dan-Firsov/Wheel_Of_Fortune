@@ -7,7 +7,7 @@ export default function WofHeader() {
   const { totalPot, totalParticipants, setTotalPot, setTotalParticipants } = useWheelOfFortuneStore()
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/game-state")
+    fetch("https://project-v1-0-9.onrender.com/api/game-state")
       .then((res) => res.json())
       .then((gameState) => {
         setTotalPot(gameState.totalPot)
