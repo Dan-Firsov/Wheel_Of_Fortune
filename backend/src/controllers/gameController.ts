@@ -6,7 +6,9 @@ export async function selectWinner() {
     throw new Error("Contract is not initialized")
   }
   try {
-    const tx = await contract.spinWheel()
+    const tx = await contract.spinWheel({
+      gasLimit: 1000000,
+    })
     await tx.wait()
     console.log(`The winner has been chosen! txHash: ${tx.hash} `)
   } catch (error) {
