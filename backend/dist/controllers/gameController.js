@@ -19,7 +19,9 @@ function selectWinner() {
             throw new Error("Contract is not initialized");
         }
         try {
-            const tx = yield contract.spinWheel();
+            const tx = yield contract.spinWheel({
+                gasLimit: 1000000,
+            });
             yield tx.wait();
             console.log(`The winner has been chosen! txHash: ${tx.hash} `);
         }
