@@ -20,21 +20,21 @@ export default function Footer() {
 
   const items = [
     {
-      title: "Правила",
+      title: "Rules",
       content: (
         <ul className="rules-list">
-          <li>Подключите ваш криптокошелек MetaMask.</li>
-          <li>Получите тестовые ETH через кран в разделе "Кран".</li>
-          <li>Сделайте ставку, размер которой определяет ваш шанс на победу.</li>
-          <li>Дождитесь завершения игры и проверьте, выиграли ли вы.</li>
+          <li>Connect your MetaMask crypto wallet.</li>
+          <li>Get test ETH through the faucet in the "Faucet" section.</li>
+          <li>Place a bet; the amount determines your chance of winning.</li>
+          <li>Wait for the game to end and check if you've won.</li>
         </ul>
       ),
     },
     {
-      title: "Кран",
+      title: "Faucet",
       content: (
         <div className="text-left">
-          Для игры вам понадобятся тестовые ETH в сети Sepolia. Вы можете получить их через:
+          You need test ETH in the Sepolia network to play. You can get it via:
           <br />
           <a href="https://sepolia-faucet.pk910.de/" target="_blank" rel="noopener noreferrer">
             Sepolia Faucet
@@ -43,7 +43,7 @@ export default function Footer() {
       ),
     },
     {
-      title: "Контакты",
+      title: "Contacts",
       content: (
         <ul className="contact-list">
           <li>
@@ -69,21 +69,20 @@ export default function Footer() {
       ),
     },
     {
-      title: "О проекте",
+      title: "About the Project",
       content: (
         <div className="text-left">
-          Проект "Wheel of Fortune" — это захватывающая игра, которая позволяет пользователям испытать удачу, делая ставки. Основные особенности:
+          The "Wheel of Fortune" project is an exciting game that allows users to test their luck by placing bets. Key features include:
           <ul>
-            <li>Честный выбор победителя на основе размера ставки.</li>
-            <li>Простой и интуитивно понятный интерфейс.</li>
-            <li>Возможность тестирования без использования реальных средств.</li>
+            <li>Fair winner selection based on bet size.</li>
+            <li>Simple and intuitive interface.</li>
+            <li>Testing without using real funds.</li>
           </ul>
-          Это уникальная возможность для пользователей познакомиться с технологией блокчейна и испытать азарт без риска!
+          This is a unique opportunity for users to explore blockchain technology and enjoy the thrill of gaming without risk!
         </div>
       ),
     },
   ]
-
   return (
     <div className="footer-wrapper">
       {items.map((item, index) => (
