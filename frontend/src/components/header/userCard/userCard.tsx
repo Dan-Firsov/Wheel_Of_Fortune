@@ -37,6 +37,7 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
     try {
       if (depositAmount) {
         await Deposit(depositAmount)
+        setDepositAmount("")
         setErrorMessageDep("")
       } else {
         console.log("Please provide value.")
@@ -58,6 +59,7 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
     try {
       if (withdrawAmount) {
         await Withdraw(withdrawAmount)
+        setWithdrawAmount("")
         setErrorMessageWith("")
         setErrorvisibleWith(false)
       } else {

@@ -15,6 +15,7 @@ export default function BetPanel() {
     try {
       if (value) {
         await PlaceBet(value)
+        setValue("")
         setErrorMessage("")
       } else {
         console.log("Please provide value.")
@@ -55,6 +56,7 @@ export default function BetPanel() {
     try {
       if (value) {
         await WithdrawBet(value)
+        setValue("")
         setErrorMessage("")
       } else {
         console.log("Please provide value.")
