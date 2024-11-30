@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.9375rem;
   align-items: end;
   margin: 1rem;
   clip-path: inset(0px 0px -300px);
@@ -10,16 +10,16 @@
 
 .connectButton {
   display: block;
-  width: 225px;
-  height: 40px;
-  line-height: 40px;
-  font-size: 18px;
+  width: 14.0625rem;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  font-size: 1.125rem;
   font-family: sans-serif;
   text-decoration: none;
   background-color: #ff7b73;
   color: #333;
   border: 2px solid #333;
-  letter-spacing: 2px;
+  letter-spacing: 0.125rem;
   text-align: center;
   position: relative;
   transition: all 0.35s ease-in-out;

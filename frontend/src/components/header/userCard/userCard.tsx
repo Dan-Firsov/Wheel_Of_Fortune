@@ -3,18 +3,20 @@ import styles from "./userCard.module.css"
 import { Withdraw } from "../../../utils/wheelOfForune/withdraw"
 import { Deposit } from "../../../utils/wheelOfForune/deposit"
 import { useWallet } from "../../../store/ConnectionStore"
-import Input from "../../input/input"
-import { DepositButton } from "../../buttons/depositButton"
-import Button from "../../buttons/Button"
+import { DepositButton } from "../../buttons/depositButton/depositButton"
+import Button from "../../buttons/button/Button"
+import Input from "../../input/Input"
 
 interface IUserCard {
   userCardRef: React.RefObject<HTMLDivElement>
   isAnimating: boolean
 }
 
+type Action = "Deposit" | "Withdraw"
+
 const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
-  const [depositAmount, setDepositAmount] = useState<string | "">("")
-  const [withdrawAmount, setWithdrawAmount] = useState<string | "">("")
+  const [depositAmount, setDepositAmount] = useState("")
+  const [withdrawAmount, setWithdrawAmount] = useState("")
   const [errorMessageDep, setErrorMessageDep] = useState("")
   const [errorMessageWith, setErrorMessageWith] = useState("")
   const [errorVisibleDep, setErrorvisibleDep] = useState(false)
@@ -89,7 +91,7 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
 
   return (
     <div ref={userCardRef} className={`${styles.userCard} ${isAnimating ? styles.visible : ""}`}>
-      <h3 style={{ fontWeight: "bold" }}>Wallet</h3>
+      <h3>Wallet</h3>
       <div className={styles.addressContainer}>
         <p className={styles.address} onClick={handleCopy}>
           {address}
@@ -99,13 +101,13 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
       <p className={styles.balance}>Balance: {balance ? <span>{balance}</span> : <span>0</span>} ETH</p>
       <div className={styles.actions}>
         <div className={styles.actionsItem}>
-          <Input customClass={styles.userCardInput} value={depositAmount} onValueChange={(e) => setDepositAmount(e.target.value.replace(",", "."))}></Input>
+          <Input customClass={styles.userCardInput} value={depositAmount} onValueChange={(e) => setDepositAmount(e)}></Input>
           {errorMessageDep && <p className={`${styles.error} ${errorVisibleDep ? styles.visible : ""}`}>{errorMessageDep}</p>}
           <DepositButton onClick={handleDeposit} />
         </div>
 
         <div className={styles.actionsItem}>
-          <Input customClass={styles.userCardInput} value={withdrawAmount} onValueChange={(e) => setWithdrawAmount(e.target.value.replace(",", "."))} />
+          <Input customClass={styles.userCardInput} value={withdrawAmount} onValueChange={(e) => setWithdrawAmount(e)} />
           {errorMessageWith && <p className={`${styles.error} ${errorVisibleWith ? styles.visible : ""}`}>{errorMessageWith}</p>}
           <Button customClass={styles.buttonWithdraw} onClick={handleWithdraw}>
             Withdraw

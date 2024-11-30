@@ -2,12 +2,11 @@
   position: absolute;
   top: 100%;
   background-color: #f7efe2;
-  padding: 12px;
+  padding: 0.75rem;
   width: 100%;
-  max-width: 197px;
+  max-width: 12.3125rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid #333;
-  font-family: sans-serif;
   opacity: 0;
   transform: translateY(-300px);
   transform-origin: top;
@@ -24,9 +23,9 @@
   opacity: 1;
 }
 .address {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #333;
-  margin-bottom: 2px;
+  margin-bottom: 0.125rem;
   word-wrap: break-word;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -38,13 +37,13 @@
 
 .copyMessage {
   position: absolute;
-  top: 5px;
-  right: 60px;
-  font-size: 12px;
+  top: 0.3125rem;
+  right: 3.75rem;
+  font-size: 0.75rem;
   background-color: #f7efe2;
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
   z-index: 1001;
@@ -52,31 +51,31 @@
 
 .balance {
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .actions {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 1.375rem;
 }
 
 .actionsItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 5px;
+  margin: 0 0.3125rem;
 }
 .error {
   position: absolute;
   background-color: #e74c3c;
   font-size: 50%;
   border: 1px solid black;
-  border-radius: 30px;
+  border-radius: 1.875rem;
   padding: 4px 8px;
   text-align: center;
-  max-width: 200px;
-  margin-top: 65px;
+  max-width: 12.5rem;
+  margin-top: 4.0625rem;
   z-index: 1000;
   opacity: 0;
   transform: scale(0.9);
@@ -97,14 +96,13 @@
   outline: none;
   background-color: #f9a603;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   color: #fff;
-  font-size: em;
   font-family: "Lato", sans-serif;
   cursor: pointer;
   box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
-  width: 85px;
-  height: 25px;
+  width: 5.3125rem;
+  height: 1.5625rem;
   transition: all 0.2s ease-in-out;
 }
 
@@ -119,5 +117,5 @@
 
 .userCardInput {
   flex: 1;
-  max-width: 70px;
+  max-width: 4.375rem;
 }

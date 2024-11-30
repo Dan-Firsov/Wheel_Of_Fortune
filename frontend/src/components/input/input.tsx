@@ -4,16 +4,15 @@ import "./input.css"
 interface InputProps {
   customClass?: string
   value: string
-  onValueChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onValueChange: (value: string) => void
 }
 
 export default function Input({ value, onValueChange, customClass }: InputProps) {
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let newValue = e.target.value
-    newValue = newValue.replace(",", ".")
+    const newValue = e.target.value.replace(",", ".")
     const regex = /^\d*\.?\d*$/
     if (regex.test(newValue)) {
-      onValueChange(e)
+      onValueChange(newValue)
     }
   }
   return (

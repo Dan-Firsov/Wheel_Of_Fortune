@@ -59,11 +59,6 @@
   }
 }
 
-.button:hover .button__text span {
-  transform: translateY(-5.25rem);
-  transition: transform 0.2s ease-in-out;
-}
-
 .button:hover {
   transform: scale(1.1);
   transition: transform 0.2s ease-in-out;
@@ -80,16 +75,15 @@
   outline: none;
   background-color: #5086bd;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   color: #fff;
-  font-size: em;
   font-family: "Lato", sans-serif;
   cursor: pointer;
   box-shadow: rgba(0, 9, 61, 0.2) 0px 4px 8px 0px;
-  width: 75px;
-  height: 25px;
+  width: 4.6875rem;
+  height: 1.5625rem;
   transition: all 0.2s ease-in-out;
-  left: -10px;
+  left: -0.625rem;
 }
 .button:active {
   transform: translateY(1px);
@@ -100,9 +94,9 @@
   text-align: center;
 }
 .button__svg {
-  width: 3.33em;
-  height: 3.33em;
+  width: 3rem;
+  height: 3rem;
   position: absolute;
-  right: -1.5rem;
-  top: -1.2rem;
+  right: -1.7rem;
+  top: -1.4rem;
 }

@@ -1,13 +1,3 @@
-import React from "react"
-import "./depositButton.css"
-
-interface DepositButtonProps {
-  onClick: () => void
-}
-
-export const DepositButton: React.FC<DepositButtonProps> = ({ onClick }) => (
-  <button className="button" onClick={onClick}>
-    <span className="button__text">Deposit</span>
     <svg className="button__svg" role="presentational" viewBox="0 0 600 600">
       <defs>
         <clipPath id="myClip">
@@ -71,5 +61,3 @@ export const DepositButton: React.FC<DepositButtonProps> = ({ onClick }) => (
         <path d="M148.16,343.22a6,6,0,0,0-6,6v92a6,6,0,0,0,12,0v-92A6,6,0,0,0,148.16,343.22Z" fill="#323c44" />
       </g>
     </svg>
-  </button>
-)

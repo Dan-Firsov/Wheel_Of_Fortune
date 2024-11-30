@@ -1,24 +1,24 @@
 .input-container {
-  height: 25px;
+  height: 1.5625rem;
   position: relative;
   width: 100%;
 }
 
 .input {
   background-color: #ffd073;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 0;
   color: #333;
-  font-size: 15px;
+  font-size: 0.9375rem;
   height: 100%;
   outline: 0;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 0.625rem;
 }
 
 .cut {
   background-color: #f7efe2;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   height: 1.2em;
   left: 1em;
   position: absolute;
@@ -30,23 +30,23 @@
 }
 
 .cut-short {
-  width: 50px;
+  width: 3.125rem;
 }
 
 .input:focus ~ .cut,
 .input:not(:placeholder-shown) ~ .cut {
-  transform: translateY(8px);
+  transform: translateY(0.5rem);
   opacity: 1;
 }
 
 .placeholder {
-  display: flex; /* Flexbox для внутренних элементов */
-  justify-content: center; /* Горизонтальное центрирование */
-  align-items: center; /* Вертикальное центрирование */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
   color: #65657b;
   line-height: 1;
-  font-size: 11.5px;
+  font-size: 0.7188rem;
   pointer-events: none;
   align-items: center;
   transform-origin: 0 50%;
@@ -57,7 +57,7 @@
 
 .input:focus ~ .placeholder,
 .input:not(:placeholder-shown) ~ .placeholder {
-  transform: translateY(-16.5px) translateX(11px) scale(0.6);
+  transform: translateY(-1.0313rem) translateX(0.6875rem) scale(0.6);
 }
 
 .input:not(:placeholder-shown) ~ .placeholder {
@@ -70,31 +70,17 @@
 
 .submit {
   background-color: #08d;
-  border-radius: 12px;
+  border-radius: 0.75rem;
   border: 0;
   color: #eee;
   cursor: pointer;
-  font-size: 18px;
-  height: 50px;
-  margin-top: 38px;
+  font-size: 1.125rem;
+  height: 3.125rem;
+  margin-top: 2.375rem;
   text-align: center;
   width: 100%;
 }
 
 .submit:active {
   background-color: #06b;
-}
-
-p {
-  margin-bottom: 0;
-}
-a,
-a:link,
-a:hover,
-a:visited {
-  color: #808097;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
 }

@@ -67,7 +67,7 @@
   color: #ffffff;
   background: linear-gradient(135deg, #f79489, #ffd6a5);
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
