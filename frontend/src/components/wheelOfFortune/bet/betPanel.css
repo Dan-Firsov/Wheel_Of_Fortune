@@ -244,17 +244,6 @@
   color: #808097;
 }
 
-a,
-a:link,
-a:hover,
-a:visited {
-  color: #808097;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
 .error-bet {
   display: flex;
   justify-content: center;

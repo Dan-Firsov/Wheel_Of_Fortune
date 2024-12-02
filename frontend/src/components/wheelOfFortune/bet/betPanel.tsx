@@ -11,6 +11,13 @@ export default function BetPanel() {
   const checkboxRef = useRef<HTMLInputElement | null>(null)
   const formContainerRef = useRef<HTMLDivElement | null>(null)
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   const handleBet = async () => {
     try {
       if (value) {
@@ -105,13 +112,6 @@ export default function BetPanel() {
       checkboxRef.current.checked = false
     }
   }
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside)
-    }
-  }, [])
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value
