@@ -4,7 +4,7 @@ import "./betPanel.css"
 import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
 
 export default function BetPanel() {
-  const [value, setValue] = useState<string>("")
+  const [value, setValue] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [errorVisible, setErrorVisible] = useState(false)
 
@@ -26,35 +26,17 @@ export default function BetPanel() {
         setErrorMessage("")
       } else {
         console.log("Please provide value.")
-        setErrorMessage("Please provide value.")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Please provide value.")
       }
     } catch (error: any) {
       if (error.reason && error.reason.includes("Insufficient funds on balance")) {
-        setErrorMessage("Insufficient funds on balance")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Insufficient funds on balance")
       }
-
       if (error.reason && error.reason.includes("No active game sessions")) {
-        setErrorMessage("No active game sessions")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("No active game sessions")
       }
-
       if (error.reason && error.reason.includes("Session already completed")) {
-        setErrorMessage("Session already completed")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Session already completed")
       }
     }
   }
@@ -67,44 +49,30 @@ export default function BetPanel() {
         setErrorMessage("")
       } else {
         console.log("Please provide value.")
-        setErrorMessage("Please provide value.")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Please provide value.")
       }
     } catch (error: any) {
       if (error.reason && error.reason.includes("Insufficient bet balance")) {
-        setErrorMessage("Insufficient bet balance")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Insufficient bet balance")
       }
-
       if (error.reason && error.reason.includes("No active game sessions")) {
-        setErrorMessage("No active game sessions")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("No active game sessions")
       }
       if (error.reason && error.reason.includes("You have not placed any bets")) {
-        setErrorMessage("You have not placed any bets")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("You have not placed any bets")
       }
-
       if (error.reason && error.reason.includes("Game has started")) {
-        setErrorMessage("Game has started")
-        setErrorVisible(true)
-        setTimeout(() => {
-          setErrorVisible(false)
-        }, 2000)
+        handleError("Game has started")
       }
     }
+  }
+
+  const handleError = (errorMsg: string) => {
+    setErrorMessage(errorMsg)
+    setErrorVisible(true)
+    setTimeout(() => {
+      setErrorVisible(false)
+    }, 2000)
   }
 
   const handleClickOutside = (event: MouseEvent) => {

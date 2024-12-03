@@ -5,12 +5,11 @@ import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/UserCard"
 
-let isRequestingAccounts = false
-
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
   const [isUserCardVisible, setIsUserCardVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [isRequestingAccounts, setIsRequestingAccounts] = useState(false)
   const { browsContract } = useContractStore()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
@@ -30,7 +29,7 @@ export default function ConnectWalletButton() {
         } catch (error) {
           console.error("Error connecting to MetaMask:", error)
         } finally {
-          isRequestingAccounts = false
+          setIsRequestingAccounts(false)
         }
       } else {
         setAddress(null)
@@ -84,12 +83,12 @@ export default function ConnectWalletButton() {
   const connectMetaMask = async () => {
     if (!isRequestingAccounts) {
       try {
-        isRequestingAccounts = true
+        setIsRequestingAccounts(true)
         await connectWallet()
       } catch (error) {
         console.error("Error connecting to MetaMask:", error)
       } finally {
-        isRequestingAccounts = false
+        setIsRequestingAccounts(false)
       }
     } else {
       console.log("MetaMask is already processing a request. Please wait.")
