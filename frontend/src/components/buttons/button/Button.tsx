@@ -5,14 +5,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, onClick, customClass = "", ...rest }, ref) => {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, customClass = "", ...rest }, ref) => {
   return (
-    <button ref={ref} onClick={onClick} className={customClass} {...rest}>
+    <button ref={ref} className={customClass} {...rest}>
       {children}
     </button>
   )
 })
-
-Button.displayName = "Button"
 
 export default Button

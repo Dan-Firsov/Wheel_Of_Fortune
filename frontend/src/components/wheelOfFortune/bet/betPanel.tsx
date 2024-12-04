@@ -82,15 +82,6 @@ export default function BetPanel() {
       checkboxRef.current.checked = false
     }
   }
-
-  const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    let newValue = e.target.value
-    newValue = newValue.replace(",", ".")
-    const regex = /^\d*\.?\d*$/
-    if (regex.test(newValue)) {
-      setValue(newValue)
-    }
-  }
   return (
     <div className="bet-panel-wrapper">
       <input className="c-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
@@ -104,11 +95,6 @@ export default function BetPanel() {
             value={value}
             onValueChange={(e) => setValue(e)}
           ></Input>
-          {/* <input id="lastname" className="input-bet c-form__input" placeholder=" " autoComplete="off" type="text" value={value} onChange={handleValueChange} />
-          <div className="cut-bet"></div>
-          <label htmlFor="lastname" className="placeholder-bet">
-            Enter value
-          </label> */}
           {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
           <label className="c-form__buttonLabel" htmlFor="checkbox">
             <Button customClass="c-form__button" onClick={handleBet}>

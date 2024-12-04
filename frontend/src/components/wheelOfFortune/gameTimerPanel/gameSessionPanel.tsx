@@ -3,8 +3,15 @@ import { socket } from "../../../store/ConnectionStore"
 import "./gameSessionPanel.css"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 
+enum GamePhase {
+  WAITING = "waiting",
+  ONGOING = "ongoing",
+  DETERMINING = "determining",
+  NEXTGAMETIMER = "nextGameTimer",
+}
+
 export default function GameSessionPanel() {
-  const [gamePhase, setGamePhase] = useState<"waiting" | "ongoing" | "determining" | "nextGameTimer">("waiting")
+  const [gamePhase, setGamePhase] = useState(GamePhase.WAITING)
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
   const [newGameTimeLeft, setNewGameTimeLeft] = useState<number | null>(null)
   const [winner, setWinner] = useState<string | null>(null)
@@ -18,10 +25,10 @@ export default function GameSessionPanel() {
         case "timerUpdate":
           console.log(update.timeLeft)
           setTimeLeft(update.timeLeft)
-          setGamePhase("ongoing")
+          setGamePhase(GamePhase.ONGOING)
           break
         case "gameEnded":
-          setGamePhase("determining")
+          setGamePhase(GamePhase.DETERMINING)
           break
         case "gameResult":
           setWinner(update.gameResult.winner)
@@ -29,7 +36,7 @@ export default function GameSessionPanel() {
           break
         case "newSessionTimerStarted":
           setNewGameTimeLeft(update.timeLeft || 0)
-          setGamePhase("nextGameTimer")
+          setGamePhase(GamePhase.NEXTGAMETIMER)
           break
         case "newSessionTimerUpdate":
           setNewGameTimeLeft(update.timeLeft)
@@ -38,7 +45,7 @@ export default function GameSessionPanel() {
           setWinner(null)
           setTimeLeft(null)
           setNewGameTimeLeft(null)
-          setGamePhase("waiting")
+          setGamePhase(GamePhase.WAITING)
           break
         default:
           break
@@ -52,22 +59,22 @@ export default function GameSessionPanel() {
 
   return (
     <div className="game-session-panel-wrapper">
-      {gamePhase === "waiting" && (
+      {gamePhase === GamePhase.WAITING && (
         <div>
           <h2>{`Waiting for participants... (${3 - totalParticipants} left)`}</h2>
         </div>
       )}
 
-      {gamePhase === "ongoing" && timeLeft !== null && (
+      {gamePhase === GamePhase.ONGOING && timeLeft !== null && (
         <div>
           <h2>Ends game time: {timeLeft} sec</h2>
           {timeLeft && <progress className="progressbar-game-session animated" id="p1" value={timeLeft} max="60"></progress>}
         </div>
       )}
 
-      {gamePhase === "determining" && <h2>Determining the winner...</h2>}
+      {gamePhase === GamePhase.DETERMINING && <h2>Determining the winner...</h2>}
 
-      {gamePhase === "nextGameTimer" && newGameTimeLeft !== null && <h2>Next game starts in: {newGameTimeLeft} sec</h2>}
+      {gamePhase === GamePhase.NEXTGAMETIMER && newGameTimeLeft !== null && <h2>Next game starts in: {newGameTimeLeft} sec</h2>}
 
       {winner && (
         <h3>

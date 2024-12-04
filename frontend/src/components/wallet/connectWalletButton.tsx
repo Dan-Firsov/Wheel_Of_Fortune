@@ -4,6 +4,7 @@ import { useWallet, useContractStore } from "../../store/ConnectionStore"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/UserCard"
+import Button from "../buttons/button/Button"
 
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
@@ -111,9 +112,9 @@ export default function ConnectWalletButton() {
 
   return (
     <div className={styles.connectWalletWraper}>
-      <button ref={buttonRef} className={`${styles.connectButton} ${isAnimating ? styles.active : ""}`} onClick={handleToggleUserCard}>
+      <Button ref={buttonRef} customClass={`${styles.connectButton} ${isAnimating ? styles.active : ""}`} onClick={handleToggleUserCard}>
         <span>{address ? `${address?.slice(0, 5) + "..." + address?.slice(-4)}` : <span style={{ fontWeight: "bold" }}>Connect Wallet</span>}</span>
-      </button>
+      </Button>
       {isUserCardVisible && <UserCard userCardRef={userCardRef} isAnimating={isAnimating} />}
     </div>
   )

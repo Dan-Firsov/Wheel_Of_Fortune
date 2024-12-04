@@ -7,12 +7,18 @@ export default function ParticipantBetsPanel() {
   const { totalPot, participants, setParticipants } = useWheelOfFortuneStore()
 
   useEffect(() => {
-    fetch("https://project-v1-0-9.onrender.com/api/game-state")
-      .then((res) => res.json())
-      .then((gameState) => {
-        setParticipants(gameState.participants)
-      })
-      .catch((error) => console.error("Error fetching game state:", error))
+    const fetchGameState = async () => {
+      try {
+        const data = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
+        const {
+          gameState: { participants },
+        } = await data.json()
+        setParticipants(participants)
+      } catch (error) {
+        console.error("Error fetching game state:", error)
+      }
+    }
+    fetchGameState()
 
     socket.on("gameUpdate", (update) => {
       if (update.type === "totalUpdate") {
