@@ -2,12 +2,15 @@ import { ChangeEvent } from "react"
 import "./input.css"
 
 interface InputProps {
-  customClass?: string
+  customContainerClass?: string
+  customInputClass?: string
+  customPlaceholderClass?: string
+  customCutClass?: string
   value: string
   onValueChange: (value: string) => void
 }
 
-export default function Input({ value, onValueChange, customClass }: InputProps) {
+export default function Input({ value, onValueChange, customContainerClass = "", customInputClass = "", customPlaceholderClass = "", customCutClass = "" }: InputProps) {
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(",", ".")
     const regex = /^\d*\.?\d*$/
@@ -16,10 +19,10 @@ export default function Input({ value, onValueChange, customClass }: InputProps)
     }
   }
   return (
-    <div className={`input-container ${customClass || ""}`}>
-      <input id="lastname" className="input" type="text" placeholder=" " autoComplete="off" value={value} onChange={handleValueChange} />
-      <div className="cut"></div>
-      <label htmlFor="lastname" className="placeholder">
+    <div className={customContainerClass || "input-container"}>
+      <input id="lastname" className={customInputClass || "input"} type="text" placeholder=" " autoComplete="off" value={value} onChange={handleValueChange} />
+      <div className={customCutClass || "cut"}></div>
+      <label htmlFor="lastname" className={customPlaceholderClass || "placeholder"}>
         Enter value
       </label>
     </div>

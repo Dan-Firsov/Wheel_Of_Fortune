@@ -1,15 +1,18 @@
-import React from "react"
+import React, { forwardRef } from "react"
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   customClass?: string
   children: React.ReactNode
-  onClick: () => void | Promise<void>
 }
 
-export default function Button({ children, onClick, customClass = "" }: ButtonProps) {
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, onClick, customClass = "", ...rest }, ref) => {
   return (
-    <button onClick={onClick} className={customClass}>
+    <button ref={ref} onClick={onClick} className={customClass} {...rest}>
       {children}
     </button>
   )
-}
+})
+
+Button.displayName = "Button"
+
+export default Button

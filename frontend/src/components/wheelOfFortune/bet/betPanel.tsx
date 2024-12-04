@@ -2,6 +2,8 @@ import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import "./betPanel.css"
 import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
+import Button from "../../buttons/button/Button"
+import Input from "../../input/Input"
 
 export default function BetPanel() {
   const [value, setValue] = useState("")
@@ -94,20 +96,27 @@ export default function BetPanel() {
       <input className="c-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
       <div className="c-formContainer" ref={formContainerRef}>
         <form className="c-form">
-          <input id="lastname" className="input-bet c-form__input" placeholder=" " autoComplete="off" type="text" value={value} onChange={handleValueChange} />
+          <Input
+            customCutClass="cut-bet"
+            customInputClass="input-bet c-form__input"
+            customPlaceholderClass="placeholder-bet"
+            customContainerClass="bet-panel-wrapper"
+            value={value}
+            onValueChange={(e) => setValue(e)}
+          ></Input>
+          {/* <input id="lastname" className="input-bet c-form__input" placeholder=" " autoComplete="off" type="text" value={value} onChange={handleValueChange} />
           <div className="cut-bet"></div>
           <label htmlFor="lastname" className="placeholder-bet">
             Enter value
-          </label>
+          </label> */}
           {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
           <label className="c-form__buttonLabel" htmlFor="checkbox">
-            <button className="c-form__button" type="button" onClick={handleBet}>
+            <Button customClass="c-form__button" onClick={handleBet}>
               Bet
-            </button>
-
-            <button className="c-form__button_remove" type="button" onClick={handleRemoveBet}>
+            </Button>
+            <Button customClass="c-form__button_remove" onClick={handleRemoveBet}>
               X
-            </button>
+            </Button>
           </label>
           <label className="c-form__toggle" htmlFor="checkbox" data-title="Place bet"></label>
         </form>

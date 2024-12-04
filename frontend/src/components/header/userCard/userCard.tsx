@@ -101,13 +101,13 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
       <p className={styles.balance}>Balance: {balance ? <span>{balance}</span> : <span>0</span>} ETH</p>
       <div className={styles.actions}>
         <div className={styles.actionsItem}>
-          <Input customClass={styles.userCardInput} value={depositAmount} onValueChange={(e) => setDepositAmount(e)}></Input>
+          <Input customContainerClass={styles.userCardInput} value={depositAmount} onValueChange={(e) => setDepositAmount(e)}></Input>
           {errorMessageDep && <p className={`${styles.error} ${errorVisibleDep ? styles.visible : ""}`}>{errorMessageDep}</p>}
           <DepositButton onClick={handleDeposit} />
         </div>
 
         <div className={styles.actionsItem}>
-          <Input customClass={styles.userCardInput} value={withdrawAmount} onValueChange={(e) => setWithdrawAmount(e)} />
+          <Input customContainerClass={styles.userCardInput} value={withdrawAmount} onValueChange={(e) => setWithdrawAmount(e)} />
           {errorMessageWith && <p className={`${styles.error} ${errorVisibleWith ? styles.visible : ""}`}>{errorMessageWith}</p>}
           <Button customClass={styles.buttonWithdraw} onClick={handleWithdraw}>
             Withdraw

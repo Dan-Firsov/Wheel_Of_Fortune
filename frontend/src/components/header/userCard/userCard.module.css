@@ -118,4 +118,7 @@
 .userCardInput {
   flex: 1;
   max-width: 4.375rem;
+  height: 1.5625rem;
+  position: relative;
+  width: 100%;
 }
