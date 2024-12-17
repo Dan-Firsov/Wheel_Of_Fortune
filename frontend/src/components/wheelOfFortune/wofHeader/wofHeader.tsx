@@ -7,13 +7,18 @@ export default function WofHeader() {
   const { totalPot, totalParticipants, setTotalPot, setTotalParticipants } = useWheelOfFortuneStore()
 
   useEffect(() => {
-    fetch("https://project-v1-0-9.onrender.com/api/game-state")
-      .then((res) => res.json())
-      .then((gameState) => {
+    const fetchGameState = async () => {
+      try {
+        const response = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
+        const gameState = await response.json()
         setTotalPot(gameState.totalPot)
         setTotalParticipants(gameState.participantCount)
-      })
-      .catch((error) => console.error("Error fetching game state:", error))
+      } catch (error) {
+        console.error("Error fetching game state:", error)
+      }
+    }
+
+    fetchGameState()
 
     socket.on("gameUpdate", (update) => {
       if (update.type === "totalUpdate") {

@@ -5,6 +5,16 @@ import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
 import Button from "../../buttons/button/Button"
 import Input from "../../input/Input"
 
+enum ErrorMsg {
+  PROVIDEVALUE = "Please provide value.",
+  LOWBALANCE = "Insufficient funds on balance",
+  NOACTIVEGAME = "No active game sessions",
+  SESSIONCOMPLETED = "Session already completed",
+  LOWBETBALANCE = "Insufficient bet balance",
+  NOTPLACEDBET = "You have not placed any bets",
+  GAMESTARTED = "Game has started",
+}
+
 export default function BetPanel() {
   const [value, setValue] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
@@ -27,18 +37,24 @@ export default function BetPanel() {
         setValue("")
         setErrorMessage("")
       } else {
-        console.log("Please provide value.")
-        handleError("Please provide value.")
+        console.log(ErrorMsg.PROVIDEVALUE)
+        handleError(ErrorMsg.PROVIDEVALUE)
       }
     } catch (error: any) {
-      if (error.reason && error.reason.includes("Insufficient funds on balance")) {
-        handleError("Insufficient funds on balance")
-      }
-      if (error.reason && error.reason.includes("No active game sessions")) {
-        handleError("No active game sessions")
-      }
-      if (error.reason && error.reason.includes("Session already completed")) {
-        handleError("Session already completed")
+      const errorReason = error.reason || ""
+
+      switch (true) {
+        case errorReason.includes(ErrorMsg.LOWBALANCE):
+          handleError(ErrorMsg.LOWBALANCE)
+          break
+        case errorReason.includes(ErrorMsg.NOACTIVEGAME):
+          handleError(ErrorMsg.NOACTIVEGAME)
+          break
+        case errorReason.includes(ErrorMsg.SESSIONCOMPLETED):
+          handleError(ErrorMsg.SESSIONCOMPLETED)
+          break
+        default:
+          console.error("Unexpected error:", error)
       }
     }
   }
@@ -50,21 +66,27 @@ export default function BetPanel() {
         setValue("")
         setErrorMessage("")
       } else {
-        console.log("Please provide value.")
-        handleError("Please provide value.")
+        console.log(ErrorMsg.PROVIDEVALUE)
+        handleError(ErrorMsg.PROVIDEVALUE)
       }
     } catch (error: any) {
-      if (error.reason && error.reason.includes("Insufficient bet balance")) {
-        handleError("Insufficient bet balance")
-      }
-      if (error.reason && error.reason.includes("No active game sessions")) {
-        handleError("No active game sessions")
-      }
-      if (error.reason && error.reason.includes("You have not placed any bets")) {
-        handleError("You have not placed any bets")
-      }
-      if (error.reason && error.reason.includes("Game has started")) {
-        handleError("Game has started")
+      const errorReason = error.reason || ""
+
+      switch (true) {
+        case errorReason.includes(ErrorMsg.LOWBETBALANCE):
+          handleError(ErrorMsg.LOWBETBALANCE)
+          break
+        case errorReason.includes(ErrorMsg.NOACTIVEGAME):
+          handleError(ErrorMsg.NOACTIVEGAME)
+          break
+        case errorReason.includes(ErrorMsg.NOTPLACEDBET):
+          handleError(ErrorMsg.NOTPLACEDBET)
+          break
+        case errorReason.includes(ErrorMsg.GAMESTARTED):
+          handleError(ErrorMsg.GAMESTARTED)
+          break
+        default:
+          console.error("Unexpected error:", error)
       }
     }
   }
@@ -84,27 +106,27 @@ export default function BetPanel() {
   }
   return (
     <div className="bet-panel-wrapper">
-      <input className="c-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
-      <div className="c-formContainer" ref={formContainerRef}>
-        <form className="c-form">
+      <input className="bet-panel-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
+      <div className="bet-panel-formContainer" ref={formContainerRef}>
+        <form className="bet-panel-form">
           <Input
             customCutClass="cut-bet"
-            customInputClass="input-bet c-form__input"
+            customInputClass="input-bet bet-panel-form__input"
             customPlaceholderClass="placeholder-bet"
             customContainerClass="bet-panel-wrapper"
             value={value}
             onValueChange={(e) => setValue(e)}
           ></Input>
           {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
-          <label className="c-form__buttonLabel" htmlFor="checkbox">
-            <Button customClass="c-form__button" onClick={handleBet}>
+          <label className="bet-panel-form__buttonLabel" htmlFor="checkbox">
+            <Button customClass="bet-panel-form__button" onClick={handleBet}>
               Bet
             </Button>
-            <Button customClass="c-form__button_remove" onClick={handleRemoveBet}>
+            <Button customClass="bet-panel-form__button_remove" onClick={handleRemoveBet}>
               X
             </Button>
           </label>
-          <label className="c-form__toggle" htmlFor="checkbox" data-title="Place bet"></label>
+          <label className="bet-panel-form__toggle" htmlFor="checkbox" data-title="Place bet"></label>
         </form>
       </div>
     </div>

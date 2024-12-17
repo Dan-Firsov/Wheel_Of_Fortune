@@ -10,6 +10,14 @@ enum GamePhase {
   NEXTGAMETIMER = "nextGameTimer",
 }
 
+enum UpdateType {
+  TIMERUPDATE = "timerUpdate",
+  GAMEENDED = "gameEnded",
+  GAMERESULT = "gameResult",
+  NEWSESSIONTIMERSTARTED = "newSessionTimerStarted",
+  NEWSESSIONTIMERUPDATE = "newSessionTimerUpdate",
+  NEWSESSIONSTARTED = "newSessionStarted",
+}
 export default function GameSessionPanel() {
   const [gamePhase, setGamePhase] = useState(GamePhase.WAITING)
   const [timeLeft, setTimeLeft] = useState<number | null>(null)
@@ -22,26 +30,26 @@ export default function GameSessionPanel() {
     socket.on("gameUpdate", (update) => {
       console.log("Received update:", update)
       switch (update.type) {
-        case "timerUpdate":
+        case UpdateType.TIMERUPDATE:
           console.log(update.timeLeft)
           setTimeLeft(update.timeLeft)
           setGamePhase(GamePhase.ONGOING)
           break
-        case "gameEnded":
+        case UpdateType.GAMEENDED:
           setGamePhase(GamePhase.DETERMINING)
           break
-        case "gameResult":
+        case UpdateType.GAMERESULT:
           setWinner(update.gameResult.winner)
           setWinnerPrize(update.gameResult.winningPot)
           break
-        case "newSessionTimerStarted":
+        case UpdateType.NEWSESSIONTIMERSTARTED:
           setNewGameTimeLeft(update.timeLeft || 0)
           setGamePhase(GamePhase.NEXTGAMETIMER)
           break
-        case "newSessionTimerUpdate":
+        case UpdateType.NEWSESSIONTIMERUPDATE:
           setNewGameTimeLeft(update.timeLeft)
           break
-        case "newSessionStarted":
+        case UpdateType.NEWSESSIONSTARTED:
           setWinner(null)
           setTimeLeft(null)
           setNewGameTimeLeft(null)
