@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react"
 import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
-import "./betPanel.css"
+import styles from "./betPanel.module.css"
 import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
 import Button from "../../buttons/button/Button"
 import Input from "../../input/Input"
@@ -105,28 +105,28 @@ export default function BetPanel() {
     }
   }
   return (
-    <div className="bet-panel-wrapper">
-      <input className="bet-panel-checkbox" type="checkbox" id="checkbox" ref={checkboxRef} />
-      <div className="bet-panel-formContainer" ref={formContainerRef}>
-        <form className="bet-panel-form">
+    <div className={styles.betPanelWrapper}>
+      <input className={styles.betPanelCheckbox} type="checkbox" id="checkbox" ref={checkboxRef} />
+      <div className={styles.betPanelFormContainer} ref={formContainerRef}>
+        <form className={styles.betPanelForm}>
           <Input
-            customCutClass="cut-bet"
-            customInputClass="input-bet bet-panel-form__input"
-            customPlaceholderClass="placeholder-bet"
-            customContainerClass="bet-panel-wrapper"
+            customCutClass={styles.cutBet}
+            customInputClass={`${styles.inputBet} ${styles.betPanelFormInput} `}
+            customPlaceholderClass={styles.placeholderBet}
+            customContainerClass={styles.betPanelWrapper}
             value={value}
             onValueChange={(e) => setValue(e)}
           ></Input>
-          {errorMessage && <p className={`error-bet ${errorVisible ? "visible" : ""}`}>{errorMessage}</p>}
-          <label className="bet-panel-form__buttonLabel" htmlFor="checkbox">
-            <Button customClass="bet-panel-form__button" onClick={handleBet}>
+          {errorMessage && <p className={`${styles.errorBet} ${errorVisible ? styles.visible : ""}`}>{errorMessage}</p>}
+          <label className={styles.betPanelFormButtonLabel} htmlFor="checkbox">
+            <Button customClass={styles.betPanelFormButton} onClick={handleBet}>
               Bet
             </Button>
-            <Button customClass="bet-panel-form__button_remove" onClick={handleRemoveBet}>
+            <Button customClass={styles.betPanelFormButtonRemove} onClick={handleRemoveBet}>
               X
             </Button>
           </label>
-          <label className="bet-panel-form__toggle" htmlFor="checkbox" data-title="Place bet"></label>
+          <label className={styles.betPanelFormToggle} htmlFor="checkbox" data-title="Place bet"></label>
         </form>
       </div>
     </div>

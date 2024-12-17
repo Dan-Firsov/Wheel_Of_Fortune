@@ -31,37 +31,37 @@ export default function ParticipantBetsPanel() {
   }, [])
 
   return (
-    <div className="participant-table">
+    <div className="participants-wrapper">
       {participants.length === 0 ? (
-        <table>
-          <tbody>
+        <table className="participants-table">
+          <tbody className="participants-tbody">
             <tr>
-              <td colSpan={4} className="waiting-cell">
+              <td colSpan={4} className="participants-td waiting-cell">
                 Waiting for participants...
               </td>
             </tr>
           </tbody>
         </table>
       ) : (
-        <table>
-          <thead>
+        <table className="participants-table">
+          <thead className="participants-thead">
             <tr>
-              <th>Participants</th>
-              <th>Address</th>
-              <th>Bet</th>
-              <th>Chance</th>
+              <th className="participants-th">Participants</th>
+              <th className="participants-th">Address</th>
+              <th className="participants-th">Bet</th>
+              <th className="participants-th">Chance</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="participants-tbody">
             {participants.map((participant, index) => {
               const winChance = (participant.bet / totalPot) * 100
 
               return (
                 <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{participant.address?.slice(0, 7) + "...." + participant.address?.slice(-6)}</td>
-                  <td>{participant.bet}</td>
-                  <td>{winChance.toFixed(2)}%</td>
+                  <td className="participants-td">{index + 1}</td>
+                  <td className="participants-td">{participant.address?.slice(0, 7) + "...." + participant.address?.slice(-6)}</td>
+                  <td className="participants-td">{participant.bet}</td>
+                  <td className="participants-td">{winChance.toFixed(2)}%</td>
                 </tr>
               )
             })}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import "./footer.css"
+import styles from "./footer.module.css"
 import { items } from "./staticData"
 
 export default function Footer() {
@@ -7,7 +7,7 @@ export default function Footer() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (!(event.target as HTMLElement).closest(".footer-item")) {
+      if (!(event.target as HTMLElement).closest(`.${styles.footerItem}`)) {
         setActiveIndex(null)
       }
     }
@@ -20,13 +20,13 @@ export default function Footer() {
   }
 
   return (
-    <div className="footer-wrapper">
+    <div className={styles.footerWrapper}>
       {items.map((item, index) => (
-        <div key={index} className="footer-item">
-          <span onClick={() => toggleDropdown(index)} className="footer-title">
+        <div key={index} className={styles.footerItem}>
+          <span onClick={() => toggleDropdown(index)} className={styles.footerTitle}>
             {item.title}
           </span>
-          <div className={`footer-dropdown ${activeIndex === index ? "show" : ""}`}>{item.content}</div>
+          <div className={`${styles.footerDropdown} ${activeIndex === index ? styles.show : ""}`}>{item.content}</div>
         </div>
       ))}
     </div>

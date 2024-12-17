@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react"
-import "./input.css"
+import styles from "./input.module.css"
 
 interface InputProps {
   customContainerClass?: string
@@ -19,10 +19,10 @@ export default function Input({ value, onValueChange, customContainerClass = "",
     }
   }
   return (
-    <div className={customContainerClass || "input-container"}>
-      <input id="lastname" className={customInputClass || "input"} type="text" placeholder=" " autoComplete="off" value={value} onChange={handleValueChange} />
-      <div className={customCutClass || "cut"}></div>
-      <label htmlFor="lastname" className={customPlaceholderClass || "placeholder"}>
+    <div className={customContainerClass || styles.inputContainer}>
+      <input id="lastname" className={customInputClass || styles.input} type="text" placeholder=" " autoComplete="off" value={value} onChange={handleValueChange} />
+      <div className={customCutClass || styles.cut}></div>
+      <label htmlFor="lastname" className={customPlaceholderClass || styles.placeholder}>
         Enter value
       </label>
     </div>

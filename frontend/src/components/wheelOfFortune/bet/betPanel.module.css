@@ -1,24 +1,24 @@
-.bet-panel-wrapper {
+.betPanelWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.bet-panel-checkbox {
+.betPanelCheckbox {
   display: none;
 
-  &:checked + .bet-panel-formContainer {
-    .bet-panel-form {
+  &:checked + .betPanelFormContainer {
+    .betPanelForm {
       width: 25rem;
     }
 
-    .bet-panel-form__toggle {
+    .betPanelFormToggle {
       visibility: hidden;
       opacity: 0;
       transform: scale(0.7);
     }
 
-    .bet-panel-form__input,
-    .bet-panel-form__buttonLabel {
+    .betPanelFormInput,
+    .betPanelFormButtonLabel {
       transition: all 0.2s 0.1s;
       visibility: visible;
       opacity: 1;
@@ -29,34 +29,34 @@
 
   &:not(:checked),
   &:checked {
-    + .bet-panel-formContainer .bet-panel-form__input:required:valid ~ .bet-panel-form__toggle::before {
+    + .betPanelFormContainer .betPanelFormInput:required:valid ~ .betPanelFormToggle::before {
       content: "Thank You! \1F60A";
     }
   }
 
-  &:not(:checked) + .bet-panel-formContainer {
-    .bet-panel-form__input:required:valid ~ .bet-panel-form__toggle {
+  &:not(:checked) + .betPanelFormContainer {
+    .betPanelFormInput:required:valid ~ .betPanelFormToggle {
       pointer-events: none;
       cursor: default;
     }
   }
 }
 
-.bet-panel-formContainer,
-.bet-panel-form,
-.bet-panel-form__toggle {
+.betPanelFormContainer,
+.betPanelForm,
+.betPanelFormToggle {
   width: 15rem;
   height: 8rem;
 }
 
-.bet-panel-formContainer {
+.betPanelFormContainer {
   position: relative;
   font-size: 1.5625rem;
   font-weight: 700;
 }
 
-.bet-panel-form,
-.bet-panel-form__toggle {
+.betPanelForm,
+.betPanelFormToggle {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -67,17 +67,17 @@
   transition: 0.2s;
 }
 
-.bet-panel-form {
+.betPanelForm {
   left: 50%;
   transform: translateX(-50%);
-  padding: 0.625em;
-  box-sizing: border-box;
+  padding: 0 0.625em;
+  box-sizing: borderBox;
   box-shadow: 0 0.125em 0.3125em rgba(#000000, 0.3);
   display: flex;
   justify-content: center;
 }
 
-.bet-panel-form__toggle {
+.betPanelFormToggle {
   color: #ff7b73;
   top: 0;
   cursor: pointer;
@@ -93,17 +93,17 @@
   }
 }
 
-.bet-panel-form__input,
-.bet-panel-form__button {
+.betPanelFormInput,
+.betPanelFormButton {
   font: inherit;
   border: 0;
   outline: 0;
   border-radius: 1em;
-  box-sizing: border-box;
+  box-sizing: borderBox;
 }
 
-.bet-panel-form__input,
-.bet-panel-form__buttonLabel {
+.betPanelFormInput,
+.betPanelFormButtonLabel {
   font-size: 1.75em;
   opacity: 0;
   visibility: hidden;
@@ -111,7 +111,7 @@
   transition: 0s;
 }
 
-.bet-panel-form__input {
+.betPanelFormInput {
   flex: 1;
   color: #333;
   height: 100%;
@@ -128,7 +128,7 @@
   &:required:valid {
     color: #ff7b73;
 
-    + .bet-panel-form__buttonLabel {
+    + .betPanelFormButtonLabel {
       color: #ffffff;
 
       &::before {
@@ -138,7 +138,7 @@
   }
 }
 
-.bet-panel-form__buttonLabel {
+.betPanelFormButtonLabel {
   color: #65657b;
   height: 100%;
   width: auto;
@@ -153,7 +153,7 @@
   }
 }
 
-.bet-panel-form__button {
+.betPanelFormButton {
   border-radius: 1em;
 
   color: inherit;
@@ -163,14 +163,14 @@
   background-color: #ff7b73;
 }
 
-.bet-panel-form__button_remove {
+.betPanelFormButtonRemove {
   position: absolute;
   font-size: 1.2rem;
   font-weight: bold;
   border: none;
   outline: none;
   border-radius: 50%;
-  box-sizing: border-box;
+  box-sizing: borderBox;
   color: #65657b;
   display: flex;
   align-items: center;
@@ -184,11 +184,11 @@
   cursor: pointer;
 }
 
-.bet-panel-form__button_remove:hover {
+.betPanelFormButtonRemove:hover {
   background-color: #e04c44;
 }
 
-.input-bet {
+.inputBet {
   background-color: #ffd073;
   border-radius: 0.75rem;
   border: 0;
@@ -199,7 +199,7 @@
   padding: 0 25px;
 }
 
-.cut-bet {
+.cutBet {
   background-color: #ffffff;
   border-radius: 0.625rem;
   height: 1.2em;
@@ -212,17 +212,17 @@
   width: 30%;
 }
 
-.cut-bet-short {
+.cutBetShort {
   width: 3.125rem;
 }
 
-.input-bet:focus ~ .cut-bet,
-.input-bet:not(:placeholder-shown) ~ .cut-bet {
+.inputBet:focus ~ .cutBet,
+.inputBet:not(:placeholder-shown) ~ .cutBet {
   transform: translateY(0.5rem);
   opacity: 1;
 }
 
-.placeholder-bet {
+.placeholderBet {
   color: #65657b;
   font-size: 2rem;
   left: 2rem;
@@ -231,20 +231,20 @@
   transition: transform 0.35s, color 0.35s;
 }
 
-.input-bet:focus ~ .placeholder-bet,
-.input-bet:not(:placeholder-shown) ~ .placeholder-bet {
+.inputBet:focus ~ .placeholderBet,
+.inputBet:not(:placeholder-shown) ~ .placeholderBet {
   transform: translateY(-2rem) translateX(-0.5rem) scale(0.5);
 }
 
-.input-bet:not(:placeholder-shown) ~ .placeholder-bet {
+.inputBet:not(:placeholder-shown) ~ .placeholderBet {
   color: #808097;
 }
 
-.input-bet:focus ~ .placeholder-bet {
+.inputBet:focus ~ .placeholderBet {
   color: #808097;
 }
 
-.error-bet {
+.errorBet {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -266,7 +266,7 @@
   bottom: 1rem;
   height: 1.5rem;
 }
-.error-bet.visible {
+.visible {
   opacity: 1;
   transform: scale(1);
 }

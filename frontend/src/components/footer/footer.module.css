@@ -1,10 +1,10 @@
-.footer-wrapper {
+.footerWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   background: #ffd073;
-  box-shadow: 0px -0.5px 1px black;
+  box-shadow: 0px -0.5px 1px rgba(0, 0, 0, 0.5);
   height: 3.75rem;
   width: 100%;
   position: fixed;
@@ -13,19 +13,24 @@
   z-index: 10;
 }
 
-.footer-item {
+.footerItem {
   position: relative;
   cursor: pointer;
 }
 
-.footer-title {
+.footerTitle {
   font-size: 1.125rem;
   font-weight: bold;
   color: #000;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.footer-dropdown {
+.footerTitle:hover {
+  color: #ffeac8;
+}
+
+.footerDropdown {
   position: absolute;
   bottom: 4.375rem;
   left: 50%;
@@ -34,8 +39,8 @@
   color: #000;
   padding: 1.25rem;
   border-radius: 0.625rem;
-  border: 0.125rem solid #ffd073;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  border: 2px solid #ffd073;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   width: 20rem;
   font-family: "Arial", sans-serif;
   font-size: 1rem;
@@ -47,13 +52,13 @@
   z-index: 100;
 }
 
-.footer-dropdown.show {
+.show {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
 
-.footer-dropdown:before {
+.footerDropdown::before {
   content: "";
   position: absolute;
   bottom: -0.625rem;
@@ -64,27 +69,33 @@
   border-left: 0.625rem solid transparent;
   border-right: 0.625rem solid transparent;
   border-top: 0.625rem solid #ffe8cc;
+  z-index: -1;
 }
 
-.rules-list {
+.rulesList,
+.contactList {
   margin: 0;
   padding-left: 1.25rem;
-}
-
-.rules-list,
-.contact-list {
   margin-bottom: 0.625rem;
 }
 
-.text-left {
+.textLeft {
   text-align: left;
 }
 
-.external-link {
+.externalLink {
   color: #0073e6;
   text-decoration: none;
+  transition: text-decoration 0.2s ease;
 }
 
-.external-link:hover {
+.externalLink:hover {
   text-decoration: underline;
+}
+
+.footerWrapper,
+.footerItem,
+.footerTitle,
+.footerDropdown {
+  box-sizing: border-box;
 }

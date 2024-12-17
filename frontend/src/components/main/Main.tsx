@@ -1,9 +1,9 @@
 import WheelOfFortune from "../wheelOfFortune/wheelOfFortune"
-import "./main.css"
+import styles from "./main.module.css"
 
 export default function Main() {
   return (
-    <div className="main-wraper">
+    <div className={styles.mainWrapper}>
       <WheelOfFortune />
     </div>
   )
