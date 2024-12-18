@@ -1,4 +1,4 @@
-.game-container {
+.gameContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,7 +23,7 @@
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
 }
 
-.game-panel {
+.gamePanel {
   display: flex;
   align-items: center;
   justify-content: space-around;

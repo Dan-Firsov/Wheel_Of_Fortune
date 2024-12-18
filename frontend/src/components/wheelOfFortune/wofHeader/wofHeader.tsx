@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import "./wofHeader.css"
+import styles from "./wofHeader.module.css"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 import { socket } from "../../../store/ConnectionStore"
 
@@ -32,14 +32,14 @@ export default function WofHeader() {
   }, [])
 
   return (
-    <div className="wof-header-wrapper">
+    <div className={styles.wofHeaderWrapper}>
       {totalPot && totalParticipants ? (
         <>
-          <div className="total-wrapper">
+          <div className={styles.totalWrapper}>
             <span style={{ fontWeight: "bold" }}>Total pot:</span>
             <span>{`${totalPot} ETH`}</span>
           </div>
-          <div className="total-wrapper">
+          <div className={styles.totalWrapper}>
             <span style={{ fontWeight: "bold" }}>Total participants:</span>
             <span>{totalParticipants}</span>
           </div>

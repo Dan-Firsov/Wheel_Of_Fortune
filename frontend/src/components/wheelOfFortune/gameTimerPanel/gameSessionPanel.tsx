@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { socket } from "../../../store/ConnectionStore"
-import "./gameSessionPanel.css"
+import styles from "./gameSessionPanel.module.css"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
 
 enum GamePhase {
@@ -66,7 +66,7 @@ export default function GameSessionPanel() {
   }, [])
 
   return (
-    <div className="game-session-panel-wrapper">
+    <div className={styles.gameSessionPanelWrapper}>
       {gamePhase === GamePhase.WAITING && (
         <div>
           <h2>{`Waiting for participants... (${3 - totalParticipants} left)`}</h2>
@@ -76,7 +76,7 @@ export default function GameSessionPanel() {
       {gamePhase === GamePhase.ONGOING && timeLeft !== null && (
         <div>
           <h2>Ends game time: {timeLeft} sec</h2>
-          {timeLeft && <progress className="progressbar-game-session animated" id="p1" value={timeLeft} max="60"></progress>}
+          {timeLeft && <progress className={`${styles.progressbarGameSession} animated"`} id="p1" value={timeLeft} max="60"></progress>}
         </div>
       )}
 

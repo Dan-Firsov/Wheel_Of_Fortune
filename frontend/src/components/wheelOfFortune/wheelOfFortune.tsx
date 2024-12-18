@@ -1,22 +1,22 @@
 import BetPanel from "./bet/betPanel"
 import WofHeader from "./wofHeader/wofHeader"
-import "./wheelOfFortune.css"
+import styles from "./wheelOfFortune.module.css"
 import ParticipantBetsPanel from "./participantBetsPanel/participantBetsPanel"
 import GameSessionPanel from "./gameTimerPanel/gameSessionPanel"
 
 export default function WheelOfFortune() {
   return (
-    <div className="game-container">
-      <div className="header">
+    <div className={styles.gameContainer}>
+      <div className={styles.header}>
         <WofHeader />
       </div>
-      <div className="game-panel">
+      <div className={styles.gamePanel}>
         <GameSessionPanel />
       </div>
-      <div className="table">
+      <div className={styles.table}>
         <ParticipantBetsPanel />
       </div>
-      <div className="footer">
+      <div className={styles.footer}>
         <BetPanel />
       </div>
     </div>
