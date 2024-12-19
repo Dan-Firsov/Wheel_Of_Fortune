@@ -3,7 +3,7 @@ import { PlaceBet } from "../../../utils/wheelOfForune/placeBet"
 import styles from "./betPanel.module.css"
 import { WithdrawBet } from "../../../utils/wheelOfForune/withdrawBet"
 import Button from "../../buttons/button/Button"
-import Input from "../../input/Input"
+import Input from "../../input/InputTest"
 
 enum ErrorMsg {
   PROVIDEVALUE = "Please provide value.",

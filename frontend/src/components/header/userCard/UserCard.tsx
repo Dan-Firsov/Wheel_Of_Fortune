@@ -5,7 +5,7 @@ import { Deposit } from "../../../utils/wheelOfForune/deposit"
 import { useWallet } from "../../../store/ConnectionStore"
 import { DepositButton } from "../../buttons/depositButton/depositButton"
 import Button from "../../buttons/button/Button"
-import Input from "../../input/Input"
+import Input from "../../input/InputTest"
 
 interface IUserCard {
   userCardRef: React.RefObject<HTMLDivElement>
