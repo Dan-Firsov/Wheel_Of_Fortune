@@ -3,7 +3,7 @@ import styles from "./connectWalletButton.module.css"
 import { useWallet, useContractStore } from "../../store/ConnectionStore"
 import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
-import UserCard from "../header/userCard/UserCard"
+import UserCard from "../header/userCard/UserCardTest"
 import Button from "../buttons/button/Button"
 
 export default function ConnectWalletButton() {
