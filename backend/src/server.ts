@@ -12,6 +12,7 @@ const server = http.createServer(app)
 const io = new SocketIOServer(server, {
   cors: {
     origin: "https://0xwheeloffortune.netlify.app",
+    methods: ["GET", "POST"],
   },
 })
 const PORT = process.env.PORT || 5000
@@ -37,6 +38,4 @@ eventEmitter.on("gameUpdate", (update) => {
   io.emit("gameUpdate", update)
 })
 
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`)
-})
+server.listen(PORT, () => {})
