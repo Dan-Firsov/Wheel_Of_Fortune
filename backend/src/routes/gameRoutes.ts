@@ -25,6 +25,7 @@ router.post("/select-winner", async (req, res) => {
 router.get("/game-state", async (req, res) => {
   try {
     const gameState = await getCurrentGameState()
+    console.log(gameState)
     res.json(gameState)
   } catch (error) {
     console.error("Failed to get game state:", error)
