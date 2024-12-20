@@ -9,7 +9,7 @@ export default function ParticipantBetsPanel() {
     const fetchGameState = async () => {
       try {
         const data = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
-        console.log(data)
+        console.log(data.json)
         const {
           gameState: { participants },
         } = await data.json()
