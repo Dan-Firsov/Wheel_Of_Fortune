@@ -8,15 +8,17 @@ export default function ParticipantBetsPanel() {
   useEffect(() => {
     const fetchGameState = async () => {
       try {
-        const data = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
-        console.log(data)
-        const {
-          gameState: { participants },
-        } = await data.json()
-        console.log(participants)
+        const response = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
+        console.log("Raw response:", response)
+        const data = await response.json()
+        console.log("Parsed data:", data)
 
-        setParticipants(participants)
-        console.log(participants)
+        if (data && Array.isArray(data.participants)) {
+          setParticipants(data.participants)
+          console.log("Participants set:", data.participants)
+        } else {
+          console.error("Unexpected data format:", data)
+        }
       } catch (error) {
         console.error("Error fetching game state:", error)
       }
