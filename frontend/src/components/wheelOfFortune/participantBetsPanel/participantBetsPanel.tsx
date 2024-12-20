@@ -9,13 +9,9 @@ export default function ParticipantBetsPanel() {
     const fetchGameState = async () => {
       try {
         const response = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
-        console.log("Raw response:", response)
         const data = await response.json()
-        console.log("Parsed data:", data)
-
         if (data && Array.isArray(data.participants)) {
           setParticipants(data.participants)
-          console.log("Participants set:", data.participants)
         } else {
           console.error("Unexpected data format:", data)
         }
