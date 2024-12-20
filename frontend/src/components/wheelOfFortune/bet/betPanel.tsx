@@ -30,7 +30,8 @@ export default function BetPanel() {
     }
   }, [])
 
-  const handleBet = async () => {
+  const handleBet = async (event: React.FormEvent) => {
+    event.preventDefault()
     try {
       if (value) {
         await PlaceBet(value)
@@ -42,7 +43,6 @@ export default function BetPanel() {
       }
     } catch (error: any) {
       const errorReason = error.reason || ""
-
       switch (true) {
         case errorReason.includes(ErrorMsg.LOWBALANCE):
           handleError(ErrorMsg.LOWBALANCE)
@@ -108,7 +108,7 @@ export default function BetPanel() {
     <div className={styles.betPanelWrapper}>
       <input className={styles.betPanelCheckbox} type="checkbox" id="checkbox" ref={checkboxRef} />
       <div className={styles.betPanelFormContainer} ref={formContainerRef}>
-        <form className={styles.betPanelForm}>
+        <form className={styles.betPanelForm} onSubmit={handleBet}>
           <Input
             customCutClass={styles.cutBet}
             customInputClass={`${styles.inputBet} ${styles.betPanelFormInput} `}
