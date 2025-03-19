@@ -18,18 +18,21 @@ export const connectWallet = async () => {
       return
     }
 
+    const provider = new ethers.BrowserProvider(window.ethereum)
+    const signer = await provider.getSigner()
+    const address = await signer.getAddress()
+    
+    await setBrowsContract()
+    await setSigContract()
+   
+    setAddress(address)
+    
     const isNetworkReady = await checkAndSwitchNetwork()
     if (!isNetworkReady) {
       console.error("Failed to switch to the required network.")
       return
     }
 
-    await setBrowsContract()
-    await setSigContract()
-    const provider = new ethers.BrowserProvider(window.ethereum)
-    const signer = await provider.getSigner()
-    const address = await signer.getAddress()
-    setAddress(address)
     GetBalance()
   } catch (error) {
     console.error("Error connecting wallet:", error)
