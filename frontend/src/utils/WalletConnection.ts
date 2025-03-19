@@ -22,11 +22,11 @@ export const connectWallet = async () => {
     const provider = getBrowsProvider()
     const signer = await provider.getSigner()
     const address = await signer.getAddress()
-    
+    setAddress(address)
+
     await setBrowsContract()
     await setSigContract()
    
-    setAddress(address)
     
     const isNetworkReady = await checkAndSwitchNetwork()
     if (!isNetworkReady) {
