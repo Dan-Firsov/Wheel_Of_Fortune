@@ -2,10 +2,11 @@ import { ethers } from "ethers"
 import { useWallet, useContractStore } from "../store/ConnectionStore"
 import { GetBalance } from "./wheelOfForune/getBalance"
 import { checkAndSwitchNetwork } from "./checkAndSwitchNetwork"
+import { getBrowsProvider } from "./initBrowsProvider"
 
 export const connectWallet = async () => {
   const { setAddress } = useWallet.getState()
-  const { setBrowsContract, setSigContract } = useContractStore.getState()
+  const { setBrowsContract, setSigContract,  } = useContractStore.getState()
 
   try {
     if (!window.ethereum) {
@@ -18,7 +19,7 @@ export const connectWallet = async () => {
       return
     }
 
-    const provider = new ethers.BrowserProvider(window.ethereum)
+    const provider = getBrowsProvider()
     const signer = await provider.getSigner()
     const address = await signer.getAddress()
     

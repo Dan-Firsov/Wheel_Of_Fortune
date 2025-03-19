@@ -1,5 +1,6 @@
 import { ethers } from "ethers"
 import { create } from "zustand"
+import { getBrowsProvider } from "../utils/initBrowsProvider"
 import { WheelOfFortuneABI } from "../assests/WheelOfFortuneABI"
 import { io } from "socket.io-client"
 
@@ -29,13 +30,15 @@ interface IUseContractStore {
   setSigContract: () => Promise<void>
 }
 
+
+
 const getBrowsContract = () => {
-  const provider = new ethers.BrowserProvider(window.ethereum)
+  const provider = getBrowsProvider()
   const browsContract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, provider)
   return browsContract
 }
 const getSigContract = async (): Promise<ethers.Contract | null> => {
-  const provider = new ethers.BrowserProvider(window.ethereum)
+  const provider = getBrowsProvider()
   const signer = await provider.getSigner()
   if (signer) {
     const sigContract = new ethers.Contract(WOF_ADDRESS, WOF_ABI, signer)
