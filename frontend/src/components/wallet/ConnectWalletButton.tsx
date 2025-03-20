@@ -5,6 +5,7 @@ import { connectWallet } from "../../utils/WalletConnection"
 import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/UserCard"
 import Button from "../buttons/button/Button"
+import { getBrowsProvider } from "../../utils/initBrowsProvider"
 
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
@@ -16,16 +17,12 @@ export default function ConnectWalletButton() {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const userCardRef = useRef<HTMLDivElement>(null)
 
-  
   useEffect(() => {
     const fetchBalance = async () => {
       if (window.ethereum) {
         try { 
-           console.log("Я тут !!!")
-
-          const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
-          console.log("Я тут !!!")
-          console.log(accounts)
+          const provider = getBrowsProvider()
+          const accounts: string[] = await provider.send("eth_accounts", [] )
           if (accounts.length > 0) {
             await connectWallet()
           } else {
@@ -43,7 +40,7 @@ export default function ConnectWalletButton() {
     }
     fetchBalance()
   }, [])
-  console.log(address)
+
   useEffect(() => {
     const handleCurrentBalance = async () => {
       await GetBalance()
