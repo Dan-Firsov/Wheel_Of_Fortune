@@ -1,6 +1,6 @@
 export const startNewGameSession = async () => {
     try {
-        const response = await fetch("https://project-v1-0-9.onrender.com/new-session", {
+        const response = await fetch("https://project-v1-0-9.onrender.com/api/new-session", {
           method: "POST",
         });
     
