@@ -13,6 +13,15 @@ router.post("/new-session", async (req, res) => {
   }
 })
 
+router.post("/spin-wheel", async (req, res) => {
+  try {
+    await createNewGameSession()
+    res.status(200).json({ message: "The wheel is spinning"})
+  } catch (error) {
+    res.status(500).json({ error: "Failed to spinning the wheel" })
+  }
+})
+
 router.post("/select-winner", async (req, res) => {
   try {
     await selectWinner()

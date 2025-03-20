@@ -1,17 +1,17 @@
-export const startNewGameSession = async () => {
+export const spinWheel = async () => {
     try {
-        const response = await fetch("https://project-v1-0-9.onrender.com/api/new-session", {
+        const response = await fetch("https://project-v1-0-9.onrender.com/api/spin-wheel", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
         });
-        
+    
         const data = await response.json()
         if (data.success) {
-          console.log("Create game successful:", data.txHash)
+          console.log("Spin wheel successful:", data.txHash)
         } else {
-          console.error("Create game failed:", data.error)
+          console.error("Spin wheel failed:", data.error)
         }
       } catch (error) {
         console.error("Error contacting backend server:", error)
