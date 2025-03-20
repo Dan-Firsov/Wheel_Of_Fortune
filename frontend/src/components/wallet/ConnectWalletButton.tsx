@@ -19,7 +19,6 @@ export default function ConnectWalletButton() {
   const userCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    selectWinner()
     const fetchBalance = async () => {
       if (window.ethereum) {
         try { 
