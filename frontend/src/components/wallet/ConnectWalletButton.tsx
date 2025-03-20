@@ -16,11 +16,16 @@ export default function ConnectWalletButton() {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const userCardRef = useRef<HTMLDivElement>(null)
 
+  
   useEffect(() => {
     const fetchBalance = async () => {
       if (window.ethereum) {
-        try {
+        try { 
+           console.log("Я тут !!!")
+
           const accounts: string[] = await window.ethereum.request({ method: "eth_accounts" })
+          console.log("Я тут !!!")
+          console.log(accounts)
           if (accounts.length > 0) {
             await connectWallet()
           } else {
@@ -38,7 +43,7 @@ export default function ConnectWalletButton() {
     }
     fetchBalance()
   }, [])
-
+  console.log(address)
   useEffect(() => {
     const handleCurrentBalance = async () => {
       await GetBalance()

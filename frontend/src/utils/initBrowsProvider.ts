@@ -6,8 +6,7 @@ export const getBrowsProvider = () => {
     if(provider){
       return new ethers.BrowserProvider(provider)    
     }
-  }
-  if(window.ethereum) {
+  } else if(window.ethereum) {
     return new ethers.BrowserProvider(window.ethereum)
   }
   throw new Error("No Ethereum provider found.")

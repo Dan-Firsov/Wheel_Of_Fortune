@@ -1,4 +1,3 @@
-import { ethers } from "ethers"
 import { useWallet, useContractStore } from "../store/ConnectionStore"
 import { GetBalance } from "./wheelOfForune/getBalance"
 import { checkAndSwitchNetwork } from "./checkAndSwitchNetwork"
@@ -24,10 +23,8 @@ export const connectWallet = async () => {
     const provider = getBrowsProvider()
     const signer = await provider.getSigner()
     const address = await signer.getAddress()
+
     setAddress(address)
-
-
-   
     
     const isNetworkReady = await checkAndSwitchNetwork()
     if (!isNetworkReady) {
