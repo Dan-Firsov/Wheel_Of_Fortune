@@ -10,7 +10,7 @@ export const connectWallet = async () => {
 
   try {
     if (!window.ethereum) {
-      const userChoice = window.confirm("MetaMask is not installed. Would you like to install it?")
+      const userChoice = window.confirm("Wallet is not installed. Would you like to install MetaMask?")
       if (userChoice) {
         window.open("https://metamask.io/download.html", "_blank")
       } else {
@@ -18,14 +18,15 @@ export const connectWallet = async () => {
       }
       return
     }
-
+    
+    await setBrowsContract()
+    await setSigContract()
     const provider = getBrowsProvider()
     const signer = await provider.getSigner()
     const address = await signer.getAddress()
     setAddress(address)
 
-    await setBrowsContract()
-    await setSigContract()
+
    
     
     const isNetworkReady = await checkAndSwitchNetwork()
