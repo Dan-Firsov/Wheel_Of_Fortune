@@ -1,6 +1,6 @@
-export const spinWheel = async () => {
+export const selectWinner = async () => {
     try {
-        const response = await fetch("https://project-v1-0-9.onrender.com/api/spin-wheel", {
+        const response = await fetch("https://project-v1-0-9.onrender.com/api/select-winner", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

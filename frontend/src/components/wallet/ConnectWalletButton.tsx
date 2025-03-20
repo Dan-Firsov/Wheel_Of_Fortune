@@ -6,7 +6,7 @@ import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/UserCard"
 import Button from "../buttons/button/Button"
 import { getBrowsProvider } from "../../utils/initBrowsProvider"
-import { spinWheel } from "../../utils/api/spinWheel"
+import { selectWinner } from "../../utils/api/selectWinner"
 
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
@@ -19,7 +19,7 @@ export default function ConnectWalletButton() {
   const userCardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    spinWheel()
+    selectWinner()
     const fetchBalance = async () => {
       if (window.ethereum) {
         try { 
