@@ -1,6 +1,6 @@
 import { useWallet, useContractStore } from "../store/ConnectionStore"
 import { GetBalance } from "./wheelOfForune/getBalance"
-import { checkAndSwitchNetwork } from "./checkAndSwitchNetwork"
+import { connectSepoliaNetwork } from "./NetworkConnection"
 import { getBrowsProvider } from "./initBrowsProvider"
 
 export const connectWallet = async () => {
@@ -17,7 +17,7 @@ export const connectWallet = async () => {
       }
       return
     }
-    
+
     await setBrowsContract()
     await setSigContract()
     const provider = getBrowsProvider()
@@ -25,8 +25,8 @@ export const connectWallet = async () => {
     const address = await signer.getAddress()
 
     setAddress(address)
-    
-    const isNetworkReady = await checkAndSwitchNetwork()
+
+    const isNetworkReady = await connectSepoliaNetwork()
     if (!isNetworkReady) {
       console.error("Failed to switch to the required network.")
       return

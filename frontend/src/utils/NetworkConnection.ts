@@ -1,31 +1,32 @@
-export const checkAndSwitchNetwork = async (): Promise<boolean> => {
-  const requiredChainId = "0xaa36a7"
+import { ethers } from "ethers"
+import { getBrowsProvider } from "./initBrowsProvider"
+
+export const connectSepoliaNetwork = async (): Promise<boolean> => {
+  const sepoliaChainId = "0xaa36a7"
 
   if (!window.ethereum) {
-    throw new Error("MetaMask is not installed.")
+    throw new Error("Wallet is not installed.")
   }
 
+  const provider = getBrowsProvider()
+
+
   try {
-    const currentChainId = await window.ethereum.request({ method: "eth_chainId" })
-    if (currentChainId === requiredChainId) {
+    const currentChainId = ethers.toQuantity((await provider.getNetwork()).chainId)
+    if (currentChainId === sepoliaChainId) {
       console.log("Already connected to Sepolia.")
       return true
     }
 
-    await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: requiredChainId }],
-    })
+    await provider.send("wallet_switchEthereumChain",[{ chainId: sepoliaChainId }])
     console.log("Network successfully switched to Sepolia.")
     return true
   } catch (error: any) {
     if (error.code === 4902) {
       try {
-        await window.ethereum.request({
-          method: "wallet_addEthereumChain",
-          params: [
+        await provider.send("wallet_addEthereumChain",[
             {
-              chainId: requiredChainId,
+              chainId: sepoliaChainId,
               chainName: "Sepolia Testnet",
               nativeCurrency: {
                 name: "Sepolia ETH",
@@ -35,8 +36,7 @@ export const checkAndSwitchNetwork = async (): Promise<boolean> => {
               rpcUrls: ["https://rpc.sepolia.org"],
               blockExplorerUrls: ["https://sepolia.etherscan.io"],
             },
-          ],
-        })
+          ])
         console.log("Sepolia network added and switched.")
         return true
       } catch (addError) {

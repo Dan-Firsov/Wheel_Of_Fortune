@@ -6,7 +6,6 @@ import { GetBalance } from "../../utils/wheelOfForune/getBalance"
 import UserCard from "../header/userCard/UserCard"
 import Button from "../buttons/button/Button"
 import { getBrowsProvider } from "../../utils/initBrowsProvider"
-import { selectWinner } from "../../utils/api/selectWinner"
 
 export default function ConnectWalletButton() {
   const { address, setAddress, setBalance } = useWallet()
