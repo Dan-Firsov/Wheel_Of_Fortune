@@ -1,13 +1,20 @@
-import { ethers } from "ethers"
+import { ethers } from "ethers";
 
 export const getBrowsProvider = () => {
-  if(window.ethereum.providers) {
-    const provider = window.ethereum.providers.find((p: any) => p.isMetaMask)
-    if(provider){
-      return new ethers.BrowserProvider(provider)    
+  if (window.ethereum) {
+    if (window.ethereum.providers) {
+      const metaMaskProvider = window.ethereum.providers.find((p: any) => p.isMetaMask);
+      if (metaMaskProvider) {
+        return new ethers.BrowserProvider(metaMaskProvider);
+      }
     }
-  } else if(window.ethereum) {
-    return new ethers.BrowserProvider(window.ethereum)
+
+    if (window.ethereum.isMetaMask) {
+      return new ethers.BrowserProvider(window.ethereum);
+    }
+
+    return new ethers.BrowserProvider(window.ethereum);
+  } else {
+    throw new Error("No Ethereum provider found.");
   }
-  throw new Error("No Ethereum provider found.")
-}
+};
