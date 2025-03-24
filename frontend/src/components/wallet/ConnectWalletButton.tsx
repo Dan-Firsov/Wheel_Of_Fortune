@@ -24,13 +24,14 @@ export default function ConnectWalletButton() {
           const provider = getBrowsProvider()
           const accounts: string[] = await provider.send("eth_accounts", [] )
           if (accounts.length > 0) {
-            await connectWallet()
+            setAddress(accounts[0])
+            await GetBalance()
           } else {
             setAddress(null)
             setBalance(null)
           }
         } catch (error) {
-          console.error("Error connecting to MetaMask:", error)
+          console.error("Error connecting to wallet:", error)
         } finally {
           setIsRequestingAccounts(false)
         }

@@ -1,5 +1,4 @@
 import { useWallet, useContractStore } from "../store/ConnectionStore"
-import { GetBalance } from "./wheelOfForune/getBalance"
 import { connectSepoliaNetwork } from "./NetworkConnection"
 import { getBrowsProvider } from "./initBrowsProvider"
 
@@ -32,7 +31,6 @@ export const connectWallet = async () => {
       return
     }
 
-    GetBalance()
   } catch (error) {
     console.error("Error connecting wallet:", error)
   }
