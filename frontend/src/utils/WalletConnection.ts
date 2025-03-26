@@ -1,11 +1,7 @@
-import { useWallet, useContractStore } from "../store/ConnectionStore"
+import { initConnections } from "./initConnections"
 import { connectSepoliaNetwork } from "./NetworkConnection"
-import { getBrowsProvider } from "./initBrowsProvider"
 
 export const connectWallet = async () => {
-  const { setAddress } = useWallet.getState()
-  const { setBrowsContract, setSigContract,  } = useContractStore.getState()
-
   try {
     if (!window.ethereum) {
       const userChoice = window.confirm("Wallet is not installed. Would you like to install MetaMask?")
@@ -16,15 +12,7 @@ export const connectWallet = async () => {
       }
       return
     }
-
-    await setBrowsContract()
-    await setSigContract()
-    const provider = getBrowsProvider()
-    const signer = await provider.getSigner()
-    const address = await signer.getAddress()
-
-    setAddress(address)
-
+    initConnections()
     const isNetworkReady = await connectSepoliaNetwork()
     if (!isNetworkReady) {
       console.error("Failed to switch to the required network.")

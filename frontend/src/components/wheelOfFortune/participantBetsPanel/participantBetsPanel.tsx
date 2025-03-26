@@ -1,35 +1,9 @@
-import { useEffect } from "react"
 import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
-import { socket } from "../../../store/ConnectionStore"
 import styles from "./participantBetsPanel.module.css"
+
 export default function ParticipantBetsPanel() {
-  const { totalPot, participants, setParticipants } = useWheelOfFortuneStore()
+  const { totalPot, participants } = useWheelOfFortuneStore()
 
-  useEffect(() => {
-    const fetchGameState = async () => {
-      try {
-        const response = await fetch("https://project-v1-0-9.onrender.com/api/game-state")
-        const data = await response.json()
-        if (data && Array.isArray(data.participants)) {
-          setParticipants(data.participants)
-        } else {
-          console.error("Unexpected data format:", data)
-        }
-      } catch (error) {
-        console.error("Error fetching game state:", error)
-      }
-    }
-    fetchGameState()
-
-    socket.on("gameUpdate", (update) => {
-      if (update.type === "totalUpdate") {
-        setParticipants(update.updatedParticipants)
-      }
-    })
-    return () => {
-      socket.off("gameUpdate")
-    }
-  }, [])
 
   return (
     <div className={styles.participantsWrapper}>

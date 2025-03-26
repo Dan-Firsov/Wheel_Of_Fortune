@@ -1,8 +1,8 @@
 import { ethers } from "ethers"
-import { useContractStore, useWallet } from "../../store/ConnectionStore"
+import { useConnectionStore, useWallet } from "../../store/ConnectionStore"
 
-export const GetBalance = async () => {
-  const { sigContract } = useContractStore.getState()
+export const getBalance = async () => {
+  const { sigContract } = useConnectionStore.getState()
   const { setBalance } = useWallet.getState()
   try {
     if (sigContract) {
@@ -15,6 +15,6 @@ export const GetBalance = async () => {
       }
     }
   } catch (error) {
-    console.error("Get Balance error:", error)
+    console.error("Get balance error:", error)
   }
 }

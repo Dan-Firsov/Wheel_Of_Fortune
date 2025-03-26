@@ -1,8 +1,8 @@
 import { parseUnits } from "ethers"
-import { useContractStore } from "../../store/ConnectionStore"
+import { useConnectionStore } from "../../store/ConnectionStore"
 
-export const WithdrawBet = async (value: string) => {
-  const { sigContract } = useContractStore.getState()
+export const withdrawBet = async (value: string) => {
+  const { sigContract } = useConnectionStore.getState()
   try {
     const amount = parseUnits(value, 18)
     if (sigContract) {

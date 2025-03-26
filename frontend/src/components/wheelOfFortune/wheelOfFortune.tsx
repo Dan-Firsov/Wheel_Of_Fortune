@@ -1,10 +1,30 @@
-import BetPanel from "./bet/betPanel"
+import BetPanel from "./betPanel/betPanel"
 import WofHeader from "./wofHeader/wofHeader"
 import styles from "./wheelOfFortune.module.css"
 import ParticipantBetsPanel from "./participantBetsPanel/participantBetsPanel"
-import GameSessionPanel from "./gameTimerPanel/gameSessionPanel"
+import GameSessionPanel from "./gameSessionPanel/gameSessionPanel"
+import { useEffect } from "react"
+import { useWheelOfFortuneStore } from "../../store/WheelOfFortuneStore"
+import { socket } from "../../store/ConnectionStore"
+import { updateGameState } from "../../utils/wheelOfForune/updateGameState"
 
 export default function WheelOfFortune() {
+  const { setTotalPot, setTotalParticipants,setParticipants } = useWheelOfFortuneStore()
+
+  useEffect(() => {
+    updateGameState()
+    socket.on("gameUpdate", (update) => {
+      if (update.type === "totalUpdate") {
+        setParticipants(update.updatedParticipants)
+        setTotalPot(update.totalUpdate.totalPot)
+        setTotalParticipants(update.totalUpdate.participantCount)
+      }
+      })
+    return () => {
+      socket.off("gameUpdate")
+    }
+  },[])
+
   return (
     <div className={styles.gameContainer}>
       <div className={styles.header}>

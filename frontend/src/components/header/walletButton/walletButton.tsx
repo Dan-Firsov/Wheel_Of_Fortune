@@ -1,68 +1,23 @@
 import { useEffect, useRef, useState } from "react"
 import styles from "./connectWalletButton.module.css"
-import { useWallet, useContractStore } from "../../store/ConnectionStore"
-import { connectWallet } from "../../utils/WalletConnection"
-import { GetBalance } from "../../utils/wheelOfForune/getBalance"
-import UserCard from "../header/userCard/UserCard"
-import Button from "../buttons/button/Button"
-import { getBrowsProvider } from "../../utils/initBrowsProvider"
+import { useWalletInfo } from "../../../store/ConnectionStore"
+import Button from "../../../shared/button/Button"
+import useBalanceUpdates from "./hooks/useBalanceUpdates"
+import { connectWallet } from "../../../utils/WalletConnection"
+import UserCard from "./userCard/UserCard"
+import { useWalletState } from "./hooks/useWalletState"
 
-export default function ConnectWalletButton() {
-  const { address, setAddress, setBalance } = useWallet()
+export default function WalletButton() {
+  const { address } = useWalletInfo()
   const [isUserCardVisible, setIsUserCardVisible] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
   const [isRequestingAccounts, setIsRequestingAccounts] = useState(false)
-  const { browsContract } = useContractStore()
 
   const buttonRef = useRef<HTMLButtonElement>(null)
   const userCardRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const fetchBalance = async () => {
-      if (window.ethereum) {
-        try { 
-          const provider = getBrowsProvider()
-          const accounts: string[] = await provider.send("eth_accounts", [] )
-          if (accounts.length > 0) {
-            setAddress(accounts[0])
-            await GetBalance()
-          } else {
-            setAddress(null)
-            setBalance(null)
-          }
-        } catch (error) {
-          console.error("Error connecting to wallet:", error)
-        } finally {
-          setIsRequestingAccounts(false)
-        }
-      } else {
-        setAddress(null)
-      }
-    }
-    fetchBalance()
-  }, [])
-
-  useEffect(() => {
-    const handleCurrentBalance = async () => {
-      await GetBalance()
-    }
-    if (browsContract) {
-      browsContract.on("Deposit", handleCurrentBalance)
-      browsContract.on("Withdraw", handleCurrentBalance)
-      browsContract.on("BetPlaced", handleCurrentBalance)
-      browsContract.on("WithdrawBet", handleCurrentBalance)
-      browsContract.on("GameResult", handleCurrentBalance)
-    }
-    return () => {
-      if (browsContract) {
-        browsContract.off("Deposit", handleCurrentBalance)
-        browsContract.off("Withdraw", handleCurrentBalance)
-        browsContract.off("BetPlaced", handleCurrentBalance)
-        browsContract.off("WithdrawBet", handleCurrentBalance)
-        browsContract.off("GameResult", handleCurrentBalance)
-      }
-    }
-  }, [browsContract])
+ 
+  useWalletState()
+  useBalanceUpdates()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -71,13 +26,11 @@ export default function ConnectWalletButton() {
         setTimeout(() => setIsUserCardVisible(false), 350)
       }
     }
-
     const handleWindowBlur = () => {
       setIsAnimating(false)
       setTimeout(() => setIsUserCardVisible(false), 350)
     }
     document.addEventListener("mousedown", handleClickOutside)
-
     return () => {
       window.removeEventListener("blur", handleWindowBlur)
       document.removeEventListener("mousedown", handleClickOutside)
@@ -90,12 +43,12 @@ export default function ConnectWalletButton() {
         setIsRequestingAccounts(true)
         await connectWallet()
       } catch (error) {
-        console.error("Error connecting to MetaMask:", error)
+        console.error("Error connecting to wallet:", error)
       } finally {
         setIsRequestingAccounts(false)
       }
     } else {
-      console.log("MetaMask is already processing a request. Please wait.")
+      console.log("Wallet is already processing a request. Please wait.")
     }
   }
 
