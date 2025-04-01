@@ -1,9 +1,8 @@
-import { useWheelOfFortuneStore } from "../../../store/WheelOfFortuneStore"
-import styles from "./participantBetsPanel.module.css"
+import { useWheelOfFortuneStore } from '../../../store/WheelOfFortuneStore';
+import styles from './participantBetsPanel.module.css';
 
 export default function ParticipantBetsPanel() {
-  const { totalPot, participants } = useWheelOfFortuneStore()
-
+  const { totalPot, participants } = useWheelOfFortuneStore();
 
   return (
     <div className={styles.participantsWrapper}>
@@ -11,7 +10,10 @@ export default function ParticipantBetsPanel() {
         <table className={styles.participantsTable}>
           <tbody className={styles.participantsTbody}>
             <tr>
-              <td colSpan={4} className={`${styles.participantsTd} ${styles.waitingCell}`}>
+              <td
+                colSpan={4}
+                className={`${styles.participantsTd} ${styles.waitingCell}`}
+              >
                 Waiting for participants...
               </td>
             </tr>
@@ -29,20 +31,26 @@ export default function ParticipantBetsPanel() {
           </thead>
           <tbody className={styles.participantsTbody}>
             {participants.map((participant, index) => {
-              const winChance = (participant.bet / totalPot) * 100
+              const winChance = (participant.bet / totalPot) * 100;
 
               return (
                 <tr key={index}>
                   <td className={styles.participantsTd}>{index + 1}</td>
-                  <td className={styles.participantsTd}>{participant.address?.slice(0, 7) + "...." + participant.address?.slice(-6)}</td>
+                  <td className={styles.participantsTd}>
+                    {participant.address?.slice(0, 7) +
+                      '....' +
+                      participant.address?.slice(-6)}
+                  </td>
                   <td className={styles.participantsTd}>{participant.bet}</td>
-                  <td className={styles.participantsTd}>{winChance.toFixed(2)}%</td>
+                  <td className={styles.participantsTd}>
+                    {winChance.toFixed(2)}%
+                  </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       )}
     </div>
-  )
+  );
 }
