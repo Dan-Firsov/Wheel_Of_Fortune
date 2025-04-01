@@ -15,7 +15,7 @@ export default function useContractBalance() {
   });
 
   const balanceBigInt = data as bigint;
-  const balance = formatUnits(balanceBigInt, 18);
+  const balance = balanceBigInt ? formatUnits(balanceBigInt, 18) : '0';
 
   return {
     address,
