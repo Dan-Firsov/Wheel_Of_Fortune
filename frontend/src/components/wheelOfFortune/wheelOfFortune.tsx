@@ -4,7 +4,7 @@ import styles from './wheelOfFortune.module.css';
 import ParticipantBetsPanel from './participantBetsPanel/participantBetsPanel';
 import GameSessionPanel from './gameSessionPanel/gameSessionPanel';
 import { useEffect } from 'react';
-import { useWheelOfFortuneStore } from '../../store/WheelOfFortuneStore';
+import { useWheelOfFortuneStore } from '../../store/useWheelOfFortuneStore';
 import { updateGameState } from '../../utils/wheelOfForune/updateGameState';
 import { socket } from '../../constants/api';
 

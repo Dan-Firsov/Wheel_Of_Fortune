@@ -1,4 +1,4 @@
-import { useWheelOfFortuneStore } from '../../../store/WheelOfFortuneStore';
+import { useWheelOfFortuneStore } from '../../../store/useWheelOfFortuneStore';
 import styles from './participantBetsPanel.module.css';
 
 export default function ParticipantBetsPanel() {

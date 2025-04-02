@@ -1,8 +1,8 @@
 import { parseUnits } from 'ethers';
 import { WOF_ABI, WOF_ADDRESS } from '../../constants/contract/wheelOfFortune';
-import useContractBalanceUpdates from '../../shared/hooks/useContractBalance';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { useState } from 'react';
+import { useContractBalanceStore } from '../../store/useContractBalanceStore';
 
 export const usePlaceBet = () => {
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
@@ -10,7 +10,7 @@ export const usePlaceBet = () => {
   const { isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
-  const { refetch } = useContractBalanceUpdates();
+  const { refetchBalance } = useContractBalanceStore.getState();
 
   const placeBet = async (value: string) => {
     if (isPending) {
@@ -27,8 +27,8 @@ export const usePlaceBet = () => {
         value: amount,
       });
       setHash(txHash);
-      if (hash && isSuccess) {
-        refetch();
+      if (hash && isSuccess && refetchBalance) {
+        refetchBalance();
         setHash(undefined);
       }
     } catch (error) {

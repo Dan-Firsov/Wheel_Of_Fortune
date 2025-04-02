@@ -4,6 +4,8 @@ import { useCopyToClipboard } from './hooks/useCopyToClipboard';
 import { useWalletActions } from './hooks/useWalletActions';
 import Input from '../../../../shared/common/input/Input';
 import Button from '../../../../shared/common/button/Button';
+import { useContractBalanceStore } from '../../../../store/useContractBalanceStore';
+import { useAccount } from 'wagmi';
 import useContractBalance from '../../../../shared/hooks/useContractBalance';
 
 interface IUserCard {
@@ -25,7 +27,9 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
     handleWithdraw,
   } = useWalletActions();
   const { isCopied, handleCopy } = useCopyToClipboard();
-  const { address, balance } = useContractBalance();
+  useContractBalance();
+  const { address } = useAccount();
+  const { balance } = useContractBalanceStore.getState();
 
   return (
     <div

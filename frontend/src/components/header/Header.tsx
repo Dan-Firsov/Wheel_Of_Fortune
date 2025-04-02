@@ -1,5 +1,5 @@
-import WalletButton from "./walletButton/walletButton"
-import styles from "./header.module.css"
+import styles from './header.module.css';
+import WalletButton from './walletButton/walletButton';
 
 export default function Header() {
   return (
@@ -7,5 +7,5 @@ export default function Header() {
       <div className={styles.headerName}>Wheel Of Fortune</div>
       <WalletButton />
     </div>
-  )
+  );
 }

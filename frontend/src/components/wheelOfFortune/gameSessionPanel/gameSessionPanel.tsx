@@ -1,5 +1,5 @@
 import styles from './gameSessionPanel.module.css';
-import { useWheelOfFortuneStore } from '../../../store/WheelOfFortuneStore';
+import { useWheelOfFortuneStore } from '../../../store/useWheelOfFortuneStore';
 import { GamePhase, useGameSessionPanel } from './useGameSessionPanel';
 
 export default function GameSessionPanel() {

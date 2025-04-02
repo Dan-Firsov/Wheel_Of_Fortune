@@ -1,8 +1,8 @@
 import { parseUnits } from 'ethers';
 import { useState } from 'react';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
-import useContractBalanceUpdates from '../../shared/hooks/useContractBalance';
 import { WOF_ABI, WOF_ADDRESS } from '../../constants/contract/wheelOfFortune';
+import { useContractBalanceStore } from '../../store/useContractBalanceStore';
 
 export const useWithdraw = () => {
   const [hash, setHash] = useState<`0x${string}` | undefined>(undefined);
@@ -10,7 +10,7 @@ export const useWithdraw = () => {
   const { isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
-  const { refetch } = useContractBalanceUpdates();
+  const { refetchBalance } = useContractBalanceStore.getState();
 
   const withdraw = async (value: string) => {
     if (isPending) {
@@ -27,8 +27,8 @@ export const useWithdraw = () => {
         value: amount,
       });
       setHash(txHash);
-      if (hash && isSuccess) {
-        refetch();
+      if (hash && isSuccess && refetchBalance) {
+        refetchBalance();
         setHash(undefined);
       }
     } catch (error) {

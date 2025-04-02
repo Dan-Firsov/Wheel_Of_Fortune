@@ -20,7 +20,6 @@ export const useWalletConnection = () => {
       }
       return;
     }
-
     if (!isPending) {
       try {
         await connectAsync({
