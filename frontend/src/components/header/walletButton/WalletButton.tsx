@@ -4,6 +4,7 @@ import UserCard from './userCard/UserCard';
 import { useWalletConnection } from '../../../shared/hooks/useWalletConnection';
 import { useUserCardVisibility } from './useUserCardVisibility';
 import { useAccount } from 'wagmi';
+import useContractBalance from '../../../shared/hooks/useContractBalance';
 
 export default function WalletButton() {
   const { address, isConnected } = useAccount();
@@ -11,6 +12,7 @@ export default function WalletButton() {
   const { isVisible, isAnimating, toggleUserCard, buttonRef, userCardRef } =
     useUserCardVisibility();
 
+  useContractBalance();
   const handleToggleUserCard = () =>
     address ? toggleUserCard() : connectMetaMask();
 
