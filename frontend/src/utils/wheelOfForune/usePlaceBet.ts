@@ -24,7 +24,7 @@ export const usePlaceBet = () => {
         address: WOF_ADDRESS,
         abi: WOF_ABI,
         functionName: 'placeBet',
-        value: amount,
+        args: [amount],
       });
       setHash(txHash);
       if (hash && isSuccess && refetchBalance) {

@@ -24,7 +24,7 @@ export const useWithdraw = () => {
         address: WOF_ADDRESS,
         abi: WOF_ABI,
         functionName: 'withdraw',
-        value: amount,
+        args: [amount],
       });
       setHash(txHash);
       if (hash && isSuccess && refetchBalance) {
