@@ -29,7 +29,7 @@ export default function WalletButton() {
           {isConnected ? (
             `${address?.slice(0, 5) + '...' + address?.slice(-4)}`
           ) : (
-            <span style={{ fontWeight: 'bold' }}>Connect Wallet</span>
+            <span style={{ fontWeight: 'bold' }}>Connect MetaMask</span>
           )}
         </span>
       </Button>

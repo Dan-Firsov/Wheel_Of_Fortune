@@ -29,8 +29,10 @@
 
   &:not(:checked),
   &:checked {
-    + .betPanelFormContainer .betPanelFormInput:required:valid ~ .betPanelFormToggle::before {
-      content: "Thank You! \1F60A";
+    + .betPanelFormContainer
+      .betPanelFormInput:required:valid
+      ~ .betPanelFormToggle::before {
+      content: 'Thank You! \1F60A';
     }
   }
 
@@ -144,7 +146,7 @@
   width: auto;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     width: 100%;
     height: 100%;
@@ -155,7 +157,7 @@
 
 .betPanelFormButton {
   border-radius: 1em;
-
+  cursor: pointer;
   color: inherit;
   padding: 0;
   height: 100%;
