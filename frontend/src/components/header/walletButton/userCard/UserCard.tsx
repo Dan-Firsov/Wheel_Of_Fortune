@@ -6,7 +6,6 @@ import Input from '../../../../shared/common/input/Input';
 import Button from '../../../../shared/common/button/Button';
 import { useContractBalanceStore } from '../../../../store/useContractBalanceStore';
 import { useAccount } from 'wagmi';
-import useContractBalance from '../../../../shared/hooks/useContractBalance';
 
 interface IUserCard {
   userCardRef: React.RefObject<HTMLDivElement | null>;
@@ -27,9 +26,8 @@ const UserCard = ({ userCardRef, isAnimating }: IUserCard) => {
     handleWithdraw,
   } = useWalletActions();
   const { isCopied, handleCopy } = useCopyToClipboard();
-  useContractBalance();
   const { address } = useAccount();
-  const { balance } = useContractBalanceStore.getState();
+  const { balance } = useContractBalanceStore();
 
   return (
     <div

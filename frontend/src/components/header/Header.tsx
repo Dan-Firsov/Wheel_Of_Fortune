@@ -1,5 +1,5 @@
 import styles from './header.module.css';
-import WalletButton from './walletButton/walletButton';
+import WalletButton from './walletButton/WalletButton';
 
 export default function Header() {
   return (

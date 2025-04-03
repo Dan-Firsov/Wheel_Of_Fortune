@@ -14,12 +14,11 @@ export default function useContractBalance() {
     address: WOF_ADDRESS,
     abi: WOF_ABI,
     functionName: 'getBalance',
+    account: address,
     query: {
       enabled: !!address,
     },
   });
-
-  console.log(data);
 
   useEffect(() => {
     if (refetch) {
@@ -28,7 +27,7 @@ export default function useContractBalance() {
   }, []);
 
   useEffect(() => {
-    if (data) {
+    if (data !== undefined) {
       const balanceBigInt = data as bigint;
       const balance = formatUnits(balanceBigInt, 18);
       setBalance(balance);

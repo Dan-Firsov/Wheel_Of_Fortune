@@ -3,12 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 export const useUserCardVisibility = () => {
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const userCardRef = useRef<HTMLDivElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [status, setStatus] = useState<boolean>(false);
 
   const handleWindowBlur = () => {
-    setIsAnimating(false);
-    setTimeout(() => setIsVisible(false), 350);
+    setTimeout(() => setStatus(false), 350);
   };
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -17,8 +15,7 @@ export const useUserCardVisibility = () => {
       buttonRef.current &&
       !buttonRef.current.contains(event.target as Node)
     ) {
-      setIsAnimating(false);
-      setTimeout(() => setIsVisible(false), 350);
+      setTimeout(() => setStatus(false), 350);
     }
   };
 
@@ -31,18 +28,16 @@ export const useUserCardVisibility = () => {
   }, []);
 
   const toggleUserCard = () => {
-    if (!isVisible) {
-      setIsVisible(true);
-      setTimeout(() => setIsAnimating(true), 0);
+    if (!status) {
+      setTimeout(() => setStatus(true), 0);
     } else {
-      setIsAnimating(false);
-      setTimeout(() => setIsVisible(false), 350);
+      setTimeout(() => setStatus(false), 350);
     }
   };
 
   return {
-    isVisible,
-    isAnimating,
+    isVisible: status,
+    isAnimating: status,
     toggleUserCard,
     buttonRef,
     userCardRef,
