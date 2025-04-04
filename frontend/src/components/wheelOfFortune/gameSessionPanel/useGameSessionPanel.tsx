@@ -29,7 +29,6 @@ export const useGameSessionPanel = () => {
       console.log('Received update:', update);
       switch (update.type) {
         case UpdateType.TIMERUPDATE:
-          console.log(update.timeLeft);
           setTimeLeft(update.timeLeft);
           setGamePhase(GamePhase.ONGOING);
           break;
